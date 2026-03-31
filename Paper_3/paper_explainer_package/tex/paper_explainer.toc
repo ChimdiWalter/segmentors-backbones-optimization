@@ -1,0 +1,67 @@
+\contentsline {section}{\numberline {1}Overview and Purpose}{3}{section.1}
+\contentsline {paragraph}{Manuscript location.}{3}{section*.2}
+\contentsline {section}{\numberline {2}What the Paper Studies}{3}{section.2}
+\contentsline {subsection}{\numberline {2.1}Why This Matters}{3}{subsection.2.1}
+\contentsline {section}{\numberline {3}Core Scientific Objective}{3}{section.3}
+\contentsline {section}{\numberline {4}High-Level Method Summary}{3}{section.4}
+\contentsline {section}{\numberline {5}Section-by-Section Explanation of the Manuscript}{4}{section.5}
+\contentsline {subsection}{\numberline {5.1}Section 1: Introduction}{4}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}Section 2: Related Work}{4}{subsection.5.2}
+\contentsline {subsection}{\numberline {5.3}Section 3: Problem Setup and Notation}{4}{subsection.5.3}
+\contentsline {subsection}{\numberline {5.4}Section 4: Mathematical Framework}{4}{subsection.5.4}
+\contentsline {subsubsection}{\numberline {5.4.1}Navier-Stokes Diffusion (Eq.\nobreakspace {}4--5)}{4}{subsubsection.5.4.1}
+\contentsline {subsubsection}{\numberline {5.4.2}Active Contour Dynamics (Eq.\nobreakspace {}6--7)}{5}{subsubsection.5.4.2}
+\contentsline {subsection}{\numberline {5.5}Section 5: Methodology --- Stochastic Parameter Search}{5}{subsection.5.5}
+\contentsline {subsubsection}{\numberline {5.5.1}Heuristic Objective (Eq.\nobreakspace {}9)}{5}{subsubsection.5.5.1}
+\contentsline {subsubsection}{\numberline {5.5.2}Search Algorithm (Algorithm 1)}{5}{subsubsection.5.5.2}
+\contentsline {subsection}{\numberline {5.6}Section 6: Implementation Details}{5}{subsection.5.6}
+\contentsline {subsection}{\numberline {5.7}Section 7: Experiments}{5}{subsection.5.7}
+\contentsline {subsection}{\numberline {5.8}Section 8: Results}{5}{subsection.5.8}
+\contentsline {subsection}{\numberline {5.9}Section 9: Multi-Stage Inference}{5}{subsection.5.9}
+\contentsline {subsection}{\numberline {5.10}Section 10: Discussion}{5}{subsection.5.10}
+\contentsline {subsection}{\numberline {5.11}Section 11: Conclusion}{5}{subsection.5.11}
+\contentsline {subsection}{\numberline {5.12}Appendices A--C}{5}{subsection.5.12}
+\contentsline {section}{\numberline {6}Experiment-by-Experiment Explanation}{6}{section.6}
+\contentsline {subsection}{\numberline {6.1}Experiment 1: Production Optimizer Run (174 Leaves)}{6}{subsection.6.1}
+\contentsline {subsection}{\numberline {6.2}Experiment 2: Objective Function Ablations}{6}{subsection.6.2}
+\contentsline {subsection}{\numberline {6.3}Experiment 3: Search Strategy Ablations}{6}{subsection.6.3}
+\contentsline {subsection}{\numberline {6.4}Experiment 4: Teacher--Student Distillation}{6}{subsection.6.4}
+\contentsline {subsection}{\numberline {6.5}Experiment 5: 9-Leaf Representative Trace Study}{7}{subsection.6.5}
+\contentsline {subsection}{\numberline {6.6}Experiment 6: Parameter-Cloud Manifold Geometry}{7}{subsection.6.6}
+\contentsline {subsection}{\numberline {6.7}Experiment 7: Solid-3D Parameter Geometry}{7}{subsection.6.7}
+\contentsline {subsection}{\numberline {6.8}Experiment 8: Patch Morphology Transfer}{7}{subsection.6.8}
+\contentsline {section}{\numberline {7}Figure-by-Figure Explanation with File Paths}{8}{section.7}
+\contentsline {subsection}{\numberline {7.1}Main Text Figures}{8}{subsection.7.1}
+\contentsline {subsubsection}{\numberline {7.1.1}Fig 1 --- Optimizer Status Bar}{8}{subsubsection.7.1.1}
+\contentsline {subsubsection}{\numberline {7.1.2}Fig 2 --- Runtime Histogram}{8}{subsubsection.7.1.2}
+\contentsline {subsubsection}{\numberline {7.1.3}Fig 3 --- Score Histogram}{8}{subsubsection.7.1.3}
+\contentsline {subsubsection}{\numberline {7.1.4}Fig 4 --- Threshold Sweep}{8}{subsubsection.7.1.4}
+\contentsline {subsubsection}{\numberline {7.1.5}Figs 5--6 --- Teacher-Student Montages}{8}{subsubsection.7.1.5}
+\contentsline {subsubsection}{\numberline {7.1.6}Figs 7--8 --- Parameter-Morphology Correlations}{8}{subsubsection.7.1.6}
+\contentsline {subsubsection}{\numberline {7.1.7}Figs 9--11 --- Trace-Based Objective Surfaces}{8}{subsubsection.7.1.7}
+\contentsline {subsubsection}{\numberline {7.1.8}Fig 12 --- Convergence Trajectory}{9}{subsubsection.7.1.8}
+\contentsline {subsubsection}{\numberline {7.1.9}Fig 13 --- PCA 2D Global-Local Projection}{9}{subsubsection.7.1.9}
+\contentsline {subsubsection}{\numberline {7.1.10}Fig 14 --- Mean Parameter Shift Profile}{9}{subsubsection.7.1.10}
+\contentsline {subsubsection}{\numberline {7.1.11}Fig 15 --- Covariance Ellipsoids}{9}{subsubsection.7.1.11}
+\contentsline {subsubsection}{\numberline {7.1.12}Fig 16 --- Qualitative Grid}{9}{subsubsection.7.1.12}
+\contentsline {subsubsection}{\numberline {7.1.13}Figs 17--19 --- Morphology Transfer Plots}{9}{subsubsection.7.1.13}
+\contentsline {subsection}{\numberline {7.2}Appendix Figures}{9}{subsection.7.2}
+\contentsline {subsubsection}{\numberline {7.2.1}Appendix A --- Optimizer Output Diagnostics}{9}{subsubsection.7.2.1}
+\contentsline {subsubsection}{\numberline {7.2.2}Appendix B --- Additional Trace Trajectories}{9}{subsubsection.7.2.2}
+\contentsline {subsubsection}{\numberline {7.2.3}Appendix C --- Supplementary Geometry}{10}{subsubsection.7.2.3}
+\contentsline {section}{\numberline {8}Table-by-Table Explanation with File Paths}{10}{section.8}
+\contentsline {subsection}{\numberline {8.1}Table I --- Objective Ablations}{10}{subsection.8.1}
+\contentsline {subsection}{\numberline {8.2}Table II --- Search Strategy Ablations}{10}{subsection.8.2}
+\contentsline {subsection}{\numberline {8.3}Table III --- Patch Morphology Transfer}{10}{subsection.8.3}
+\contentsline {section}{\numberline {9}Literature and Mathematics Explained}{11}{section.9}
+\contentsline {subsection}{\numberline {9.1}Literature Landscape}{11}{subsection.9.1}
+\contentsline {subsection}{\numberline {9.2}Mathematical Components}{11}{subsection.9.2}
+\contentsline {section}{\numberline {10}Main Findings and What They Mean}{11}{section.10}
+\contentsline {section}{\numberline {11}Strongest Evidence}{12}{section.11}
+\contentsline {section}{\numberline {12}What is Provisional, Appendix-Only, or Diagnostic}{12}{section.12}
+\contentsline {subsection}{\numberline {12.1}Provisional / Incomplete}{12}{subsection.12.1}
+\contentsline {subsection}{\numberline {12.2}Appendix-Only}{12}{subsection.12.2}
+\contentsline {subsection}{\numberline {12.3}Diagnostic Only --- Not for Paper}{12}{subsection.12.3}
+\contentsline {section}{\numberline {13}Manifold / Solid-3D / Optimization Geometry Assessment}{12}{section.13}
+\contentsline {section}{\numberline {14}Directory Structure Summary}{13}{section.14}
+\contentsline {section}{\numberline {15}Final Summary}{13}{section.15}

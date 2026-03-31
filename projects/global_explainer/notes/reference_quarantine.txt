@@ -1,0 +1,68 @@
+Reference Quarantine List
+Phase 3 Audit — 2026-03-30
+=============================================================================
+
+This file lists references that require attention before final manuscript
+submission. Each entry describes the issue and recommended action.
+
+-----------------------------------------------------------------------------
+1. plantcv2025  (Paper 1 only)
+   Title:    PlantCV v4
+   Authors:  Feldman et al.
+   Venue:    bioRxiv, 2025
+   Status:   PARTIALLY VERIFIED
+
+   Issue:    This is a bioRxiv preprint. It may not yet have a final
+             peer-reviewed publication. Preprints are acceptable in many
+             venues but some reviewers may flag it.
+
+   Action:   Before submission, check whether a peer-reviewed version has
+             been published. If so, update the citation key, venue, year,
+             and DOI accordingly. If it remains a preprint, keep it but
+             ensure the bib entry explicitly labels it as a preprint.
+
+-----------------------------------------------------------------------------
+2. bertalmio2000navier  (Paper 1 only)
+   Title:    Navier-stokes, fluid dynamics, and image and video inpainting
+   Authors:  Bertalmio, Bertozzi, Sapiro
+   Venue:    CVPR 2001
+   Status:   VERIFIED (content correct, key mismatch only)
+
+   Issue:    The citation key contains "2000" but the actual proceedings
+             year is 2001. This does not affect LaTeX compilation or
+             correctness of the rendered citation, but it is a cosmetic
+             inconsistency in the bib source.
+
+   Action:   Low priority. Optionally rename the key to
+             bertalmio2001navier and update all \cite{} calls in the
+             manuscript. No impact on readers.
+
+-----------------------------------------------------------------------------
+3. Cross-paper duplicate keys  (Both papers)
+   The following references appear in both Paper 1 and Paper 2 under
+   different citation keys. If the two papers are ever merged into a
+   single document or a shared bibliography is used, these must be
+   deduplicated.
+
+   Paper 1 key            Paper 2 key         Reference
+   -----------            -----------         ---------
+   kass1988snakes         B_Kass1988          Kass et al., IJCV 1988
+   he2016deep             B_He2016            He et al., CVPR 2016
+   raissi2019physics      B_Raissi2019        Raissi et al., JCP 2019
+   oquab2023dinov2        B_Oquab2024         Oquab et al., arXiv 2023
+   mahlein2016plant       B_Mahlein2016       Mahlein, Plant Disease 2016
+   gehan2017high          B_Gehan2017         Gehan/Kellogg, Am J Botany 2017
+
+   Action:   For standalone submissions, no change needed — each paper
+             has its own self-consistent .bib file. If a unified
+             bibliography is ever required (e.g., for a dissertation or
+             combined supplementary), pick one canonical key per reference
+             and remove the duplicate.
+
+   Additional note on B_Oquab2024: The key says 2024 but the paper
+   content is from 2023 (arXiv:2304.07193). The 2024 date may refer to
+   a TMLR revision. Verify which version is actually cited and align
+   the key accordingly.
+
+=============================================================================
+End of quarantine list.

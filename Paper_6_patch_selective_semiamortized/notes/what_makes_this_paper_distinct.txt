@@ -1,0 +1,6 @@
+Distinctness summary:
+1) inference unit is patch, not full leaf.
+2) introduces patch-level selective routing/refinement.
+3) introduces patch-to-leaf aggregation methods.
+4) focuses on spatial heterogeneity within a single leaf.
+5) evaluates cross-domain patch behavior on 18.7.

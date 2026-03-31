@@ -1,0 +1,32 @@
+Paper 3 Build Report
+Generated: 2026-02-27T00:18:19-06:00
+Workspace: /deltos/e/lesion_phes/code/python/pipeline/segmentors_backbones
+
+Artifact Audit
+FOUND   experiments/exp_v1/outputs/opt_summary_local.csv
+FOUND   experiments/exp_v1/outputs/teacher_student_metrics.csv
+FOUND   experiments/exp_v1/outputs/teacher_student_metrics_roi_thr0p30.csv
+FOUND   experiments/exp_v1/outputs/threshold_sweep.csv
+FOUND   experiments/exp_v1/outputs/postprocess_sweep.csv
+FOUND   experiments/exp_v1/outputs/optimizer_summary/optimizer_summary_stats.csv
+FOUND   experiments/exp_v1/outputs/optimizer_summary/status_counts.csv
+FOUND   experiments/exp_v1/outputs/teacher_student_figures/montage_teacher_student.png
+FOUND   experiments/exp_v1/outputs/paper_disagreement_montage_roi_thr0p30.png
+FOUND   experiments/exp_v1/outputs/threshold_sweep_plot.png
+FOUND   experiments/exp_v1/outputs/optimizer_summary/status_bar.png
+FOUND   experiments/exp_v1/outputs/optimizer_summary/elapsed_seconds_hist.png
+FOUND   experiments/exp_v1/outputs/optimizer_summary/score_hist.png
+
+Missing count: 0
+Status: PASS
+
+Build Step
+Command: latexmk -pdf -interaction=nonstopmode paper3_exp_v1.tex
+Result: SUCCESS
+Figures included in paper3_exp_v1.tex:
+- figs/montage_teacher_student.png
+- figs/montage_disagreement_roi.png
+- figs/threshold_sweep_plot.png
+- figs/optimizer_status_bar.png
+- figs/optimizer_elapsed_seconds_hist.png
+- figs/optimizer_score_hist.png

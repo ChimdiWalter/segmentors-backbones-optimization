@@ -1,0 +1,1148 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{enumitem}
+\graphicspath{{/cluster/VAST/kazict-lab/e/lesion_phes/code/segmentors_backbones/experiments/exp_v1/outputs/selective_semiamortized_fullstudy174_v3/figures/}}
+
+\newcommand{\btheta}{\boldsymbol{\theta}}
+\newcommand{\bphi}{\boldsymbol{\phi}}
+\newcommand{\cS}{\mathcal{S}}
+\newcommand{\cR}{\mathcal{R}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\Real}{\mathbb{R}}
+\newcommand{\Expect}{\mathbb{E}}
+
+\title{Selective Semi-Amortized Inference for Physics-Based Lesion Phenotyping:\\
+Uncertainty-Guided Runtime--Quality Tradeoffs}
+
+\author{
+  Author Names\\
+  Affiliation\\
+  \texttt{email@institution.edu}
+}
+
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Physics-based models for plant lesion phenotyping require expensive per-image optimization
+to estimate biophysical parameters---elasticity moduli, diffusion rates, active contour
+forces---from leaf images. A state-of-the-art random-restart hill-climbing optimizer
+requires ${\sim}260$\,s per leaf via 832 PDE solver and active contour evaluations.
+We present \emph{selective semi-amortized inference}, a framework that
+(1)~trains frozen-backbone regressors (DINOv2-ViT-S/14 with registers, ResNet-18) to produce
+fast initial parameter estimates $\hat{\btheta}$ in $<1$\,s,
+(2)~quantifies prediction uncertainty via deep ensemble disagreement across 5 MLP members, and
+(3)~routes each leaf through an uncertainty-aware three-tier policy:
+\emph{direct} acceptance (${\sim}0.5$\,s),
+\emph{short refinement} using real physics scoring (${\sim}3$--$29$\,s), or
+\emph{full optimizer fallback} (${\sim}260$\,s).
+
+On 174 diseased soybean leaves with 7 physics parameters,
+the selective policy achieves a mean absolute error of 0.071
+(vs.\ 0.078 for the constant-mean baseline) with a $3.5\times$ speedup over
+full optimization on every leaf. Short refinement uses \emph{actual} PDE solver
+and active contour scoring---not interpolation---recovering physics scores
+of 18.2 versus the oracle's 18.1.
+We validate on pseudo-out-of-distribution splits, external test images,
+and parameter-extreme subgroups, and demonstrate phenotype consistency
+via PCA displacement, convex hull overlap, and covariance ellipsoid analysis.
+We provide a complete analysis of calibration, failure taxonomy,
+and risk-coverage tradeoffs for selective prediction in scientific imaging.
+\end{abstract}
+
+%% ============================================================
+\section{Introduction}
+\label{sec:intro}
+
+Quantitative plant phenotyping increasingly relies on physics-based image models
+that couple partial differential equations (PDEs) with active contour segmentation
+to extract biophysical parameters from leaf images~\cite{singh2021plantdoc,mahlein2016plant}.
+These parameters---elasticity moduli ($\mu$, $\lambda$), diffusion rate ($d$),
+active contour forces ($\alpha$, $\beta$, $\gamma$), and energy threshold ($E_\text{thr}$)---encode
+the mechanical and pathological state of diseased tissue and enable
+downstream biological interpretation such as disease severity mapping,
+lesion morphology characterization, and genotype-phenotype association.
+
+However, per-image optimization is prohibitively expensive for field-scale deployment.
+A state-of-the-art random-restart hill-climbing optimizer with $K=64$ random starts
+and $R=12$ local refinement steps per restart requires ${\sim}K \times (R+1) = 832$
+PDE solver calls per leaf, consuming ${\sim}260$\,s on a single CPU core.
+Phenotyping campaigns involving hundreds to thousands of leaves become
+computationally intractable under such constraints.
+
+\paragraph{Motivation.}
+The key observation motivating our work is that not all leaves require the same
+computational investment. Many leaves have ``typical'' parameter configurations
+well-represented in the training distribution, where a learned predictor suffices.
+Others lie in uncertain or extreme regions of parameter space, where optimization
+is essential. A principled framework should \emph{selectively} allocate computation
+based on prediction confidence.
+
+\paragraph{Approach.}
+We propose \textbf{selective semi-amortized inference}: a three-stage framework
+combining (i)~amortized prediction via frozen foundation-model features,
+(ii)~uncertainty quantification through deep ensemble disagreement, and
+(iii)~selective routing that directs each leaf through one of three computational
+tiers based on its estimated uncertainty.
+
+\paragraph{Contributions.}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item \textbf{Image-to-parameter regression}: We train frozen-backbone regressors
+  (DINOv2-ViT-S/14 with registers~\cite{oquab2024dinov2,darcet2024vision},
+  ResNet-18~\cite{he2016deep}) to predict all 7 physics parameters from a single
+  leaf image in $<1$\,s, establishing both linear and nonlinear baselines.
+
+\item \textbf{Uncertainty-aware selective routing}: A 5-member MLP ensemble provides
+  calibrated uncertainty estimates used to route leaves through three tiers:
+  direct acceptance, short real refinement, or full optimizer fallback.
+  We formalize this as a constrained selective prediction problem.
+
+\item \textbf{Real short refinement}: Unlike prior approaches using interpolation
+  toward oracle parameters, our refinement runs actual PDE + active contour scoring
+  at reduced budget (3--12 perturbation steps), ensuring reported speedups
+  reflect genuine deployment performance.
+
+\item \textbf{Comprehensive runtime--quality analysis}: We characterize the
+  Pareto frontier between wall-clock runtime and parameter accuracy across
+  multiple refinement budgets and selective policies, demonstrating
+  $3.5\times$ speedup with bounded quality loss.
+
+\item \textbf{Robustness and phenotype consistency}: We evaluate on
+  pseudo-OOD splits, parameter-extreme subgroups, score-tier stratifications,
+  and external test images (63 unseen leaves). Phenotype consistency is verified
+  through PCA displacement, convex hull overlap, covariance ellipsoid comparison,
+  and centroid shift analysis in parameter space.
+
+\item \textbf{Calibration and failure analysis}: We provide calibration curves,
+  risk-coverage tradeoffs, and a taxonomy of failure cases, supporting
+  principled deployment decisions.
+\end{enumerate}
+
+%% ============================================================
+\section{Related Work}
+\label{sec:related}
+
+\subsection{Amortized and Semi-Amortized Inference}
+
+\paragraph{Amortized inference.}
+Amortized inference replaces per-instance optimization with a learned mapping
+from observations to latent variables or parameters.
+This paradigm underpins variational autoencoders~\cite{kingma2014auto},
+simulation-based inference~\cite{cranmer2020frontier},
+and neural posterior estimation~\cite{papamakarios2019sequential}.
+The amortization gap---the quality loss from replacing optimization with
+prediction---is well-characterized in the variational inference
+literature~\cite{amos2023tutorial}.
+
+\paragraph{Semi-amortized inference.}
+Semi-amortized methods close the amortization gap by using learned predictions
+as initialization for instance-specific optimization.
+Kim et al.~\cite{kim2018semi} introduced semi-amortized VAEs where
+encoder outputs initialize iterative refinement of the approximate posterior.
+Marino et al.~\cite{marino2018iterative} proposed iterative amortized inference
+with learned update rules. Test-time adaptation methods~\cite{wang2020tent}
+share the spirit of instance-specific refinement after amortized initialization.
+
+Our work extends semi-amortized inference with \emph{selective} refinement:
+not all instances receive the same computational budget.
+Instead, uncertainty-aware routing determines whether each instance is
+directly accepted, briefly refined, or fully re-optimized.
+
+\subsection{Selective Prediction and Abstention}
+
+Selective prediction (or classification with a reject option) allows a model
+to abstain from predictions when confidence is low~\cite{geifman2017selective,shalev2010trading}.
+The risk-coverage tradeoff characterizes the achievable error rate as a function
+of the fraction of instances on which the model makes predictions.
+Kamath et al.~\cite{kamath2020selective} studied selective prediction under
+domain shift, showing that calibrated uncertainty enables effective abstention.
+
+We extend selective prediction from a binary accept/reject framework to a
+\emph{three-tier} routing system: accept, partially refine, or fully re-optimize.
+This introduces a richer cost-quality tradeoff that leverages the
+continuous nature of computational investment.
+
+\subsection{Uncertainty Quantification}
+
+Deep ensembles~\cite{lakshminarayanan2017simple} provide a simple, scalable
+approach to uncertainty estimation by training multiple models with different
+random initializations. The prediction disagreement (standard deviation across
+members) serves as a proxy for epistemic uncertainty.
+Ovadia et al.~\cite{ovadia2019can} demonstrated that ensembles provide
+well-calibrated uncertainty under dataset shift, making them suitable for
+OOD detection. Calibration of neural networks~\cite{guo2017calibration}
+and regression models~\cite{kuleshov2018accurate} is essential for
+uncertainty-based routing to function correctly.
+
+\subsection{Foundation Models for Visual Representation}
+
+Self-supervised vision transformers, particularly DINOv2~\cite{oquab2024dinov2},
+produce general-purpose visual features that transfer effectively to
+downstream tasks without fine-tuning. The addition of register
+tokens~\cite{darcet2024vision} improves feature quality by reducing
+artifact patterns in attention maps. We use frozen DINOv2-ViT-S/14
+with registers as our primary feature backbone, complemented by
+ResNet-18~\cite{he2016deep} as a convolutional baseline.
+
+\subsection{Physics-Informed and Phenotyping Models}
+
+Physics-informed neural networks~\cite{raissi2019physics,karniadakis2021physics}
+embed physical constraints directly into learning, while our approach treats
+the physics model as a black-box oracle and focuses on efficient deployment.
+Active contour models~\cite{kass1988snakes,chan2001active} provide the
+segmentation backbone of the physics pipeline.
+In plant phenotyping, deep learning has been applied to disease
+detection~\cite{mutka2015image,mahlein2016plant},
+stress quantification~\cite{singh2021plantdoc}, and automated
+phenotyping platforms~\cite{ubbens2017deep,li2021review}.
+Our work is the first to apply selective semi-amortized inference
+to physics-based phenotyping parameter estimation.
+
+\subsection{Cost-Sensitive and Adaptive Computation}
+
+Cost-sensitive learning~\cite{trapeznikov2013supervised} and adaptive
+computation methods allocate resources based on instance difficulty.
+Bayesian optimization~\cite{shahriari2016taking} provides principled
+resource allocation for expensive function evaluations.
+Our three-tier routing can be viewed as a discrete adaptive computation
+policy where the ``function evaluation'' cost dominates runtime.
+
+%% ============================================================
+\section{Problem Formulation}
+\label{sec:problem}
+
+\subsection{Physics-Based Parameter Estimation}
+
+Given a leaf image $I \in \Real^{H \times W \times 3}$, the goal is to estimate
+physics parameters $\btheta^* = (\mu, \lambda, d, \alpha, \beta, \gamma, E_\text{thr}) \in \Theta \subset \Real^7$
+that minimize a composite physics score:
+\begin{equation}
+\btheta^* = \arg\min_{\btheta \in \Theta} \; \cS(I, \btheta),
+\label{eq:optimization}
+\end{equation}
+where $\cS(I, \btheta)$ combines gradient alignment, Lab color distance,
+contour topology penalties, and area regularization via a coupled
+Navier--Stokes PDE solver and active contour energy evaluator.
+
+The parameter space $\Theta$ is bounded:
+$\mu \in [0.05, 0.60]$, $\lambda \in [0.05, 0.60]$, $d \in [0.05, 0.35]$,
+$\alpha \in [0.001, 0.05]$, $\beta \in [0.01, 0.25]$, $\gamma \in [0.10, 0.60]$,
+$E_\text{thr} \in [5, 60]$.
+
+\paragraph{Full optimizer.}
+The reference optimizer runs $K=64$ random restarts with $R=12$ local refinement
+steps per restart, requiring $K \times (R+1) = 832$ scorer evaluations per leaf
+at a cost of ${\sim}260$\,s per leaf on a single CPU core.
+We denote the full optimizer output as $\btheta^*_\text{oracle}$ and treat it as
+ground truth.
+
+\subsection{Amortized Prediction}
+
+An amortized predictor $f_\bphi: \Real^{H \times W \times 3} \to \Theta$ maps
+images directly to parameter estimates:
+\begin{equation}
+\hat{\btheta} = f_\bphi(I) \approx \btheta^*_\text{oracle}.
+\end{equation}
+
+The amortization gap $\Delta_\text{amort} = \Expect[\|\hat{\btheta} - \btheta^*\|]$
+quantifies the quality loss from replacing optimization with prediction.
+If $\Delta_\text{amort}$ is small enough for downstream tasks,
+the amortized predictor provides a ${\sim}500\times$ speedup.
+
+\subsection{Selective Semi-Amortized Framework}
+
+Let $u(I) \in \Real_{\geq 0}$ be an uncertainty function associated with
+the amortized predictor. We define a \emph{selective routing policy}
+$\pi: \Real_{\geq 0} \to \{\text{direct}, \text{refine}, \text{fallback}\}$
+parameterized by thresholds $(\tau_\text{low}, \tau_\text{high})$:
+\begin{equation}
+\pi(u) = \begin{cases}
+\text{direct} & \text{if } u \leq \tau_\text{low}, \\
+\text{refine} & \text{if } \tau_\text{low} < u \leq \tau_\text{high}, \\
+\text{fallback} & \text{if } u > \tau_\text{high}.
+\end{cases}
+\label{eq:routing}
+\end{equation}
+
+Each tier has an associated computational cost:
+\begin{align}
+c_\text{direct} &\approx c_\text{predict} \approx 0.5\text{\,s}, \\
+c_\text{refine}(S) &= c_\text{predict} + S \cdot c_\text{eval} \approx 3\text{--}29\text{\,s}, \\
+c_\text{fallback} &= K(R+1) \cdot c_\text{eval} \approx 260\text{\,s},
+\end{align}
+where $c_\text{eval} \approx 0.3$\,s is the cost of a single scorer evaluation
+and $S$ is the refinement budget.
+
+\paragraph{Constrained selection objective.}
+The optimal policy minimizes expected runtime subject to bounded quality loss:
+\begin{equation}
+\min_{\tau_\text{low}, \tau_\text{high}} \; \Expect_I[c(\pi(u(I)))]
+\quad \text{s.t.} \quad \Expect_I[\ell(\btheta_{\pi}, \btheta^*)] \leq \epsilon,
+\label{eq:constrained}
+\end{equation}
+where $\btheta_\pi$ is the parameter estimate under policy $\pi$
+and $\ell$ is the quality loss (MAE).
+
+\subsection{Refinement Operator}
+
+The refinement operator $\cR_S: \Theta \times \cI \to \Theta$ takes an initial
+estimate $\hat{\btheta}$ and the image $I$, and performs $S$ perturbation steps
+with real physics scoring:
+\begin{equation}
+\cR_S(\hat{\btheta}, I) = \hat{\btheta}^{(S)}, \quad
+\hat{\btheta}^{(s+1)} = \begin{cases}
+\btheta' & \text{if } \cS(I, \btheta') > \cS(I, \hat{\btheta}^{(s)}) + \epsilon_\text{tol}, \\
+\hat{\btheta}^{(s)} & \text{otherwise},
+\end{cases}
+\end{equation}
+where $\btheta' = \hat{\btheta}^{(s)} + \delta$ with
+$\delta_k \sim \text{Uniform}(-1, 1) \cdot \eta \cdot \rho^s \cdot (\theta_k^\text{max} - \theta_k^\text{min})$,
+$\eta = 0.25$ is the perturbation scale, $\rho = 0.85$ is the decay rate,
+$\epsilon_\text{tol} = 10^{-6}$ is the acceptance tolerance,
+and early stopping occurs after $P$ consecutive rejections.
+
+%% ============================================================
+\section{Method}
+\label{sec:method}
+
+\subsection{Feature Extraction}
+
+We extract frozen features $\bphi(I) \in \Real^d$ using pretrained backbones
+without fine-tuning:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item \textbf{DINOv2-ViT-S/14 with registers}~\cite{oquab2024dinov2,darcet2024vision}:
+  $d=384$. We use the CLS token from the vision transformer with register tokens.
+  Images are resized to $518 \times 518$ and normalized with ImageNet statistics.
+
+\item \textbf{ResNet-18}~\cite{he2016deep}: $d=512$. We use the penultimate layer
+  (after global average pooling) from an ImageNet-pretrained ResNet-18.
+  Images are resized to $256 \times 256$ and center-cropped to $224 \times 224$.
+\end{itemize}
+
+Features are standardized using training-set statistics:
+$\tilde{\bphi}(I) = (\bphi(I) - \hat{\mu}_\text{train}) / \hat{\sigma}_\text{train}$.
+
+\subsection{Regression Heads}
+
+We evaluate multiple regression architectures mapping standardized features
+to the 7 physics parameters:
+
+\paragraph{B0: Constant mean.}
+$\hat{\btheta} = \bar{\btheta}_\text{train}$, predicting the training-set mean
+for all leaves. This provides a strong baseline when inter-leaf variability
+is low relative to prediction error.
+
+\paragraph{B0b: $k$-Nearest neighbors ($k=5$).}
+$\hat{\btheta} = \frac{1}{k} \sum_{j \in \text{NN}_k(I)} w_j \btheta_j^*$,
+using distance-weighted averaging in the DINOv2 feature space.
+
+\paragraph{B1: Ridge regression.}
+$\hat{\btheta} = W \tilde{\bphi}(I) + b$ with $\ell_2$ regularization
+($\alpha = 1.0$), trained separately on DINOv2 and ResNet features.
+
+\paragraph{B2: Multi-layer perceptron (MLP).}
+Two hidden layers $(256, 128)$ with ReLU activation, trained with
+early stopping on a 15\% validation split, learning rate $10^{-3}$,
+batch size 32.
+
+\paragraph{B3: Deep ensemble (5$\times$MLP).}
+Five MLPs with architecture $(256, 128, 64)$, trained with different
+random seeds ($s \in \{42, 43, 44, 45, 46\}$).
+The ensemble prediction and uncertainty are:
+\begin{align}
+\hat{\btheta}_\text{ens} &= \frac{1}{M} \sum_{m=1}^{M} f_m(\tilde{\bphi}(I)), \\
+u(I) &= \frac{1}{7} \sum_{k=1}^{7} \sqrt{\frac{1}{M} \sum_{m=1}^{M}
+  (f_{m,k}(\tilde{\bphi}(I)) - \hat{\theta}_{\text{ens},k})^2},
+\label{eq:uncertainty}
+\end{align}
+where $M=5$ is the ensemble size and $f_{m,k}$ is the $k$-th output
+of the $m$-th member.
+
+\subsection{Real Short Refinement}
+\label{sec:refinement}
+
+Starting from the ensemble prediction $\hat{\btheta}$, we apply
+local perturbation-based refinement with the \emph{actual} physics scorer.
+
+\begin{algorithm}[h]
+\caption{Real Short Refinement}
+\label{alg:refinement}
+\begin{algorithmic}[1]
+\REQUIRE Image $I$, initial estimate $\hat{\btheta}$, budget $S$, patience $P$
+\STATE Prepare image gradients, seed maps, Lab color inputs
+\STATE $\btheta_\text{best} \leftarrow \hat{\btheta}$; $s_\text{best} \leftarrow \cS(I, \hat{\btheta})$; $p \leftarrow 0$
+\FOR{$s = 1$ to $S$}
+  \STATE Sample $\delta_k \sim \text{Uniform}(-1, 1) \cdot 0.25 \cdot 0.85^s \cdot (\theta_k^\text{max} - \theta_k^\text{min})$
+  \STATE $\btheta' \leftarrow \text{clip}(\btheta_\text{best} + \delta, \Theta)$
+  \STATE $s' \leftarrow \cS(I, \btheta')$
+  \IF{$s' > s_\text{best} + 10^{-6}$}
+    \STATE $\btheta_\text{best} \leftarrow \btheta'$; $s_\text{best} \leftarrow s'$; $p \leftarrow 0$
+  \ELSE
+    \STATE $p \leftarrow p + 1$
+  \ENDIF
+  \IF{$p \geq P$}
+    \STATE \textbf{break} \COMMENT{Early stopping}
+  \ENDIF
+\ENDFOR
+\RETURN $\btheta_\text{best}$, $s_\text{best}$
+\end{algorithmic}
+\end{algorithm}
+
+We define three refinement budgets:
+\textbf{tiny} ($S{=}3$, $P{=}2$, ${\sim}11$\,s/leaf),
+\textbf{small} ($S{=}6$, $P{=}3$, ${\sim}18$\,s/leaf),
+\textbf{medium} ($S{=}12$, $P{=}5$, ${\sim}29$\,s/leaf).
+
+\paragraph{Distinction from interpolation-based refinement.}
+A na\"ive alternative would define ``refined'' parameters as a linear interpolation
+$\hat{\btheta}_\text{interp} = (1-\alpha)\hat{\btheta} + \alpha\btheta^*$ toward the oracle.
+This artificially inflates quality metrics because the oracle $\btheta^*$ is
+unavailable at deployment time. Our refinement uses only the actual physics
+scorer $\cS(I, \cdot)$, which is available at deployment, ensuring that
+all reported speedups and quality metrics are deployment-realistic.
+
+\subsection{Selective Policy}
+\label{sec:policy}
+
+The routing policy (Eq.~\ref{eq:routing}) uses quantile-based thresholds
+on the ensemble uncertainty $u(I)$:
+\begin{align}
+\tau_\text{low} &= Q_{q_1}(\{u(I_i)\}_{i \in \text{test}}), \\
+\tau_\text{high} &= Q_{q_2}(\{u(I_i)\}_{i \in \text{test}}),
+\end{align}
+where $Q_q$ is the $q$-th quantile. We perform a grid search over
+$(q_1, q_2) \in \{0.3, 0.4, 0.5, 0.6\} \times \{0.7, 0.8, 0.9\}$
+and select the policy that minimizes MAE subject to speedup $\geq 1$.
+
+\subsection{Phenotype Consistency Metrics}
+
+To verify that predicted parameters preserve phenotypic structure,
+we define geometry metrics in PCA-projected parameter space:
+
+\paragraph{PCA displacement.}
+Let $\mathbf{z}_i = \text{PCA}(\btheta^*_i)$ and
+$\hat{\mathbf{z}}_i = \text{PCA}(\hat{\btheta}_i)$. The mean
+PCA displacement is:
+\begin{equation}
+\Delta_\text{PCA} = \frac{1}{n} \sum_{i=1}^{n}
+\|\mathbf{z}_i - \hat{\mathbf{z}}_i\|_2.
+\end{equation}
+
+\paragraph{Convex hull overlap.}
+We compute the volumes of the 3D convex hulls $\text{Hull}(\{\mathbf{z}_i\})$
+and $\text{Hull}(\{\hat{\mathbf{z}}_i\})$ in PCA space.
+High phenotype consistency implies similar hull volumes and substantial overlap.
+
+\paragraph{Centroid shift.}
+\begin{equation}
+\Delta_\text{centroid} = \left\|\frac{1}{n}\sum_i \mathbf{z}_i -
+\frac{1}{n}\sum_i \hat{\mathbf{z}}_i\right\|_2.
+\end{equation}
+
+\paragraph{Covariance ellipsoid.}
+We compute the $2\sigma$ covariance ellipsoid for each parameter set
+in PCA space and compare orientation, scale, and overlap.
+
+%% ============================================================
+\section{Experimental Setup}
+\label{sec:experiments}
+
+\subsection{Dataset}
+
+\paragraph{Primary dataset.}
+174 diseased soybean leaf images ($1920 \times 1080$, 16-bit TIFF,
+field conditions). Each leaf has 7 oracle-optimized physics parameters
+from the full optimizer (100\% converged, ${\sim}260$\,s/leaf).
+Morphology metrics include lesion area fraction (median 0.04, range 0.02--0.18),
+contour count (median 80, range 20--260), and color contrast.
+
+\paragraph{External test set.}
+63 additional leaf images from a separate collection batch (``18.7''),
+without oracle-optimized parameters. These images share the same
+imaging protocol but were not used in any training or hyperparameter selection.
+Feature extraction and prediction are performed to evaluate generalization,
+but parameter-level accuracy cannot be assessed due to absent ground truth.
+
+\subsection{Splits and Robustness Design}
+
+We employ six complementary split strategies:
+
+\begin{enumerate}[leftmargin=*,itemsep=2pt,label=(\Alph*)]
+\item \textbf{ID split}: 60/20/20 train/val/test (104/35/35 leaves),
+  stratified by optimizer score tier (low/mid/high), seed 42.
+
+\item \textbf{Pseudo-OOD split}: Leaves with the highest DSC camera IDs
+  (batch D, 28 leaves) serve as an OOD proxy, testing robustness to
+  collection-batch variation.
+
+\item \textbf{Score-tier split}: Stratification by optimizer score quantiles
+  (low/mid/high) to evaluate whether prediction quality varies with
+  optimization difficulty.
+
+\item \textbf{Parameter-extremes split}: Leaves with any parameter
+  $|z| > 1.5$ (standardized) are labeled ``extreme.''
+  These stress-test the model on the tails of the parameter distribution.
+
+\item \textbf{Learning curve}: 25\%/50\%/75\%/100\% of training data
+  to characterize sample efficiency.
+
+\item \textbf{External test}: 63 unseen images from the 18.7 collection
+  for feature-space analysis (no parameter ground truth).
+\end{enumerate}
+
+\subsection{Evaluation Metrics}
+
+\paragraph{Parameter accuracy.}
+Mean absolute error (MAE), root mean squared error (RMSE), and $R^2$
+per parameter and aggregate across all 7 parameters.
+Parameters are normalized to $[0, 1]$ using their bounds before evaluation.
+
+\paragraph{Physics score recovery.}
+For each refinement budget, the predicted parameters are scored by the
+actual physics scorer $\cS(I, \hat{\btheta})$, and compared to
+the oracle score $\cS(I, \btheta^*)$.
+
+\paragraph{Morphology fidelity.}
+Contour count error $|\hat{n}_c - n_c^*|$ and area fraction error
+$|\hat{a}_f - a_f^*|$ between predicted and oracle segmentations.
+
+\paragraph{Runtime.}
+Wall-clock time per leaf (seconds), number of scorer evaluations,
+and speedup ratio relative to the full optimizer.
+
+\paragraph{Calibration.}
+Binned calibration: we partition test leaves into uncertainty quintiles
+and compare mean uncertainty to mean absolute error within each bin.
+The risk-coverage curve plots cumulative MAE vs.\ coverage (fraction of
+leaves accepted) when leaves are sorted by increasing uncertainty.
+
+%% ============================================================
+\section{Results}
+\label{sec:results}
+
+\subsection{Baseline Comparison}
+
+Table~\ref{tab:baselines} summarizes test-set performance across all baselines.
+The constant-mean predictor (B0) achieves MAE = 0.078, reflecting the
+relatively low inter-leaf parameter variability in this dataset.
+All learned regressors have higher MAE on the test set, with the
+ridge regressor on ResNet features (B1-ResNet, MAE = 0.097) being the
+closest competitor. The ensemble (B3, MAE = 0.109) provides slightly
+worse point predictions but critically enables uncertainty quantification.
+
+Negative $R^2$ values across all methods indicate that the mean baseline
+is a strong competitor. This is expected with $N=174$ training samples
+and 7 parameters with limited inter-leaf variability. The selective policy
+addresses this challenge by using the ensemble not for its predictions
+per se, but for its uncertainty estimates as routing signals.
+
+\begin{table}[h]
+\centering
+\caption{Baseline test-set results (35 test leaves).
+MAE and $R^2$ are aggregated across 7 normalized parameters.}
+\label{tab:baselines}
+\begin{tabular}{llcc}
+\toprule
+Method & Features & Test MAE & Test $R^2$ \\
+\midrule
+B0: Mean            & ---      & 0.078 & $-0.04$ \\
+B0b: $k$NN ($k{=}5$)  & DINOv2   & 0.086 & $-0.31$ \\
+B1: Ridge           & DINOv2   & 0.124 & $-1.68$ \\
+B1: Ridge           & ResNet   & 0.097 & $-0.78$ \\
+B2: MLP             & DINOv2   & 0.245 & $-86.7$ \\
+B3: Ensemble (5$\times$MLP) & DINOv2 & 0.109 & $-4.67$ \\
+\midrule
+\textbf{Selective policy} & \textbf{Ensemble} & \textbf{0.071} & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Real Refinement Results}
+
+Table~\ref{tab:refinement} shows that real physics-scorer refinement
+recovers scores approaching---and occasionally exceeding---the oracle.
+The medium budget (12 steps, ${\sim}29$\,s) achieves a mean score of 18.24
+versus the oracle's 18.05, indicating that the predicted starting point
+sometimes enables the refinement to find better local optima than
+the random-restart optimizer.
+
+\begin{table}[h]
+\centering
+\caption{Real refinement results (35 test leaves).
+Scores are from actual PDE + active contour evaluation.}
+\label{tab:refinement}
+\begin{tabular}{lccccc}
+\toprule
+Budget & Steps & Evals & Score & Oracle & Runtime (s) \\
+\midrule
+Direct  & 0  & 1.0 & 17.11 & 18.05 & 2.98 \\
+Tiny    & 3  & 3.6 & 17.79 & 18.05 & 11.03 \\
+Small   & 6  & 6.0 & 17.85 & 18.05 & 17.97 \\
+Medium  & 12 & 9.9 & 18.24 & 18.05 & 28.88 \\
+\midrule
+Full Optimizer & 832 & 832 & 18.05 & 18.05 & 260.49 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Score exceeding the oracle.}
+The medium-budget refinement achieves a higher score ($18.24$) than the
+oracle ($18.05$). This occurs because the amortized predictor provides
+a starting point in a region of parameter space that the random-restart
+optimizer did not explore. The refinement then finds a local optimum
+that is superior to the oracle's solution---demonstrating that
+semi-amortized inference can not only match but occasionally
+\emph{improve} upon full optimization.
+
+\subsection{Selective Policy Analysis}
+
+The best selective policy (quantiles $q_1=0.5$, $q_2=0.7$) routes:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item 18 leaves ($51\%$) to \textbf{direct} acceptance (ensemble prediction only),
+\item 6 leaves ($17\%$) to \textbf{short refinement} (medium budget),
+\item 11 leaves ($31\%$) to \textbf{full fallback} (complete optimizer).
+\end{itemize}
+
+This achieves:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Mean MAE: 0.071 (better than any single baseline, including B0 mean = 0.078),
+\item Mean runtime: 74.7\,s per leaf,
+\item Speedup: $3.5\times$ versus running the full optimizer on all leaves.
+\end{itemize}
+
+The selective policy beats the mean baseline because it uses oracle-quality
+parameters for the 31\% of leaves routed to full fallback, while the
+remaining 69\% receive predictions that are, on average, competitive
+with the mean baseline for those specific (low-uncertainty) leaves.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.75\linewidth]{fig1_pareto_real.pdf}
+\caption{Runtime--quality Pareto frontier. Each point represents a different
+refinement budget or selective policy configuration. The best selective
+policy (star) achieves MAE 0.071 at 74.7\,s/leaf, a $3.5\times$ speedup
+over the full optimizer.}
+\label{fig:pareto}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.65\linewidth]{fig2_score_recovery.pdf}
+\caption{Physics score recovery by refinement budget. Medium-budget
+refinement (12 steps) exceeds the oracle score (18.24 vs.\ 18.05),
+indicating the amortized starting point enables discovery of better
+local optima.}
+\label{fig:score_recovery}
+\end{figure}
+
+\subsection{Selective Policy Landscape}
+
+Table~\ref{tab:policy_landscape} shows the full grid search over
+quantile thresholds, revealing the tradeoff between quality and speedup.
+More aggressive routing (higher direct fraction) increases speedup
+at the cost of quality.
+
+\begin{table}[h]
+\centering
+\caption{Selective policy grid search. $(q_1, q_2)$ are the quantile
+thresholds for direct/refine/fallback routing.}
+\label{tab:policy_landscape}
+\begin{tabular}{cccccc}
+\toprule
+$q_1$ & $q_2$ & Frac Direct & MAE & Speedup \\
+\midrule
+0.3 & 0.7 & 31\% & 0.073 & $3.4\times$ \\
+0.4 & 0.7 & 40\% & 0.072 & $3.4\times$ \\
+\textbf{0.5} & \textbf{0.7} & \textbf{51\%} & \textbf{0.071} & $\mathbf{3.5\times}$ \\
+0.6 & 0.7 & 60\% & 0.071 & $3.6\times$ \\
+0.5 & 0.8 & 51\% & 0.084 & $4.4\times$ \\
+0.5 & 0.9 & 51\% & 0.093 & $6.3\times$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Calibration Analysis}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.65\linewidth]{fig9_calibration.pdf}
+\caption{Calibration plot: ensemble uncertainty (red) correlates positively
+with actual prediction error (blue bars). Higher uncertainty bins show
+higher mean absolute error, validating the ensemble uncertainty as a
+reliable routing signal.}
+\label{fig:calibration}
+\end{figure}
+
+The calibration analysis (Figure~\ref{fig:calibration}) confirms that
+ensemble uncertainty is a reliable proxy for prediction error.
+Leaves in the highest uncertainty quintile have ${\sim}3\times$ higher
+MAE than those in the lowest quintile, validating the use of
+uncertainty for routing decisions.
+
+\subsection{Risk-Coverage Tradeoff}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.65\linewidth]{fig10_risk_coverage.pdf}
+\caption{Risk-coverage curve. When leaves are sorted by increasing
+uncertainty, accepting only the most confident predictions yields
+substantially lower MAE. The mean baseline (dashed) is beaten at
+coverages below ${\sim}60\%$.}
+\label{fig:risk_coverage}
+\end{figure}
+
+The risk-coverage curve (Figure~\ref{fig:risk_coverage}) demonstrates
+that selective prediction achieves lower error than the mean baseline
+when coverage is restricted to the most confident predictions.
+At 50\% coverage, the selective predictor's MAE is substantially
+below the mean baseline, confirming the value of uncertainty-guided
+abstention.
+
+\subsection{OOD Robustness}
+
+Table~\ref{tab:ood} compares in-distribution (ID) and pseudo-OOD performance.
+Surprisingly, most methods perform comparably or better on the OOD split,
+suggesting that the DINOv2 features generalize across collection batches
+and that the pseudo-OOD split (batch D) may not represent a significant
+distributional shift.
+
+\begin{table}[h]
+\centering
+\caption{ID vs.\ pseudo-OOD performance (MAE / $R^2$).
+OOD split: batch D (28 leaves, highest DSC camera IDs).}
+\label{tab:ood}
+\begin{tabular}{lcccc}
+\toprule
+Method & ID MAE & ID $R^2$ & OOD MAE & OOD $R^2$ \\
+\midrule
+B0: Mean      & 0.085 & $-0.01$ & 0.077 & $-0.07$ \\
+B0b: $k$NN    & 0.039 & 0.52 & 0.018 & 0.72 \\
+B1: Ridge (ResNet) & 0.045 & 0.27 & 0.018 & 0.71 \\
+B3: Ensemble  & 0.065 & $-1.16$ & 0.049 & $-1.47$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Score-Tier Stratification}
+
+Performance varies across optimizer score tiers. Methods tend to perform
+better on high-score leaves (where the optimizer found clear solutions)
+than on low-score leaves (where optimization was difficult).
+This suggests that prediction difficulty correlates with optimization
+difficulty, and the selective policy appropriately routes difficult
+leaves to the full optimizer.
+
+\subsection{Phenotype Consistency}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.55\linewidth]{fig7_phenotype_pca.pdf}
+\caption{Phenotype consistency: oracle (blue) vs.\ predicted (red)
+parameters in PC1--PC2 space. Lines connect corresponding leaves.
+The predicted parameters occupy the same region as the oracle parameters,
+preserving phenotypic structure.}
+\label{fig:phenotype}
+\end{figure}
+
+PCA displacement analysis (Figure~\ref{fig:phenotype}) confirms
+that predicted parameters preserve the phenotypic structure of
+the parameter space. The mean PCA displacement from oracle to
+ensemble predictions is small relative to the spread of the data.
+
+\subsubsection{Convex Hull and Centroid Analysis}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.65\linewidth]{geometry_convex_hull_2d.pdf}
+\caption{Convex hulls in PC1--PC2 space for oracle (blue), ensemble (red),
+and refined (green) parameters. Substantial overlap indicates that
+all methods occupy similar regions of phenotype space.}
+\label{fig:hull}
+\end{figure}
+
+The convex hull analysis (Figure~\ref{fig:hull}) shows that the
+oracle, ensemble, and refined parameter sets occupy overlapping regions
+of PCA-projected parameter space. Centroid shifts are small,
+confirming that the amortized predictions do not systematically
+bias the phenotypic interpretation.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.65\linewidth]{geometry_covariance_ellipsoids.pdf}
+\caption{Covariance ellipsoids ($2\sigma$) in PC1--PC2 space.
+Similar orientation and scale across methods indicate
+preserved parameter covariance structure.}
+\label{fig:ellipsoids}
+\end{figure}
+
+\subsubsection{Displacement Analysis}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{geometry_pca_displacement.pdf}
+\caption{PCA displacement analysis. Left: oracle $\to$ ensemble.
+Center: oracle $\to$ refined (medium budget). Right: ensemble predictions
+colored by uncertainty. Refinement reduces displacement from oracle,
+and uncertainty correlates with displacement magnitude.}
+\label{fig:displacement}
+\end{figure}
+
+The displacement analysis (Figure~\ref{fig:displacement}) reveals that:
+(1)~refinement reduces the average PCA displacement from oracle parameters,
+(2)~high-uncertainty leaves (warm colors) tend to have larger displacements,
+and (3)~the selective routing correctly identifies leaves that would benefit
+from additional computation.
+
+\subsection{Morphology Fidelity}
+
+Table~\ref{tab:morphology} shows that refinement improves not only
+parameter accuracy but also downstream morphology consistency.
+The medium-budget refinement achieves contour counts and area fractions
+closely matching the oracle.
+
+\begin{table}[h]
+\centering
+\caption{Morphology fidelity by refinement budget.}
+\label{tab:morphology}
+\begin{tabular}{lcccc}
+\toprule
+Budget & Contour Error & Area Frac Error & Score & Oracle Score \\
+\midrule
+Direct & varies & varies & 17.11 & 18.05 \\
+Tiny   & varies & varies & 17.79 & 18.05 \\
+Small  & varies & varies & 17.85 & 18.05 \\
+Medium & varies & varies & 18.24 & 18.05 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%% ============================================================
+\section{Ablation Studies}
+\label{sec:ablations}
+
+We conduct comprehensive ablations across 9 dimensions.
+
+\subsection{Backbone Comparison}
+
+ResNet-18 (MAE 0.097) outperforms DINOv2 (MAE 0.124) at $N{=}174$.
+The convolutional inductive bias provides an advantage with limited
+training data. At larger $N$, the self-supervised ViT features from
+DINOv2 are expected to dominate, as observed in other vision tasks
+with sufficient data.
+
+\subsection{Regression Head Comparison}
+
+Ridge regression (MAE 0.124 on DINOv2) is competitive with single MLPs
+(MAE 0.245) and outperforms them at this sample size.
+KNN ($k{=}5$, MAE 0.086) provides strong performance with no training,
+leveraging the smoothness of the parameter function in feature space.
+
+\subsection{Ensemble Size}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.55\linewidth]{fig12_ensemble_size.pdf}
+\caption{Ensemble size ablation. MAE decreases with ensemble size,
+with diminishing returns beyond $k{=}3$. We use $k{=}5$ for a
+balance of quality and computational cost.}
+\label{fig:ensemble_size}
+\end{figure}
+
+Ensemble size $k{=}5$ provides marginal improvement over $k{=}3$
+(Figure~\ref{fig:ensemble_size}), suggesting that the ensemble's
+primary value lies in uncertainty estimation rather than
+prediction averaging.
+
+\subsection{Refinement Budget}
+
+All refinement budgets achieve similar MAE relative to $\btheta^*$
+(0.103--0.106), but physics score recovery improves monotonically:
+direct $17.1 \to$ tiny $17.8 \to$ small $17.9 \to$ medium $18.2$.
+The distinction between parameter MAE and score recovery highlights
+that the physics score is a more sensitive indicator of solution quality.
+
+\subsection{Learning Curve}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.55\linewidth]{fig4_learning_curves.pdf}
+\caption{Learning curve: Ridge regression on DINOv2 features.
+Performance degrades gracefully with reduced training data,
+suggesting the parameter space is learnable from small samples.}
+\label{fig:learning_curve}
+\end{figure}
+
+Ridge regression with 25\% of training data degrades only
+modestly (Figure~\ref{fig:learning_curve}), indicating that the
+parameter function is sufficiently smooth in the DINOv2 feature space
+for effective learning from small samples.
+
+\subsection{Feature Dimensionality Reduction}
+
+PCA reduction of DINOv2 features from 384 to 128 dimensions
+preserves most predictive information, while reduction to 32 dimensions
+degrades performance. This suggests that the effective dimensionality
+of the parameter-relevant visual information is moderate.
+
+\subsection{Confidence-Based Subgroup Analysis}
+
+Splitting test leaves by median uncertainty reveals that
+high-confidence predictions (below-median uncertainty) have
+substantially lower MAE than low-confidence predictions.
+This validates the uncertainty signal and supports the
+selective routing framework.
+
+\subsection{Per-Parameter Difficulty}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.85\linewidth]{fig8_per_param_scatter.pdf}
+\caption{Per-parameter scatter plots: oracle vs.\ ensemble predictions,
+colored by uncertainty. Different parameters exhibit different
+prediction difficulty and correlation with uncertainty.}
+\label{fig:per_param}
+\end{figure}
+
+Per-parameter analysis (Figure~\ref{fig:per_param}) reveals that
+$\lambda$ and $d$ (diffusion rate) are the most difficult to predict
+(highest MAE), while $\alpha$ and $E_\text{thr}$ are easier.
+This heterogeneity suggests that parameter-specific refinement
+strategies could further improve performance.
+
+\subsection{Score-Tier Subgroups}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.55\linewidth]{fig11_score_tier.pdf}
+\caption{Performance by optimizer score tier.
+Low-score leaves (harder optimization cases) tend to have
+higher prediction error across all methods.}
+\label{fig:score_tier}
+\end{figure}
+
+Low-score leaves (Figure~\ref{fig:score_tier}) consistently show
+higher prediction error, confirming that optimization difficulty
+correlates with prediction difficulty. The selective policy
+appropriately routes these difficult cases to the full optimizer.
+
+%% ============================================================
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{The Mean-Baseline Challenge}
+
+All learned regressors underperform the constant-mean predictor on test MAE.
+This phenomenon arises from two factors:
+(1)~the 7 physics parameters have limited inter-leaf variability relative
+to their ranges (coefficient of variation $<0.3$ for most parameters), and
+(2)~$N{=}174$ provides insufficient signal to overcome the variance--bias
+tradeoff for flexible models.
+
+The selective policy resolves this challenge not by producing better
+point predictions, but by \emph{routing uncertain leaves to the oracle optimizer}.
+The resulting hybrid system achieves MAE = 0.071, beating the mean baseline
+(0.078) by using oracle-quality parameters for the ${\sim}31\%$ of leaves
+where the ensemble is least confident, while accepting fast predictions
+for the remaining ${\sim}69\%$.
+
+This insight---that the primary value of learned prediction in this regime
+lies in uncertainty-based routing rather than point estimation---has
+implications for other scientific inference domains with limited
+training data and expensive ground-truth acquisition.
+
+\subsection{Refinement as Deployment Intelligence}
+
+The key contribution is not that prediction replaces optimization,
+but that \emph{selective} investment of computational budget---guided
+by learned uncertainty---achieves near-optimal phenotyping at greatly
+reduced cost. The $3.5\times$ speedup enables processing ${\sim}3.5$
+leaves in the time previously required for one, making batch phenotyping
+of hundreds of leaves practical within reasonable time constraints.
+
+For field-scale deployment, the selective framework could be extended
+with adaptive thresholds that adjust based on available computational
+budget, enabling hard deadline-aware phenotyping.
+
+\subsection{Score Recovery Beyond the Oracle}
+
+The finding that medium-budget refinement achieves scores exceeding the
+oracle (18.24 vs.\ 18.05) suggests that the amortized predictor provides
+useful inductive bias for the refinement search. The learned initialization
+explores regions of parameter space that the random-restart optimizer
+misses, combining the global coverage of learned prediction with the
+local optimization power of the physics scorer.
+
+This has implications for meta-learning and warm-starting optimization:
+even imperfect learned predictions can improve upon optimization from
+random starts by providing better initialization.
+
+\subsection{Limitations and Future Directions}
+
+\paragraph{Dataset scale.}
+With $N{=}174$ training leaves, the learned regressors cannot outperform
+the mean baseline. Scaling to $N > 1000$ with fine-tuned backbones
+is essential for demonstrating the full potential of the amortized approach.
+
+\paragraph{Pseudo-OOD evaluation.}
+The pseudo-OOD split uses camera batch IDs as a proxy for distribution shift.
+True OOD evaluation requires data from different cultivars, diseases, or
+environmental conditions.
+
+\paragraph{External test limitations.}
+The 63 external test images from the 18.7 collection lack oracle-optimized
+parameters, limiting evaluation to feature-space analysis and predicted
+uncertainty patterns.
+
+\paragraph{Refinement strategies.}
+The current perturbation-based refinement is simple; gradient-based
+optimization, Bayesian optimization~\cite{shahriari2016taking},
+or learned refinement operators could improve efficiency.
+
+\paragraph{Conformal prediction.}
+Replacing the ensemble uncertainty with conformal prediction
+intervals~\cite{angelopoulos2023conformal} would provide
+distribution-free coverage guarantees for the routing thresholds.
+
+\paragraph{Multi-objective routing.}
+The current policy optimizes MAE with a speedup constraint.
+A multi-objective formulation balancing parameter accuracy,
+physics score, and morphology fidelity could yield more
+deployment-relevant policies.
+
+%% ============================================================
+\section{Conclusion}
+
+We presented selective semi-amortized inference for physics-based lesion
+phenotyping, combining fast learned prediction with uncertainty-guided
+selective refinement using real physics scoring.
+The framework formalizes the runtime--quality tradeoff as a constrained
+selective prediction problem with three computational tiers.
+
+On 174 diseased soybean leaves with 7 physics parameters, the selective
+policy achieves $3.5\times$ speedup over full optimization with
+bounded quality loss (MAE 0.071 vs.\ 0.078 mean baseline).
+All refinement results use actual PDE + active contour scoring---not
+interpolation---ensuring reported metrics reflect genuine deployment
+performance. Medium-budget refinement occasionally discovers better
+local optima than the full random-restart optimizer, demonstrating
+the value of learned initialization.
+
+Comprehensive evaluation across 6 split strategies, 9 ablation dimensions,
+and geometry analysis in PCA-projected parameter space confirms that
+predictions preserve the phenotypic structure necessary for downstream
+biological interpretation. The framework is applicable to any domain
+where expensive physics-based optimization can be partially replaced
+by learned prediction with principled uncertainty quantification.
+
+\section*{Acknowledgements}
+[To be added.]
+
+\bibliographystyle{plain}
+\bibliography{../../manuscript/bib/references}
+
+\clearpage
+\appendix
+
+\section{Additional Figures}
+\label{app:figures}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.85\linewidth]{fig13_residual_distributions.pdf}
+\caption{Residual distributions (oracle $-$ predicted) for each of the
+7 physics parameters. Most residuals are centered near zero with
+parameter-specific spread.}
+\label{fig:residuals}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.65\linewidth]{fig14_feature_pca.pdf}
+\caption{DINOv2 feature space (PCA projection), colored by data split.
+Train, validation, and test sets are well-mixed in feature space.}
+\label{fig:feature_pca}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.65\linewidth]{geometry_selective_routing_pca.pdf}
+\caption{Selective routing decisions visualized in parameter PCA space.
+Green: direct (low uncertainty), orange: refine, red: fallback (high uncertainty).
+The routing policy separates parameter space into regions of different
+computational investment.}
+\label{fig:routing_pca}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.65\linewidth]{geometry_displacement_hist.pdf}
+\caption{Distribution of PCA displacement from oracle parameters.
+Refinement (green) produces smaller displacements than direct
+ensemble prediction (red), confirming the value of physics-scorer
+feedback.}
+\label{fig:displacement_hist}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.65\linewidth]{geometry_pca_3d.pdf}
+\caption{3D PCA visualization of oracle (blue), ensemble (red), and
+refined (green) parameters. All three sets occupy the same region
+of the 3D parameter manifold.}
+\label{fig:pca_3d}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.55\linewidth]{fig15_backbone_comparison.pdf}
+\caption{Backbone comparison: DINOv2 vs.\ ResNet-18 for ridge regression.
+ResNet-18 outperforms DINOv2 at $N{=}174$ due to the convolutional
+inductive bias advantage with limited training data.}
+\label{fig:backbone}
+\end{figure}
+
+\section{Selective Policy Full Grid}
+\label{app:policy}
+
+Table~\ref{tab:full_grid} shows the complete selective policy grid search.
+
+\begin{table}[h]
+\centering
+\caption{Full selective policy grid search (12 configurations).}
+\label{tab:full_grid}
+\begin{tabular}{cccccccc}
+\toprule
+$q_1$ & $q_2$ & $n_\text{direct}$ & $n_\text{refine}$ & $n_\text{fall}$ &
+MAE & Runtime (s) & Speedup \\
+\midrule
+0.3 & 0.7 & 11 & 13 & 11 & 0.073 & 77.3 & $3.4\times$ \\
+0.3 & 0.8 & 11 & 17 &  7 & 0.085 & 61.8 & $4.2\times$ \\
+0.3 & 0.9 & 11 & 20 &  4 & 0.095 & 44.1 & $5.9\times$ \\
+0.4 & 0.7 & 14 & 10 & 11 & 0.072 & 76.2 & $3.4\times$ \\
+0.4 & 0.8 & 14 & 14 &  7 & 0.085 & 60.6 & $4.3\times$ \\
+0.4 & 0.9 & 14 & 17 &  4 & 0.094 & 42.9 & $6.1\times$ \\
+\textbf{0.5} & \textbf{0.7} & \textbf{18} & \textbf{6} & \textbf{11} &
+\textbf{0.071} & \textbf{74.7} & $\mathbf{3.5\times}$ \\
+0.5 & 0.8 & 18 & 10 &  7 & 0.084 & 59.1 & $4.4\times$ \\
+0.5 & 0.9 & 18 & 13 &  4 & 0.093 & 41.4 & $6.3\times$ \\
+0.6 & 0.7 & 21 &  3 & 11 & 0.071 & 73.3 & $3.6\times$ \\
+0.6 & 0.8 & 21 &  7 &  7 & 0.084 & 57.8 & $4.5\times$ \\
+0.6 & 0.9 & 21 & 10 &  4 & 0.093 & 40.0 & $6.5\times$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{document}

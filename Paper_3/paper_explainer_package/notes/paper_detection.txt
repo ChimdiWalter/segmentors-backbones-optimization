@@ -1,0 +1,76 @@
+PAPER DETECTION REPORT
+======================
+Date: 2026-03-13
+
+MAIN MANUSCRIPT SOURCE FILE
+-----------------------------
+Path: Paper_3/manuscript_final_strengthened/tex/Latest_Paper_1_strengthened.tex
+Size: 66,475 bytes
+Last modified: 2026-03-12 23:21
+
+BIBLIOGRAPHY FILE
+------------------
+Path: Paper_3/manuscript_final_strengthened/tex/refs.bib
+Size: 7,563 bytes (25 entries)
+
+LATEST COMPILED PDF
+--------------------
+Path: Paper_3/manuscript_final_strengthened/pdf/Latest_Paper_1_strengthened.pdf
+(also found at Paper_3/manuscript_final_strengthened/tex/Latest_Paper_1_strengthened.pdf)
+Size: ~20 MB
+Last compiled: 2026-03-12 23:49
+
+FIGURE SOURCE DIRECTORIES (from \graphicspath)
+-----------------------------------------------
+1. ../figs_from_outputs/exp_v1/     — optimizer summary, teacher-student, morphology plots
+2. ../figs_from_outputs/9leaf/      — 9-leaf trace surface and trajectory plots
+3. ../figs_from_outputs/manifold/   — PCA/t-SNE/UMAP manifold geometry plots
+4. ../figs_from_outputs/solid3d/    — covariance ellipsoids, convex hulls, dD surfaces
+
+All four directories are populated with the necessary PNG files.
+
+MANUSCRIPT VERSION HISTORY (by date)
+--------------------------------------
+1. Paper_3/paper_3.tex                                          — 2026-01-07 (earliest, ~17 KB)
+2. Paper_3/paper3.tex                                           — 2026-01-29 (~28 KB)
+3. Paper_3/paper3_updated.tex                                   — 2026-02-26 (~33 KB)
+4. Paper_3/paper3_exp_v1.tex                                    — 2026-03-03 (~33 KB)
+5. Paper_3/paper3_exp_v2.tex                                    — 2026-03-03 (~36 KB)
+6. Paper_3/Latest_paper.tex                                     — 2026-03-03 (~38 KB)
+7. Paper_3/Latest_Paper_1.tex                                   — 2026-03-03 (~46 KB)
+8. Paper_3/Latest_Paper_1_updated.tex                           — 2026-03-03 (~46 KB)
+9. Paper_3/manuscript_update_fullbudget_9leaf/tex/...tex         — 2026-03-12 (~57 KB)
+10. Paper_3/manuscript_final_strengthened/tex/...tex             — 2026-03-12 (~66 KB) ← LATEST
+
+WHY THIS IS THE LATEST/BEST VERSION
+--------------------------------------
+- manuscript_final_strengthened is the most recent version (Mar 12, 23:21)
+- It is 10 KB larger than the fullbudget_9leaf version, indicating added content
+- It includes all sections: introduction, related work, problem setup, math framework,
+  methodology, implementation, experiments, results (with all subsections), discussion,
+  conclusion, and three appendix sections
+- It incorporates the 9-leaf trace analysis, manifold geometry, and solid-3D results
+- It uses IEEEtran journal format
+- Has its own IEEEtran.cls and IEEEtran.bst files locally
+
+TABLE SOURCE FILES
+-------------------
+Paper_3/tables/tableI_objective_ablations.tex   — objective ablation results
+Paper_3/tables/tableII_search_ablations.tex     — search strategy ablation results
+(Note: these are standalone .tex fragments but the main manuscript embeds the tables inline)
+
+OTHER MANUSCRIPT FOLDERS
+-------------------------
+- Paper_3/manuscript_update_fullbudget_9leaf/  — intermediate version with 9-leaf updates
+  Contains its own tex/, pdf/, figs_from_outputs/ directories
+  Has symlinks to figure folders
+- Paper_3/manuscript_final_strengthened/       — final strengthened version (CURRENT BEST)
+  Contains tex/, pdf/ directories and figs_from_outputs/ with all required figures
+- Paper_3/figs/                                — original figure folder (shared across versions)
+
+PAPER METADATA
+---------------
+Title: "Gradient-Free Stochastic Optimization of Navier-Stokes Active Contours
+        for Unsupervised High-Throughput Phenotyping"
+Authors: Chimdi Walter Ndubuisi (Student Member, IEEE) and Toni Kazic
+Format: IEEE Journal (IEEEtran class)

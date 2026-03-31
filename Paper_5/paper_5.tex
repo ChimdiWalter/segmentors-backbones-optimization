@@ -1,0 +1,149 @@
+\documentclass[journal]{IEEEtran}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{cite}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{subcaption}
+\usepackage{siunitx}
+\newcommand{\TODO}[1]{\textcolor{red}{\textbf{[TODO: #1]}}}
+
+\begin{document}
+
+\title{Nested Lesion Decomposition and Phenotyping via Multi-Scale Iso-Contours and Patch-Wise Neural Surrogates}
+
+\author{Chimdi Walter Ndubuisi and Toni Kazic}
+
+\maketitle
+
+\begin{abstract}
+Plant lesions frequently exhibit nested morphology: a necrotic core surrounded by a chlorotic halo, with intermediate oscillatory structures and weak edges. Standard binary segmentation collapses these layers and fails under coalescence, where multiple nearby lesions merge into a single blob. We propose a structured, multi-scale framework that decomposes lesions into nested regions using iso-contours of a Navier--Stokes energy field, then trains a fast neural surrogate that predicts multi-class nested masks and instance-separation cues at high resolution. Our method integrates (i) physics-derived multi-level pseudo-labels (outer/mid/inner), (ii) topology- and nesting-consistent losses, and (iii) patch-wise inference with overlap-tile blending to preserve small lesions and weak halos. We demonstrate improved delineation of nested lesion anatomy and report derived phenotyping descriptors (halo thickness, core-to-halo ratio, coalescence index) that support downstream quantitative genetics and high-throughput screening.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Multi-Scale Segmentation, Iso-Contours, Plant Phenotyping, Knowledge Distillation, Patch-wise Inference, Topological Priors.
+\end{IEEEkeywords}
+
+\section{Introduction}
+Many real lesions are not single homogeneous regions: they contain a dark necrotic center, lighter necrotic body, and diffuse halo.
+Capturing this structure matters for phenotyping (severity, progression stage, pathogen type).
+Binary masks merge nested structure and break under coalescence.
+
+\subsection{Contributions}
+\begin{enumerate}
+\item A \textbf{nested iso-contour teacher} that produces outer/mid/inner lesion pseudo-labels from a single energy field while enforcing nesting constraints.
+\item A \textbf{multi-head student} predicting multi-class masks + separation cues, enabling fast inference without physics optimization.
+\item A \textbf{phenotype descriptor suite} from nested masks (halo thickness, core solidity, coalescence index).
+\item Patch-wise high-res inference with overlap blending to preserve small lesions and weak boundaries.
+\end{enumerate}
+
+\section{Related Work}
+We build on segmentation networks (U-Net~\cite{ronneberger2015unet}, transformers~\cite{xie2021segformer,cheng2022mask2former}), foundation priors (SAM~\cite{kirillov2023sam}), and topology-aware losses (TopoLoss~\cite{hu2019topoloss}).
+Our approach differs by explicitly modeling \emph{nested lesion anatomy} via iso-contours and training a surrogate for speed.
+
+\section{Nested Iso-Contour Teacher}
+Let $E(x,y;\theta)$ be the Navier energy field.
+Given a base threshold $T$, we define three nested regions:
+\begin{align}
+M_{\text{outer}} &= \mathbf{1}[E \ge T],\\
+M_{\text{mid}}   &= \mathbf{1}[E \ge T+\Delta_1],\\
+M_{\text{inner}} &= \mathbf{1}[E \ge T+\Delta_2],\quad \Delta_2>\Delta_1>0.
+\end{align}
+We enforce nesting:
+\begin{equation}
+M_{\text{inner}} \subseteq M_{\text{mid}} \subseteq M_{\text{outer}}.
+\end{equation}
+We optionally apply component-wise conditioning to prevent coalesced merges:
+\begin{equation}
+\text{Split}(M_{\text{outer}}) \leftarrow \mathrm{Watershed}(\mathrm{DT}(M_{\text{outer}}), \text{seeds}=\mathrm{peaks}).
+\end{equation}
+\TODO{Describe your exact iso-contour extraction (T, T+10, T+25) and why it aligns to necrosis vs halo.}
+
+\begin{algorithm}
+\caption{Nested Iso-Contour Pseudo-Labeling}
+\begin{algorithmic}[1]
+\REQUIRE Image $I$, teacher parameters $\theta$, thresholds $(T,\Delta_1,\Delta_2)$
+\STATE Compute energy $E=\mathrm{NavierEnergy}(I;\theta)$
+\STATE $M_o\leftarrow \mathbf{1}[E\ge T]$, $M_m\leftarrow \mathbf{1}[E\ge T+\Delta_1]$, $M_i\leftarrow \mathbf{1}[E\ge T+\Delta_2]$
+\STATE Enforce nesting by $M_m\leftarrow M_m\wedge M_o$, $M_i\leftarrow M_i\wedge M_m$
+\STATE Optional: split coalesced regions with watershed on distance transform of $M_o$
+\RETURN $(M_o,M_m,M_i)$
+\end{algorithmic}
+\end{algorithm}
+
+\section{Student Model: Multi-Class + Separation Head}
+We predict $K=3$ nested classes plus a separation cue $D$ (boundary probability or distance transform):
+\begin{equation}
+(\hat{P}_{1:K}, \hat{D}) = f_\phi(I).
+\end{equation}
+Training targets:
+\begin{equation}
+Y(x,y)\in\{0,\text{outer},\text{mid},\text{inner}\}.
+\end{equation}
+
+\subsection{Loss}
+We combine cross-entropy (or focal), soft Dice per class, and a separation loss:
+\begin{equation}
+\mathcal{L} = \lambda_{CE}\mathcal{L}_{CE} + \sum_{k=1}^K \lambda_k(1-\mathrm{Dice}_k) + \lambda_D\lVert \hat{D}-D_T\rVert_1.
+\end{equation}
+Optionally add topology regularization:
+\begin{equation}
+\mathcal{L}_{topo}=\mathrm{TopoLoss}(\hat{P}_{outer}, M_{outer}) \quad \text{(optional)}~\cite{hu2019topoloss}.
+\end{equation}
+
+\section{Patch-Wise High-Resolution Inference}
+Let $I$ be large (megapixel). We tile into overlapping patches $I_{pq}$ of size $s\times s$ with stride $r$.
+We blend probabilities with a raised-cosine window $W$:
+\begin{equation}
+\hat{P}(x,y)=\frac{\sum_{pq} W_{pq}(x,y)\hat{P}_{pq}(x,y)}{\sum_{pq} W_{pq}(x,y)+\epsilon}.
+\end{equation}
+This avoids the ``tiny lesion vanishes'' failure common in naive resizing.
+
+\section{Phenotyping Descriptors from Nested Masks}
+Given nested masks, we compute:
+\begin{align}
+\text{HaloThickness} &\approx \mathbb{E}[\mathrm{DT}(M_o) - \mathrm{DT}(M_m)],\\
+\text{CoreRatio} &= \frac{A(M_i)}{A(M_o)},\\
+\text{CoalescenceIndex} &= \frac{A(\mathrm{ConvHull}(M_o)) - A(M_o)}{A(\mathrm{ConvHull}(M_o))}.
+\end{align}
+These descriptors support downstream statistical genetics / disease progression studies. \TODO{Add any trait labels you have later.}
+
+\section{Experiments}
+\subsection{Protocol}
+\begin{itemize}
+\item Teacher produces nested pseudo-labels on 174 images.
+\item Student trains on quality-gated subset.
+\item Evaluate on unseen leaves (no teacher) using: nested Dice, boundary F1, and phenotype descriptor stability.
+\end{itemize}
+
+\begin{table}[t]
+\centering
+\caption{Planned nested segmentation results (fill in later).}
+\begin{tabular}{lccc}
+\toprule
+Model & Outer Dice & Inner Dice & Halo BF \\
+\midrule
+Binary U-Net (baseline) & \TODO{} & -- & \TODO{} \\
+Multi-class U-Net & \TODO{} & \TODO{} & \TODO{} \\
+Transformer student & \TODO{} & \TODO{} & \TODO{} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\fbox{\parbox{0.95\linewidth}{\centering
+\TODO{Insert nested overlays: outer/mid/inner contours on 4 examples incl. coalescence}}}
+\caption{Nested lesion anatomy: outer halo, mid-body, inner necrotic core.}
+\end{figure}
+
+\section{Conclusion}
+We introduced nested iso-contour supervision and patch-wise surrogate inference to handle coalesced, nested lesions. The output enables richer phenotyping than binary masks.
+
+\bibliographystyle{IEEEtran}
+\bibliography{refs}
+\end{document}
+

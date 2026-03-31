@@ -1,0 +1,81 @@
+Advisor Talking Points — Patch Full Study v2
+==============================================
+1059 patches from 237 leaves (174 + 63 external 18.7), 7 physics params
+
+ELEVATOR PITCH (30 seconds):
+"We extend our selective semi-amortized inference framework from whole leaves
+to patches. This companion paper to the full-leaf study preserves spatial
+resolution lost by downsampling, reveals within-leaf heterogeneity as a new
+biological signal, and introduces patch-to-leaf aggregation as a principled
+way to recover leaf-level phenotypes from local estimates."
+
+KEY POINTS FOR DISCUSSION:
+
+1. Companion Paper to Full-Leaf Study
+   - Same methodology, same depth, same rigor
+   - Same 7 physics parameters, same PDE scorer, same backbones
+   - Direct comparison possible at leaf level via aggregation
+   - Patch study adds new dimensions not possible at whole-leaf level
+
+2. Preserves Spatial Resolution
+   - Whole-leaf processing requires resizing 2000-4000px to 224-518px
+   - 224x224 patches maintain native resolution fidelity
+   - Architecture-agnostic: works with DINO (384d), ResNet (512d),
+     handcrafted (45d) without modification
+   - Not about sample count inflation — about preserving biological signal
+
+3. Within-Leaf Heterogeneity Is Novel Finding
+   - Multiple oracle theta per leaf reveals parameter non-uniformity
+   - Mean within-leaf std(theta) = 1.70
+   - New biological evidence: disease severity varies spatially
+   - Impossible to observe in the full-leaf study (1 theta per leaf)
+   - This is the strongest novel scientific contribution
+
+4. Selective Routing Works at Patch Level
+   - 11.1x speedup through selective routing
+   - 136 routing policies evaluated via threshold sweep
+   - Refinement: direct MAE 5.34 reduced to full refinement MAE 2.11
+   - Calibration and risk-coverage validate uncertainty as routing signal
+
+5. Route-Aware Aggregation Outperforms Simple Methods
+   - 6 aggregation operators compared systematically
+   - Selective mixture: 7.99 leaf-level MAE
+   - Other methods: ~10.02 leaf-level MAE
+   - Aggregation is a new methodological contribution
+
+ANTICIPATED QUESTIONS:
+
+Q: "Why not just use higher-resolution backbones?"
+A: Pretrained backbones have fixed input sizes (224/518px). Fine-tuning on
+   full-resolution images requires enormous GPU memory and loses pretrained
+   features. Patchification is a principled, architecture-agnostic solution.
+
+Q: "Is the sample size increase (174 to 1059) just inflating statistics?"
+A: No. The primary motivation is resolution preservation. The sample size
+   increase is a secondary benefit. We maintain parent-leaf-safe splits
+   to prevent data leakage.
+
+Q: "How does this compare to MIL approaches?"
+A: Our approach is simpler than attention-based MIL but serves a different
+   purpose. MIL typically aggregates for classification; we aggregate
+   continuous parameter vectors. Attention-based aggregation is future work.
+
+Q: "What about the mean-baseline problem from the full study?"
+A: With more patches, learned regressors have more training samples.
+   Selective routing remains the key to beating baselines by routing
+   uncertain patches to the oracle.
+
+POSITIONING:
+- Paper 6 in the series
+- Companion to Paper 3 (full-leaf selective semi-amortized study)
+- Advances: resolution preservation, heterogeneity analysis, aggregation
+- Not an optimizer paper, not a manifold paper
+- Plant phenotyping + efficient inference + uncertainty quantification
+
+MANUSCRIPT STATS:
+- 21 pages compiled
+- 12+ main-text figures
+- 4+ tables
+- 3 backbones, 6 aggregation methods, 136 routing policies
+- Geometry: PCA, convex hulls, centroid shifts
+- External 18.7 domain evaluated

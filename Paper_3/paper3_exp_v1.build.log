@@ -1,0 +1,939 @@
+Rc files read:
+  /etc/LatexMk
+Latexmk: This is Latexmk, John Collins, 27 Dec. 2024. Version 4.86a.
+No existing .aux file, so I'll make a simple one, and require run of *latex.
+Latexmk: applying rule 'pdflatex'...
+Rule 'pdflatex':  Reasons for rerun
+Category 'other':
+  Rerun of 'pdflatex' forced or previously required:
+    Reason or flag: 'Initial setup'
+
+------------
+Run number 1 of rule 'pdflatex'
+------------
+------------
+Running 'pdflatex  -interaction=nonstopmode -recorder  "paper3_exp_v1.tex"'
+------------
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./paper3_exp_v1.tex
+LaTeX2e <2024-11-01> patch level 2
+L3 programming layer <2025-01-18>
+(/usr/local/texlive/2024/texmf-dist/tex/latex/ieeetran/IEEEtran.cls
+Document Class: IEEEtran 2015/08/26 V1.8b by Michael Shell
+-- See the "IEEEtran_HOWTO" manual for usage information.
+-- http://www.michaelshell.org/tex/ieeetran/
+(/usr/local/texlive/2024/texmf-dist/tex/latex/psnfss/ot1ptm.fd)
+-- Using 8.5in x 11in (letter) paper.
+-- Using PDF output.
+-- This is a 10 point document.
+) (/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/amssymb.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/algorithms/algorithmic.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/base/ifthen.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/keyval.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/algorithms/algorithm.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/float/float.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics-def/pdftex.def)))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/base/textcomp.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/booktabs/booktabs.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/multirow/multirow.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/cite/cite.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/infwarerr/infwarerr.sty)))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/gettitlestring/gettitlestring.s
+ty (/usr/local/texlive/2024/texmf-dist/tex/latex/kvoptions/kvoptions.sty)))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/etoolbox/etoolbox.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/stringenc/stringenc.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/url/url.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/local/texlive/2024/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
+))) (/usr/local/texlive/2024/texmf-dist/tex/latex/tools/bm.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def)
+(./paper3_exp_v1.aux)
+-- Lines per column: 58 (exact).
+(/usr/local/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/usr/local/texlive/2024/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg))
+Underfull \hbox (badness 2393) in paragraph at lines 39--41
+[]\OT1/ptm/b/it/9 Index Terms\OT1/ptm/b/n/9 ---Active Con-tours, Navier-Stokes 
+Equa-tions,
+
+LaTeX Warning: Citation `ronneberger2015u' on page 1 undefined on input line 48
+.
+
+
+LaTeX Warning: Citation `he2017mask' on page 1 undefined on input line 48.
+
+
+LaTeX Warning: Citation `xie2021segformer' on page 1 undefined on input line 48
+.
+
+
+LaTeX Warning: Citation `kirillov2023segment' on page 1 undefined on input line
+ 48.
+
+
+
+LaTeX Warning: Citation `kass1988snakes' on page 1 undefined on input line 50.
+
+
+LaTeX Warning: Citation `ronneberger2015u' on page 1 undefined on input line 59
+.
+
+
+LaTeX Warning: Citation `oquab2023dinov2' on page 1 undefined on input line 59.
+
+
+
+LaTeX Warning: Citation `hinton2015distilling' on page 1 undefined on input lin
+e 59.
+
+
+LaTeX Warning: Citation `kass1988snakes' on page 1 undefined on input line 69.
+
+
+LaTeX Warning: Citation `caselles1997geodesic' on page 1 undefined on input lin
+e 69.
+
+
+LaTeX Warning: Citation `chan2001active' on page 1 undefined on input line 69.
+
+
+LaTeX Warning: Citation `xu1998gvf' on page 1 undefined on input line 69.
+
+
+[1{/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/l
+ocal/texlive/2024/texmf-dist/fonts/enc/dvips/base/8r.enc}]
+
+LaTeX Warning: Citation `bertalmio2000navier' on page 2 undefined on input line
+ 72.
+
+
+LaTeX Warning: Citation `berry2018color' on page 2 undefined on input line 72.
+
+
+LaTeX Warning: Citation `plantcv2025' on page 2 undefined on input line 72.
+
+
+LaTeX Warning: Citation `ronneberger2015u' on page 2 undefined on input line 75
+.
+
+
+LaTeX Warning: Citation `he2017mask' on page 2 undefined on input line 75.
+
+
+LaTeX Warning: Citation `chen2018deeplabv3plus' on page 2 undefined on input li
+ne 75.
+
+
+LaTeX Warning: Citation `xie2021segformer' on page 2 undefined on input line 75
+.
+
+
+LaTeX Warning: Citation `kirillov2023segment' on page 2 undefined on input line
+ 75.
+
+
+LaTeX Warning: Citation `oquab2023dinov2' on page 2 undefined on input line 75.
+
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/umsb.fd)
+
+LaTeX Warning: Citation `yu2020hyperparam' on page 2 undefined on input line 78
+.
+
+
+LaTeX Warning: Citation `gehan2017high' on page 2 undefined on input line 81.
+
+
+LaTeX Warning: Citation `plantcv2025' on page 2 undefined on input line 81.
+
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 88--90
+[]\OT1/ptm/m/n/10 We pa-ram-e-ter-ize our physics en-gine by $\OML/cmm/m/it/10 
+^^R \OT1/cmr/m/n/10 =
+
+LaTeX Warning: Reference `sec:objective' on page 2 undefined on input line 99.
+
+
+LaTeX Warning: Citation `xu1998gvf' on page 2 undefined on input line 108.
+
+
+Overfull \hbox (14.38118pt too wide) detected at line 112
+[][][]\OML/cmm/m/it/10 E[] \OT1/cmr/m/n/10 = \OML/cmm/m/it/10 E[] \OT1/cmr/m/n/
+10 + ^^A\OML/cmm/m/it/10 t[]^^V\OT1/cmr/m/n/10 ^^A\OML/cmm/m/it/10 E[] \OT1/cmr
+/m/n/10 + (\OML/cmm/m/it/10 ^^U \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 ^^V\OT1/cmr/
+m/n/10 ) [](\OMS/cmsy/m/n/10 r\OML/cmm/m/it/10 E[]\OT1/cmr/m/n/10 ) + \OML/cmm/
+m/it/10 q \OMS/cmsy/m/n/10 ^^A \OT1/cmr/m/n/10 (\OML/cmm/m/it/10 F \OMS/cmsy/m/
+n/10 ^^@ \OML/cmm/m/it/10 E[]\OT1/cmr/m/n/10 )[]\OML/cmm/m/it/10 ;
+
+[2]
+
+LaTeX Warning: Reference `eq:diffusion_update' on page 3 undefined on input lin
+e 133.
+
+
+Overfull \hbox (39.10147pt too wide) detected at line 139
+[][][]\OML/cmm/m/it/10 E[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 C\OT1/cmr/m/n/10 ) 
+= [][] [][]\OML/cmm/m/it/10  [][] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 ^^L [][] 
+[] ds \OT1/cmr/m/n/10 + [][] \OML/cmm/m/it/10 E[]\OT1/cmr/m/n/10 (\OML/cmm/m/it
+/10 C\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 s\OT1/cmr/m/n/10 )) \OML/cmm/m/it/10 ds:
+
+
+Overfull \hbox (68.25552pt too wide) detected at line 168
+[][][]\OML/cmm/m/it/10 S\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^^R\OT1/cmr/m/n/10 ) 
+= \OML/cmm/m/it/10 w[] \OMS/cmsy/m/n/10 G\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 M; I
+\OT1/cmr/m/n/10 ) + \OML/cmm/m/it/10 w[] \OMS/cmsy/m/n/10 C\OT1/cmr/m/n/10 (\OM
+L/cmm/m/it/10 M; I\OT1/cmr/m/n/10 ) + \OML/cmm/m/it/10 w[] []\OT1/cmr/m/n/10 (1
+ + \OML/cmm/m/it/10 N\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 M\OT1/cmr/m/n/10 )) \OMS
+/cmsy/m/n/10 ^^@ P[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 M\OT1/cmr/m/n/10 ) \OMS/c
+msy/m/n/10 ^^@ P[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 M\OT1/cmr/m/n/10 )\OML/cmm/
+m/it/10 ;
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 172.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 172.
+
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 179.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 179.
+
+
+LaTeX Warning: Citation `berry2018color' on page 3 undefined on input line 183.
+
+
+
+LaTeX Warning: Citation `plantcv2025' on page 3 undefined on input line 183.
+
+
+LaTeX Warning: Reference `eq:objective' on page 3 undefined on input line 205.
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/psnfss/omsptm.fd)
+
+LaTeX Warning: Citation `yu2020hyperparam' on page 3 undefined on input line 22
+3.
+
+
+LaTeX Warning: Citation `berry2018color' on page 3 undefined on input line 233.
+
+
+
+[3]
+
+Underfull \hbox (badness 1418) in paragraph at lines 271--272
+[]\OT1/ptm/m/n/10 Classical thresh-old-ing and color-index seg-men-ta-tions
+
+LaTeX Warning: Citation `ronneberger2015u' on page 4 undefined on input line 27
+2.
+
+
+LaTeX Warning: Citation `xie2021segformer' on page 4 undefined on input line 27
+3.
+
+
+LaTeX Warning: Citation `kirillov2023segment' on page 4 undefined on input line
+ 273.
+
+
+[4]
+
+LaTeX Warning: Reference `sec:multistage' on page 5 undefined on input line 301
+.
+
+
+Underfull \hbox (badness 1776) in paragraph at lines 301--302
+[]\OT1/ptm/m/n/10 Coalescing le-sions: stronger rigid-ity to avoid over-
+
+LaTeX Warning: Reference `eq:objective' on page 5 undefined on input line 307.
+
+
+Overfull \hbox (48.54945pt too wide) in paragraph at lines 313--324
+ [][] 
+
+Overfull \hbox (4.13857pt too wide) in paragraph at lines 330--340
+ [][] 
+
+
+LaTeX Warning: Reference `eq:objective' on page 5 undefined on input line 425.
+
+
+LaTeX Warning: Citation `hinton2015distilling' on page 5 undefined on input lin
+e 426.
+
+
+[5]
+No file paper3_exp_v1.bbl.
+
+
+[6 <./figs/montage_teacher_student.png (PNG copy)> <./figs/montage_disagreement
+_roi.png (PNG copy)>]
+
+[7 <./figs/threshold_sweep_plot.png> <./figs/optimizer_status_bar.png> <./figs/
+optimizer_elapsed_seconds_hist.png> <./figs/optimizer_score_hist.png>]
+(./paper3_exp_v1.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `paper3_exp_v1.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+ )
+(see the transcript file for additional information)</usr/local/texlive/2024/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2024/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2024/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2024/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2024/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2024/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2024/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/local/texlive/2024/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2024/texmf-dist/fo
+nts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2024/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2024/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2024/texmf-dist/fonts/typ
+e1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/p
+ublic/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2024/texmf-dist/fonts/typ
+e1/urw/times/utmb8a.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/urw/tim
+es/utmbi8a.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/urw/times/utmr8a
+.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on paper3_exp_v1.pdf (7 pages, 15164751 bytes).
+Transcript written on paper3_exp_v1.log.
+Latexmk: Getting log file 'paper3_exp_v1.log'
+Latexmk: Examining 'paper3_exp_v1.fls'
+Latexmk: Examining 'paper3_exp_v1.log'
+Latexmk: Missing bbl file 'paper3_exp_v1.bbl' in following:
+ No file paper3_exp_v1.bbl.
+Latexmk: References changed.
+Latexmk: References changed.
+Latexmk: Log file says output to 'paper3_exp_v1.pdf'
+Latexmk: Found bibliography file(s):
+  ./refs.bib
+Latexmk: applying rule 'bibtex paper3_exp_v1'...
+Rule 'bibtex paper3_exp_v1':  Reasons for rerun
+Category 'other':
+  Rerun of 'bibtex paper3_exp_v1' forced or previously required:
+    Reason or flag: 'Initial set up of rule'
+
+------------
+Run number 1 of rule 'bibtex paper3_exp_v1'
+------------
+------------
+Running 'bibtex  "paper3_exp_v1.aux"'
+------------
+This is BibTeX, Version 0.99d (TeX Live 2024)
+The top-level auxiliary file: paper3_exp_v1.aux
+The style file: IEEEtran.bst
+Database file #1: refs.bib
+-- IEEEtran.bst version 1.14 (2015/08/26) by Michael Shell.
+-- http://www.michaelshell.org/tex/ieeetran/bibtex/
+-- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
+
+Done.
+Latexmk: applying rule 'pdflatex'...
+Rule 'pdflatex':  Reasons for rerun
+Changed files or newly in use/created:
+  paper3_exp_v1.aux
+  paper3_exp_v1.bbl
+  paper3_exp_v1.out
+
+------------
+Run number 2 of rule 'pdflatex'
+------------
+------------
+Running 'pdflatex  -interaction=nonstopmode -recorder  "paper3_exp_v1.tex"'
+------------
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./paper3_exp_v1.tex
+LaTeX2e <2024-11-01> patch level 2
+L3 programming layer <2025-01-18>
+(/usr/local/texlive/2024/texmf-dist/tex/latex/ieeetran/IEEEtran.cls
+Document Class: IEEEtran 2015/08/26 V1.8b by Michael Shell
+-- See the "IEEEtran_HOWTO" manual for usage information.
+-- http://www.michaelshell.org/tex/ieeetran/
+(/usr/local/texlive/2024/texmf-dist/tex/latex/psnfss/ot1ptm.fd)
+-- Using 8.5in x 11in (letter) paper.
+-- Using PDF output.
+-- This is a 10 point document.
+) (/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/amssymb.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/algorithms/algorithmic.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/base/ifthen.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/keyval.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/algorithms/algorithm.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/float/float.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics-def/pdftex.def)))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/base/textcomp.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/booktabs/booktabs.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/multirow/multirow.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/cite/cite.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/infwarerr/infwarerr.sty)))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/gettitlestring/gettitlestring.s
+ty (/usr/local/texlive/2024/texmf-dist/tex/latex/kvoptions/kvoptions.sty)))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/etoolbox/etoolbox.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/stringenc/stringenc.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/url/url.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/local/texlive/2024/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
+))) (/usr/local/texlive/2024/texmf-dist/tex/latex/tools/bm.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def)
+(./paper3_exp_v1.aux)
+-- Lines per column: 58 (exact).
+(/usr/local/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/usr/local/texlive/2024/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg))
+(./paper3_exp_v1.out) (./paper3_exp_v1.out)
+Underfull \hbox (badness 2393) in paragraph at lines 39--41
+[]\OT1/ptm/b/it/9 Index Terms\OT1/ptm/b/n/9 ---Active Con-tours, Navier-Stokes 
+Equa-tions,
+
+LaTeX Warning: Citation `ronneberger2015u' on page 1 undefined on input line 48
+.
+
+
+LaTeX Warning: Citation `he2017mask' on page 1 undefined on input line 48.
+
+
+LaTeX Warning: Citation `xie2021segformer' on page 1 undefined on input line 48
+.
+
+
+LaTeX Warning: Citation `kirillov2023segment' on page 1 undefined on input line
+ 48.
+
+
+
+LaTeX Warning: Citation `kass1988snakes' on page 1 undefined on input line 50.
+
+
+LaTeX Warning: Citation `ronneberger2015u' on page 1 undefined on input line 59
+.
+
+
+LaTeX Warning: Citation `oquab2023dinov2' on page 1 undefined on input line 59.
+
+
+
+LaTeX Warning: Citation `hinton2015distilling' on page 1 undefined on input lin
+e 59.
+
+
+LaTeX Warning: Citation `kass1988snakes' on page 1 undefined on input line 69.
+
+
+LaTeX Warning: Citation `caselles1997geodesic' on page 1 undefined on input lin
+e 69.
+
+
+LaTeX Warning: Citation `chan2001active' on page 1 undefined on input line 69.
+
+
+LaTeX Warning: Citation `xu1998gvf' on page 1 undefined on input line 69.
+
+
+[1{/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/l
+ocal/texlive/2024/texmf-dist/fonts/enc/dvips/base/8r.enc}]
+
+LaTeX Warning: Citation `bertalmio2000navier' on page 2 undefined on input line
+ 72.
+
+
+LaTeX Warning: Citation `berry2018color' on page 2 undefined on input line 72.
+
+
+LaTeX Warning: Citation `plantcv2025' on page 2 undefined on input line 72.
+
+
+LaTeX Warning: Citation `ronneberger2015u' on page 2 undefined on input line 75
+.
+
+
+LaTeX Warning: Citation `he2017mask' on page 2 undefined on input line 75.
+
+
+LaTeX Warning: Citation `chen2018deeplabv3plus' on page 2 undefined on input li
+ne 75.
+
+
+LaTeX Warning: Citation `xie2021segformer' on page 2 undefined on input line 75
+.
+
+
+LaTeX Warning: Citation `kirillov2023segment' on page 2 undefined on input line
+ 75.
+
+
+LaTeX Warning: Citation `oquab2023dinov2' on page 2 undefined on input line 75.
+
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/umsb.fd)
+
+LaTeX Warning: Citation `yu2020hyperparam' on page 2 undefined on input line 78
+.
+
+
+LaTeX Warning: Citation `gehan2017high' on page 2 undefined on input line 81.
+
+
+LaTeX Warning: Citation `plantcv2025' on page 2 undefined on input line 81.
+
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 88--90
+[]\OT1/ptm/m/n/10 We pa-ram-e-ter-ize our physics en-gine by $\OML/cmm/m/it/10 
+^^R \OT1/cmr/m/n/10 =
+
+LaTeX Warning: Citation `xu1998gvf' on page 2 undefined on input line 108.
+
+
+Overfull \hbox (14.38118pt too wide) detected at line 112
+[][][]\OML/cmm/m/it/10 E[] \OT1/cmr/m/n/10 = \OML/cmm/m/it/10 E[] \OT1/cmr/m/n/
+10 + ^^A\OML/cmm/m/it/10 t[]^^V\OT1/cmr/m/n/10 ^^A\OML/cmm/m/it/10 E[] \OT1/cmr
+/m/n/10 + (\OML/cmm/m/it/10 ^^U \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 ^^V\OT1/cmr/
+m/n/10 ) [](\OMS/cmsy/m/n/10 r\OML/cmm/m/it/10 E[]\OT1/cmr/m/n/10 ) + \OML/cmm/
+m/it/10 q \OMS/cmsy/m/n/10 ^^A \OT1/cmr/m/n/10 (\OML/cmm/m/it/10 F \OMS/cmsy/m/
+n/10 ^^@ \OML/cmm/m/it/10 E[]\OT1/cmr/m/n/10 )[]\OML/cmm/m/it/10 ;
+
+[2]
+Overfull \hbox (39.10147pt too wide) detected at line 139
+[][][]\OML/cmm/m/it/10 E[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 C\OT1/cmr/m/n/10 ) 
+= [][] [][]\OML/cmm/m/it/10  [][] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 ^^L [][] 
+[] ds \OT1/cmr/m/n/10 + [][] \OML/cmm/m/it/10 E[]\OT1/cmr/m/n/10 (\OML/cmm/m/it
+/10 C\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 s\OT1/cmr/m/n/10 )) \OML/cmm/m/it/10 ds:
+
+
+Overfull \hbox (68.25552pt too wide) detected at line 168
+[][][]\OML/cmm/m/it/10 S\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^^R\OT1/cmr/m/n/10 ) 
+= \OML/cmm/m/it/10 w[] \OMS/cmsy/m/n/10 G\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 M; I
+\OT1/cmr/m/n/10 ) + \OML/cmm/m/it/10 w[] \OMS/cmsy/m/n/10 C\OT1/cmr/m/n/10 (\OM
+L/cmm/m/it/10 M; I\OT1/cmr/m/n/10 ) + \OML/cmm/m/it/10 w[] []\OT1/cmr/m/n/10 (1
+ + \OML/cmm/m/it/10 N\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 M\OT1/cmr/m/n/10 )) \OMS
+/cmsy/m/n/10 ^^@ P[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 M\OT1/cmr/m/n/10 ) \OMS/c
+msy/m/n/10 ^^@ P[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 M\OT1/cmr/m/n/10 )\OML/cmm/
+m/it/10 ;
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 172.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 172.
+
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 179.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 179.
+
+
+LaTeX Warning: Citation `berry2018color' on page 3 undefined on input line 183.
+
+
+
+LaTeX Warning: Citation `plantcv2025' on page 3 undefined on input line 183.
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/psnfss/omsptm.fd)
+
+LaTeX Warning: Citation `yu2020hyperparam' on page 3 undefined on input line 22
+3.
+
+
+LaTeX Warning: Citation `berry2018color' on page 3 undefined on input line 233.
+
+
+
+[3]
+
+Underfull \hbox (badness 1418) in paragraph at lines 271--272
+[]\OT1/ptm/m/n/10 Classical thresh-old-ing and color-index seg-men-ta-tions
+
+LaTeX Warning: Citation `ronneberger2015u' on page 4 undefined on input line 27
+2.
+
+
+LaTeX Warning: Citation `xie2021segformer' on page 4 undefined on input line 27
+3.
+
+
+LaTeX Warning: Citation `kirillov2023segment' on page 4 undefined on input line
+ 273.
+
+
+[4]
+Underfull \hbox (badness 1776) in paragraph at lines 301--302
+[]\OT1/ptm/m/n/10 Coalescing le-sions: stronger rigid-ity to avoid over-
+
+Overfull \hbox (48.54945pt too wide) in paragraph at lines 313--324
+ [][] 
+
+Overfull \hbox (4.13857pt too wide) in paragraph at lines 330--340
+ [][] 
+
+
+LaTeX Warning: Citation `hinton2015distilling' on page 5 undefined on input lin
+e 426.
+
+
+[5] (./paper3_exp_v1.bbl
+Underfull \hbox (badness 1616) in paragraph at lines 49--52
+[]\OT1/ptm/m/n/8 M. Oquab, T. Darcet, T. Moutakanni, H. Vo \OT1/ptm/m/it/8 et a
+l.\OT1/ptm/m/n/8 , ``DI-NOv2:
+
+
+Underfull \vbox (badness 1107) has occurred while \output is active
+[6 <./figs/montage_teacher_student.png (PNG copy)> <./figs/montage_disagreement
+_roi.png (PNG copy)>])
+
+[7 <./figs/threshold_sweep_plot.png> <./figs/optimizer_status_bar.png> <./figs/
+optimizer_elapsed_seconds_hist.png> <./figs/optimizer_score_hist.png>]
+(./paper3_exp_v1.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `paper3_exp_v1.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+ )
+(see the transcript file for additional information)</usr/local/texlive/2024/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2024/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2024/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2024/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2024/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2024/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2024/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/local/texlive/2024/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2024/texmf-dist/fo
+nts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2024/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2024/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2024/texmf-dist/fonts/typ
+e1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/p
+ublic/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2024/texmf-dist/fonts/typ
+e1/urw/times/utmb8a.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/urw/tim
+es/utmbi8a.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/urw/times/utmr8a
+.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on paper3_exp_v1.pdf (7 pages, 15172318 bytes).
+Transcript written on paper3_exp_v1.log.
+Latexmk: Getting log file 'paper3_exp_v1.log'
+Latexmk: Examining 'paper3_exp_v1.fls'
+Latexmk: Examining 'paper3_exp_v1.log'
+Latexmk: Found input bbl file 'paper3_exp_v1.bbl'
+Latexmk: References changed.
+Latexmk: References changed.
+Latexmk: Log file says output to 'paper3_exp_v1.pdf'
+Latexmk: Found bibliography file(s):
+  ./refs.bib
+Latexmk: applying rule 'bibtex paper3_exp_v1'...
+Rule 'bibtex paper3_exp_v1':  Reasons for rerun
+Changed files or newly in use/created:
+  paper3_exp_v1.aux
+
+------------
+Run number 2 of rule 'bibtex paper3_exp_v1'
+------------
+------------
+Running 'bibtex  "paper3_exp_v1.aux"'
+------------
+This is BibTeX, Version 0.99d (TeX Live 2024)
+The top-level auxiliary file: paper3_exp_v1.aux
+The style file: IEEEtran.bst
+Database file #1: refs.bib
+-- IEEEtran.bst version 1.14 (2015/08/26) by Michael Shell.
+-- http://www.michaelshell.org/tex/ieeetran/bibtex/
+-- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
+
+Done.
+Latexmk: applying rule 'pdflatex'...
+Rule 'pdflatex':  Reasons for rerun
+Changed files or newly in use/created:
+  paper3_exp_v1.aux
+  paper3_exp_v1.out
+
+------------
+Run number 3 of rule 'pdflatex'
+------------
+------------
+Running 'pdflatex  -interaction=nonstopmode -recorder  "paper3_exp_v1.tex"'
+------------
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./paper3_exp_v1.tex
+LaTeX2e <2024-11-01> patch level 2
+L3 programming layer <2025-01-18>
+(/usr/local/texlive/2024/texmf-dist/tex/latex/ieeetran/IEEEtran.cls
+Document Class: IEEEtran 2015/08/26 V1.8b by Michael Shell
+-- See the "IEEEtran_HOWTO" manual for usage information.
+-- http://www.michaelshell.org/tex/ieeetran/
+(/usr/local/texlive/2024/texmf-dist/tex/latex/psnfss/ot1ptm.fd)
+-- Using 8.5in x 11in (letter) paper.
+-- Using PDF output.
+-- This is a 10 point document.
+) (/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/amssymb.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/algorithms/algorithmic.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/base/ifthen.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/keyval.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/algorithms/algorithm.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/float/float.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics-def/pdftex.def)))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/base/textcomp.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/booktabs/booktabs.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/multirow/multirow.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/cite/cite.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/infwarerr/infwarerr.sty)))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/gettitlestring/gettitlestring.s
+ty (/usr/local/texlive/2024/texmf-dist/tex/latex/kvoptions/kvoptions.sty)))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/etoolbox/etoolbox.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/stringenc/stringenc.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/url/url.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/local/texlive/2024/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
+))) (/usr/local/texlive/2024/texmf-dist/tex/latex/tools/bm.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def)
+(./paper3_exp_v1.aux)
+-- Lines per column: 58 (exact).
+(/usr/local/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/usr/local/texlive/2024/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg))
+(./paper3_exp_v1.out) (./paper3_exp_v1.out)
+Underfull \hbox (badness 2393) in paragraph at lines 39--41
+[]\OT1/ptm/b/it/9 Index Terms\OT1/ptm/b/n/9 ---Active Con-tours, Navier-Stokes 
+Equa-tions,
+
+
+[1{/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/l
+ocal/texlive/2024/texmf-dist/fonts/enc/dvips/base/8r.enc}]
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/umsb.fd)
+
+Underfull \hbox (badness 10000) in paragraph at lines 88--90
+[]\OT1/ptm/m/n/10 We pa-ram-e-ter-ize our physics en-gine by $\OML/cmm/m/it/10 
+^^R \OT1/cmr/m/n/10 =
+
+Overfull \hbox (14.38118pt too wide) detected at line 112
+[][][]\OML/cmm/m/it/10 E[] \OT1/cmr/m/n/10 = \OML/cmm/m/it/10 E[] \OT1/cmr/m/n/
+10 + ^^A\OML/cmm/m/it/10 t[]^^V\OT1/cmr/m/n/10 ^^A\OML/cmm/m/it/10 E[] \OT1/cmr
+/m/n/10 + (\OML/cmm/m/it/10 ^^U \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 ^^V\OT1/cmr/
+m/n/10 ) [](\OMS/cmsy/m/n/10 r\OML/cmm/m/it/10 E[]\OT1/cmr/m/n/10 ) + \OML/cmm/
+m/it/10 q \OMS/cmsy/m/n/10 ^^A \OT1/cmr/m/n/10 (\OML/cmm/m/it/10 F \OMS/cmsy/m/
+n/10 ^^@ \OML/cmm/m/it/10 E[]\OT1/cmr/m/n/10 )[]\OML/cmm/m/it/10 ;
+
+[2]
+Overfull \hbox (39.10147pt too wide) detected at line 139
+[][][]\OML/cmm/m/it/10 E[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 C\OT1/cmr/m/n/10 ) 
+= [][] [][]\OML/cmm/m/it/10  [][] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 ^^L [][] 
+[] ds \OT1/cmr/m/n/10 + [][] \OML/cmm/m/it/10 E[]\OT1/cmr/m/n/10 (\OML/cmm/m/it
+/10 C\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 s\OT1/cmr/m/n/10 )) \OML/cmm/m/it/10 ds:
+
+
+Overfull \hbox (68.25552pt too wide) detected at line 168
+[][][]\OML/cmm/m/it/10 S\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^^R\OT1/cmr/m/n/10 ) 
+= \OML/cmm/m/it/10 w[] \OMS/cmsy/m/n/10 G\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 M; I
+\OT1/cmr/m/n/10 ) + \OML/cmm/m/it/10 w[] \OMS/cmsy/m/n/10 C\OT1/cmr/m/n/10 (\OM
+L/cmm/m/it/10 M; I\OT1/cmr/m/n/10 ) + \OML/cmm/m/it/10 w[] []\OT1/cmr/m/n/10 (1
+ + \OML/cmm/m/it/10 N\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 M\OT1/cmr/m/n/10 )) \OMS
+/cmsy/m/n/10 ^^@ P[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 M\OT1/cmr/m/n/10 ) \OMS/c
+msy/m/n/10 ^^@ P[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 M\OT1/cmr/m/n/10 )\OML/cmm/
+m/it/10 ;
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 172.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 172.
+
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 179.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 179.
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/psnfss/omsptm.fd)
+[3]
+
+Underfull \hbox (badness 1418) in paragraph at lines 271--272
+[]\OT1/ptm/m/n/10 Classical thresh-old-ing and color-index seg-men-ta-tions
+
+[4]
+Underfull \hbox (badness 1776) in paragraph at lines 301--302
+[]\OT1/ptm/m/n/10 Coalescing le-sions: stronger rigid-ity to avoid over-
+
+Overfull \hbox (48.54945pt too wide) in paragraph at lines 313--324
+ [][] 
+
+Overfull \hbox (4.13857pt too wide) in paragraph at lines 330--340
+ [][] 
+
+
+[5] (./paper3_exp_v1.bbl
+Underfull \hbox (badness 1616) in paragraph at lines 49--52
+[]\OT1/ptm/m/n/8 M. Oquab, T. Darcet, T. Moutakanni, H. Vo \OT1/ptm/m/it/8 et a
+l.\OT1/ptm/m/n/8 , ``DI-NOv2:
+
+
+Underfull \vbox (badness 1107) has occurred while \output is active
+[6 <./figs/montage_teacher_student.png (PNG copy)> <./figs/montage_disagreement
+_roi.png (PNG copy)>])
+
+[7 <./figs/threshold_sweep_plot.png> <./figs/optimizer_status_bar.png> <./figs/
+optimizer_elapsed_seconds_hist.png> <./figs/optimizer_score_hist.png>]
+(./paper3_exp_v1.aux) )
+(see the transcript file for additional information)</usr/local/texlive/2024/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2024/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2024/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2024/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2024/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2024/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2024/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/local/texlive/2024/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2024/texmf-dist/fo
+nts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2024/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2024/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2024/texmf-dist/fonts/typ
+e1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/p
+ublic/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2024/texmf-dist/fonts/typ
+e1/urw/times/utmb8a.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/urw/tim
+es/utmbi8a.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/urw/times/utmr8a
+.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on paper3_exp_v1.pdf (7 pages, 15172994 bytes).
+Transcript written on paper3_exp_v1.log.
+Latexmk: Getting log file 'paper3_exp_v1.log'
+Latexmk: Examining 'paper3_exp_v1.fls'
+Latexmk: Examining 'paper3_exp_v1.log'
+Latexmk: Found input bbl file 'paper3_exp_v1.bbl'
+Latexmk: Log file says output to 'paper3_exp_v1.pdf'
+Latexmk: Found bibliography file(s):
+  ./refs.bib
+Latexmk: All targets (paper3_exp_v1.pdf) are up-to-date
+

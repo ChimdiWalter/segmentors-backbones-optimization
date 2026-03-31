@@ -1,0 +1,7 @@
+method,runtime_sec
+full_optimizer,260.48938705580576
+B4_direct,2.9828392914363318
+B4_medium,28.881756019592284
+B4_small,17.968038197926113
+B4_tiny,11.034403821400234
+B3_ensemble_predict,0.5

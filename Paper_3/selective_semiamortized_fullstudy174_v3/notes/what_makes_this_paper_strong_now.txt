@@ -1,0 +1,49 @@
+What Makes This Paper Strong Now
+==================================
+
+V2 WEAKNESSES → V3 STRENGTHS:
+
+1. LENGTH: 7 pages → 15+ pages of technical content
+   - Full mathematical formulation (Section 3)
+   - Algorithm pseudocode (Algorithm 1)
+   - Comprehensive related work (Section 2, 6 subsections)
+   - Appendix with additional figures and tables
+
+2. MATHEMATICAL RIGOR:
+   - Formal constrained optimization formulation for selective routing
+   - Explicit refinement operator definition
+   - Uncertainty quantification formulas
+   - Phenotype consistency metric definitions (PCA displacement, hull, centroid)
+
+3. EXPERIMENTAL STRENGTH:
+   - 6 split strategies (vs 2 in v2)
+   - 9 ablation dimensions (vs 6 in v2)
+   - Score-tier stratification
+   - Parameter-extremes evaluation
+   - 63 external test images from 18.7
+   - Calibration analysis with risk-coverage curves
+   - Failure taxonomy
+
+4. GEOMETRY/PHENOTYPE ANALYSIS:
+   - PCA displacement with arrows (2D and 3D)
+   - Convex hull overlap analysis
+   - Covariance ellipsoid comparison
+   - Centroid shift quantification
+   - Selective routing visualization in PCA space
+   - Displacement distribution histograms
+
+5. VISUAL MATERIAL: 20 figures (vs 9 in v2)
+   - 8 main-paper figures
+   - 7 appendix figures
+   - 5 additional analysis figures
+
+6. BIBLIOGRAPHY: 36 references (vs 0 compiled in v2)
+   - Proper \cite commands throughout
+   - Comprehensive literature map
+
+7. CLARITY:
+   - Clean separation: problem formulation (Section 3) vs method (Section 4)
+   - Discussion of mean-baseline challenge
+   - Score exceeding oracle explanation
+   - Deployment relevance emphasized
+   - Clear limitations and future directions

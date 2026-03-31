@@ -1,0 +1,4 @@
+method,runtime_sec,nmae,source_file
+full_optimizer,260.49,0.0257513914656772,/cluster/VAST/kazict-lab/e/lesion_phes/code/segmentors_backbones/experiments/exp_v1/outputs/integrated_full_vs_patch_leaves_18p7_v1/tables/table_refinement.csv
+direct_full_leaf,2.98,1.15406275165745,/cluster/VAST/kazict-lab/e/lesion_phes/code/segmentors_backbones/experiments/exp_v1/outputs/integrated_full_vs_patch_leaves_18p7_v1/tables/table_refinement.csv
+selective_policy_best_speedup,55.76685714285715,0.8191838426531186,/cluster/VAST/kazict-lab/e/lesion_phes/code/segmentors_backbones/experiments/exp_v1/outputs/integrated_full_vs_patch_leaves_18p7_v1/tables/table_routing.csv

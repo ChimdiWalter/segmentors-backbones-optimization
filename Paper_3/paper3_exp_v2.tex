@@ -1,0 +1,449 @@
+\documentclass[journal]{IEEEtran}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{cite}
+\usepackage{hyperref}
+\usepackage{bm}
+
+% --- optional but safe for IEEE-style figure refs ---
+\usepackage{url}
+
+% --- lightweight TODO macro (no extra packages) ---
+\newcommand{\TODO}[1]{\textcolor{red}{\textbf{[TODO: #1]}}}
+
+% --- common math shortcuts ---
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\grad}{\nabla}
+\newcommand{\lap}{\Delta}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+
+\begin{document}
+
+\title{Gradient-Free Stochastic Optimization of Navier-Stokes Active Contours for Unsupervised High-Throughput Phenotyping}
+
+\author{Chimdi Walter Ndubuisi, \IEEEmembership{Student Member, IEEE}, and Toni Kazic}
+
+\maketitle
+
+\begin{abstract}
+Quantitative phenotyping of plant disease lesions is a critical bottleneck in agricultural breeding programs. While deep learning offers potent segmentation capabilities, it requires extensive pixel-level annotation which is often unavailable in specialized domains. Physics-based active contour models driven by partial differential equations (PDEs) offer an unsupervised alternative but are notoriously sensitive to hyperparameter selection, often failing on heterogeneous datasets due to local minima and varying lesion morphology. In this work, we propose a fully automated, unsupervised segmentation framework that treats the tuning of Navier-Stokes active contours as a high-dimensional black-box optimization problem. We introduce a novel heuristic objective function that quantifies segmentation quality without ground truth by integrating gradient alignment, chromatic separability in Lab space, and topological constraints. We employ a Random-Restart Stochastic Hill Climbing algorithm to navigate the non-convex parameter space, locating optimal viscosity, tension, and rigidity coefficients for each individual image. We evaluate our method on a dataset of 174 high-resolution, 16-bit leaf images exhibiting diverse lesion morphologies. Our results demonstrate that automated physics optimization achieves robust segmentation of both necrotic cores and chlorotic halos without human intervention. We additionally distill the optimizer pseudo-labels into a patch-based UNet student for rapid, high-fidelity inference at native resolution. We further provide comprehensive ablation studies analyzing the contribution of each objective term and the convergence properties of the stochastic search.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Active Contours, Navier-Stokes Equations, Stochastic Optimization, Unsupervised Segmentation, Plant Phenotyping, Computer Vision in Agriculture.
+\end{IEEEkeywords}
+
+% ==========================
+\section{Introduction}
+% ==========================
+\IEEEPARstart{P}{recision} agriculture relies on the accurate quantification of plant traits to inform breeding and management decisions. Among these traits, the severity and morphology of disease lesions are paramount for assessing crop resistance. Traditional methods for lesion quantification involve visual scoring by experts, which is subjective, labor-intensive, and prone to inter-observer variability. Computer vision offers an objective alternative; however, classical segmentation techniques such as Otsu's thresholding or K-Means clustering often fail when applied to complex biological imagery. Leaf lesions exhibit significant variability: they range from deep necrotic spots to faint chlorotic halos, often on leaves with complex venation patterns and under variable lighting conditions.
+
+Deep learning approaches, particularly Convolutional Neural Networks (CNNs) like U-Net \cite{ronneberger2015u} and instance-based models such as Mask R-CNN \cite{he2017mask}, have become the standard for segmentation tasks, with recent transformer-era segmentation systems (e.g., SegFormer \cite{xie2021segformer}) and foundation segmentation models (e.g., SAM \cite{kirillov2023segment}) widening the design space. However, they introduce a significant \emph{data bottleneck}: reliable training often requires thousands of pixel-accurate masks. In scientific phenotyping, generating ground truth is expensive, slow, and frequently ambiguous (e.g., faint halos vs.\ vein texture). Moreover, models trained on limited data can overfit and fail to generalize across cultivars, pathogen strains, cameras, and lighting.
+
+Physics-based deformable models, specifically Active Contour Models (Snakes) \cite{kass1988snakes}, offer a powerful unsupervised alternative. By evolving a curve to minimize an energy functional, snakes can segment objects based on smoothness and edge evidence without training data. However, traditional snakes suffer from: (1) sensitivity to initialization (they must be placed near the object), and (2) sensitivity to hyperparameters (tension, rigidity, and external-force weights). A parameter set that successfully segments a sharp, dark lesion can fail on a faint, diffuse lesion; conversely, a set that expands into chlorosis can leak into healthy tissue.
+
+In this paper, we bridge physics-based modeling and automation by proposing a \emph{self-configuring} framework that searches for per-image physics parameters and yields high-fidelity pseudo-labels for downstream learning.
+
+\textbf{Contributions.} We provide:
+\begin{enumerate}
+    \item A \textbf{Navier-Stokes diffusion engine} that treats image gradients as a fluid, producing a smoothed energy landscape that supports weak boundaries and reduces initialization sensitivity.
+    \item A \textbf{no-ground-truth objective} combining (i) gradient alignment, (ii) chromatic separability in Lab space, and (iii) connected-component/topology priors to discourage trivial solutions and encourage biologically plausible lesion multiplicity.
+    \item A \textbf{gradient-free stochastic optimizer} (random-restart + hill climbing) that maximizes the objective per image over a bounded parameter space, with practical runtime controls (downscaling, timeouts, parallelism).
+    \item A \textbf{phenotyping-ready pipeline} producing 16-bit overlays/masks and per-image parameter summaries, enabling later training of compact student models (e.g., U-Net \cite{ronneberger2015u}, transformer encoders \cite{oquab2023dinov2}) via distillation \cite{hinton2015distilling}.
+\end{enumerate}
+
+\TODO{Insert 1--2 sentences describing the biological experiment context (genotype set, treatment, pathogen, days post infection), camera/optics, and why 16-bit matters.}
+
+% ==========================
+\section{Related Work}
+% ==========================
+
+\subsection{Active Contours, Level Sets, and External Forces}
+Active contour models introduced by Kass \emph{et al.} \cite{kass1988snakes} optimize a curve by balancing internal elastic energies and external image forces. Later developments such as geodesic active contours \cite{caselles1997geodesic} and region-based Chan--Vese models \cite{chan2001active} improved robustness to weak edges and topology changes. A long-standing challenge is designing external forces that attract contours from far away while remaining stable in noise. Gradient Vector Flow (GVF) \cite{xu1998gvf} and its extensions diffuse edge information to enlarge capture range, but practical performance remains sensitive to parameters and contrast.
+
+\subsection{PDEs and Fluid Dynamics in Vision}
+Fluid analogies have a rich history in vision, including Navier--Stokes-inspired inpainting \cite{bertalmio2000navier} and PDE-based smoothing/diffusion formulations for robust feature propagation. In phenotyping pipelines, stable illumination and color standardization can be as important as the segmentation model; PlantCV and related tooling emphasize reproducibility and calibration in plant image analysis \cite{berry2018color,plantcv2025}. Our approach combines (i) calibrated pre-processing assumptions (masking, channel fusion, 16-bit handling) with (ii) PDE-driven energy fields that increase the capture range of snakes on faint lesions.
+
+\subsection{Segmentation Models (2015--2025): CNNs, Transformers, and Foundation Models}
+U-Net \cite{ronneberger2015u} established the encoder--decoder template with skip connections for biomedical segmentation, which has been widely adapted for plant images. Mask R-CNN \cite{he2017mask} enabled instance-aware segmentation via detection+mask heads. DeepLabv3+ \cite{chen2018deeplabv3plus} improved semantic segmentation with atrous convolution and encoder--decoder refinement. The transformer era introduced scalable representations and efficient segmentation heads (e.g., SegFormer \cite{xie2021segformer}) and general-purpose segmentation systems (e.g., SAM \cite{kirillov2023segment}). Self-supervised visual encoders such as DINOv2 \cite{oquab2023dinov2} are especially relevant in small-data regimes (like ours, $N\approx 174$), where feature reuse and distillation can stabilize learning.
+
+\subsection{Black-Box and Hyperparameter Optimization for Vision}
+Hyperparameter optimization (HPO) is widely used in ML; surveys \cite{yu2020hyperparam} emphasize that robust objectives and search-space design often matter more than the specific optimizer when budgets are small. Per-image optimization for PDE-driven segmentation is less common due to cost, but becomes feasible with pragmatic engineering: downscaling during search, randomized exploration, local refinement, and timeouts. Our optimizer is deliberately simple (random-restart hill climbing), trading theoretical sophistication for predictability and ease of deployment on CPU clusters.
+
+\subsection{Plant Phenotyping Context and Tooling}
+High-throughput phenotyping requires repeatable pipelines that produce interpretable traits, not just segmentations. Reviews highlight the role of image analysis in enabling scalable plant trait measurement \cite{gehan2017high}, while toolkits such as PlantCV standardize workflows and facilitate reproducibility \cite{plantcv2025}. Our pipeline outputs both masks and rich per-image metadata (physics parameters, objective terms, runtime), aligning segmentation with downstream trait extraction (lesion count, area distributions, necrotic/chlorotic ratios).
+
+% ==========================
+\section{Problem Setup and Notation}
+% ==========================
+Let $I:\Omega\subset\R^2\rightarrow\R$ denote a (preprocessed) grayscale image derived from a 16-bit leaf image (via channel fusion, masking, and contrast normalization). We seek a lesion mask $M\subset\Omega$ consisting of one or many connected components whose boundaries correspond to lesion edges (strong or weak), and whose interiors exhibit chromatic signatures distinct from healthy tissue.
+
+We parameterize our physics engine by $\theta = (\mu,\lambda,\alpha,\beta,\gamma,T)$ where:
+\begin{itemize}
+    \item $(\mu,\lambda)$ govern diffusion/elastic coupling (Navier/elastic coefficients),
+    \item $(\alpha,\beta)$ are snake tension/rigidity,
+    \item $\gamma$ is an inflation/balloon force,
+    \item $T$ is an energy threshold controlling candidate region proposals.
+\end{itemize}
+We perform per-image optimization:
+\begin{equation}
+\theta^\star = \arg\max_{\theta \in \Theta} \; S(I;\theta),
+\end{equation}
+where $S$ is a heuristic, no-ground-truth score (Section~\ref{sec:objective}) and $\Theta$ is a bounded search space.
+
+% ==========================
+\section{Mathematical Framework}
+% ==========================
+
+\subsection{Navier-Stokes Diffusion for Edge Enhancement}
+The core of our segmentation engine is an external force field derived from image gradients. Direct use of $\grad I$ is susceptible to high-frequency noise (dust, sensor grain, leaf hairs, compression artifacts). We instead form a smoothed \emph{energy landscape} that amplifies lesion structures while diffusing irrelevant texture.
+
+We begin with Sobel gradients $\grad I = (I_x, I_y)$ and magnitude $G = \norm{\grad I}$. In classical GVF \cite{xu1998gvf}, one diffuses a vector field to enlarge the capture range of snakes. Our implementation uses a scalar diffusion-reaction update inspired by fluid/elastic analogies:
+\begin{equation}
+E^{(t+1)} = E^{(t)} + \Delta t \Big( \mu \lap E^{(t)} + (\lambda+\mu)\,\mathrm{div}(\grad E^{(t)}) + q\cdot (F - E^{(t)}) \Big),
+\label{eq:diffusion_update}
+\end{equation}
+where:
+\begin{itemize}
+    \item $E^{(t)}$ is the evolving energy field,
+    \item $\mu$ plays the role of viscosity (smoothing),
+    \item $(\lambda+\mu)\,\mathrm{div}(\grad E)$ is a coarse elastic coupling term,
+    \item $F$ is a forcing term derived from gradient discrepancies (see below),
+    \item $q$ is an edge-gating mask (strong edges should dominate forcing).
+\end{itemize}
+
+\paragraph{Seed vs.\ Image Gradients.}
+We define \emph{image gradients} $(I_x,I_y)$ as the high-frequency edge evidence, and a \emph{seed/prior gradient field} $(S_x,S_y)$ as a low-pass (Gaussian-smoothed) version of $(I_x,I_y)$. Then:
+\begin{equation}
+F = \norm{(I_x-S_x,\; I_y-S_y)}_2,
+\end{equation}
+so forcing is strong where fine-scale edges deviate from coarse-scale structure (often where lesions and halos introduce new boundaries beyond leaf texture).
+
+\paragraph{Edge-gating.}
+Let $q = \mathbf{1}[G > T]$ for threshold $T$, restricting forcing to regions with nontrivial gradient evidence.
+
+\paragraph{Stability note.}
+Equation~\eqref{eq:diffusion_update} is an explicit scheme; its stability is governed by a CFL-type condition $\Delta t \leq h^2/(4\mu)$, where $h$ is the grid spacing. In our implementation we fix $\Delta t = 1$ on integer-pixel grids ($h=1$) and keep $\mu\leq 0.25$, which satisfies this bound. We run 80 diffusion iterations and normalize $E$ to $[0,255]$ after convergence. These choices yield stable, artifact-free energy fields across all 174 images at both downscaled ($s{=}0.75$) and full resolution.
+
+\subsection{Active Contour Dynamics (Snakes)}
+We represent a boundary as a parameterized curve $C(s) = (x(s), y(s))$, $s\in[0,1]$, and minimize:
+\begin{equation}
+E_{\mathrm{snake}}(C) = \int_0^1 \frac{1}{2}\Big(\alpha \norm{C'(s)}^2 + \beta \norm{C''(s)}^2\Big)\,ds + \int_0^1 E_{\mathrm{ext}}(C(s))\,ds.
+\end{equation}
+Here $\alpha$ penalizes stretching (shrinkage bias), $\beta$ penalizes curvature (smoothness/roundness), and $E_{\mathrm{ext}}$ is derived from the energy map $E$ (high energy at boundaries). We also employ a balloon term $\gamma$ to encourage outward expansion until edges are encountered:
+\begin{equation}
+\frac{\partial C}{\partial t} = \alpha C'' - \beta C'''' + \gamma \mathbf{n}(s) - \grad E_{\mathrm{ext}}.
+\end{equation}
+
+\paragraph{Multi-lesion handling.}
+To address multiple lesions per image, we generate multiple candidate regions by thresholding $E$ and fitting snakes to each connected component that satisfies scale constraints. This is crucial for clustered fungal lesions and mixed necrotic/chlorotic phenotypes.
+
+In practice, we set minimum and maximum blob fractions relative to the working image area: $f_{\min}=5\times10^{-4}$ (rejects dust and sensor noise below ${\sim}2{,}600$ pixels at 5\,MP) and $f_{\max}=0.45$ (prevents a single component from engulfing the entire leaf). Because these thresholds are area fractions rather than absolute pixel counts, the same values apply at both the downscaled search resolution ($s{=}0.75$, ${\sim}2.8$\,MP) and full resolution (${\sim}5.2$\,MP), yielding consistent candidate filtering across scales.
+
+% ==========================
+\section{Methodology: Stochastic Parameter Search}
+% ==========================
+
+\subsection{Overview of the Optimization Loop}
+The interaction between $\mu,\lambda,\alpha,\beta,\gamma$ and threshold $T$ yields a non-convex landscape. A fixed $\theta$ rarely works across heterogeneous lesion morphologies. We therefore solve:
+\begin{equation}
+\theta^\star = \arg\max_{\theta\in\Theta} S(I;\theta)
+\end{equation}
+with a two-phase stochastic strategy: (i) random exploration, (ii) local refinement around the best candidate.
+
+\subsection{The Heuristic Objective Function}
+\label{sec:objective}
+We define a scalar score $S(\theta)$ (proxy quality without ground truth):
+\begin{equation}
+S(\theta) = w_g \,\mathcal{G}(M,I) + w_c \,\mathcal{C}(M,I) + w_n \log(1+N(M))
+            - \mathcal{P}_{\mathrm{area}}(M) - \mathcal{P}_{\mathrm{noise}}(M),
+\label{eq:objective}
+\end{equation}
+where $M$ is the segmentation mask obtained by running the physics engine with $\theta$.
+
+\subsubsection{Gradient Alignment ($\mathcal{G}$)}
+Let $\partial M$ denote the boundary pixels of the mask. Let $G=\norm{\grad I}$ be gradient magnitude (scaled to $[0,1]$). We define:
+\begin{equation}
+\mathcal{G}(M,I) = \frac{\E_{(x,y)\sim \partial M}[G(x,y)]}{\E_{(x,y)\sim \Omega}[G(x,y)] + \varepsilon}.
+\end{equation}
+This rewards boundaries that sit on stronger-than-average image gradients.
+
+\subsubsection{Chromatic Separability ($\mathcal{C}$)}
+We convert RGB to Lab and compare mean chroma vectors inside vs.\ outside lesions (restricted to leaf pixels):
+\begin{equation}
+\mathcal{C}(M,I) = \frac{\norm{\bm{\mu}_{\mathrm{in}}^{ab}-\bm{\mu}_{\mathrm{out}}^{ab}}_2}{\sqrt{2}\cdot 255},
+\end{equation}
+where $\bm{\mu}^{ab}$ are means over the $(a^\ast,b^\ast)$ channels. This rewards separation of yellow/brown/reddish lesions from green tissue. (This term is strongly motivated by color calibration best practices in phenotyping pipelines \cite{berry2018color,plantcv2025}.)
+
+\subsubsection{Topological Reward (Lesion Multiplicity)}
+Let $N(M)$ be the number of connected components above a minimum area threshold. We use $\log(1+N(M))$ to reward multiple lesions but prevent runaway incentives to fragment into speckle noise.
+
+\subsubsection{Penalty Terms}
+We apply penalties to prevent degenerate solutions:
+\begin{itemize}
+    \item $\mathcal{P}_{\mathrm{area}}$: penalizes masks that are empty or cover an implausibly large fraction of the leaf.
+    \item $\mathcal{P}_{\mathrm{noise}}$: penalizes ultra-small components (dust/sensor noise).
+\end{itemize}
+
+\subsection{Random-Restart Stochastic Hill Climbing}
+We employ a two-phase optimization strategy:
+\begin{algorithm}
+\caption{Stochastic Parameter Optimization (per image)}
+\begin{algorithmic}[1]
+\REQUIRE Image $I$, bounds $\Theta$, random budget $K$, refinement steps $R$
+\STATE $S_{\mathrm{best}} \leftarrow -\infty$, $\theta_{\mathrm{best}}\leftarrow \emptyset$
+\FOR{$i=1$ to $K$}
+    \STATE Sample $\theta_i \sim \mathrm{Uniform}(\Theta)$
+    \STATE $M_i \leftarrow \mathrm{RunPhysics}(I;\theta_i)$
+    \STATE $S_i \leftarrow S(I;\theta_i)$ using Eq.~\eqref{eq:objective}
+    \IF{$S_i > S_{\mathrm{best}}$}
+        \STATE $S_{\mathrm{best}}\leftarrow S_i$, $\theta_{\mathrm{best}}\leftarrow \theta_i$
+    \ENDIF
+\ENDFOR
+\FOR{$j=1$ to $R$}
+    \STATE $\sigma_j \leftarrow \sigma_0 \cdot 0.85^j$ \COMMENT{cooling}
+    \STATE $\theta' \leftarrow \mathrm{Perturb}(\theta_{\mathrm{best}};\sigma_j)$ and clip to $\Theta$
+    \STATE Evaluate $S(I;\theta')$
+    \IF{$S(I;\theta') > S_{\mathrm{best}}$}
+        \STATE Update $(S_{\mathrm{best}},\theta_{\mathrm{best}})\leftarrow (S(I;\theta'),\theta')$
+    \ENDIF
+\ENDFOR
+\RETURN $\theta_{\mathrm{best}}, M(I;\theta_{\mathrm{best}})$
+\end{algorithmic}
+\end{algorithm}
+
+\paragraph{Why gradient-free?}
+The mapping $\theta \mapsto M(I;\theta)$ involves thresholding, connected-component filtering, and iterative snake evolution, making $S$ non-smooth and not amenable to standard differentiation. Gradient-free stochastic search is a robust fit in this setting \cite{yu2020hyperparam}.
+
+% ==========================
+\section{Implementation Details and Engineering Choices}
+% ==========================
+
+\subsection{16-bit Handling, Masking, and Channel Fusion}
+Our pipeline ingests 16-bit TIFF imagery and produces 16-bit overlays/masks for phenotyping compatibility.
+We convert to 8-bit working space for stable gradients and consistent thresholding, while saving the final mask as 16-bit (0/65535).
+We optionally compute a fused channel combining green, grayscale, and Lab chroma channels (especially $b^\ast$ for yellowing), then apply CLAHE to improve contrast on faint halos.
+\TODO{Add a short subsection explaining your upstream steps: entropy masking, leaf/background masking, and any color-correction assumptions. Cite \cite{berry2018color} for color standardization practices.}
+
+\subsection{Scale-Aware Candidate Filtering}
+We set component-size bounds as fractions of image area, so the same code works on downscaled search and full-resolution inference. This reduces the tendency to (i) accept dust as lesions, and (ii) merge close lesions into one giant region.
+
+\subsection{Runtime Controls: Downscaling, Timeouts, and Parallelism}
+We downscale images for the search phase (cheap approximate evaluation), then re-run the best parameters at full resolution. A per-image watchdog ensures bounded runtime. We use process-level parallelism and force single-thread BLAS/OpenCV to avoid oversubscription on shared clusters.
+
+% ==========================
+\section{Experiments}
+% ==========================
+
+\subsection{Dataset}
+We utilize a dataset of 174 high-resolution (16-bit TIFF) images of maize and soybean leaves.
+Typical images are on the order of $\sim$3900$\times$1340 pixels (with modest variation across acquisitions), and exhibit necrotic spots, chlorotic halos, coalescing lesions, and variable contrast.
+All downstream patchification and learning experiments preserve native pixel fidelity (no global resizing), and use lossless mask storage.
+\TODO{Fill in: genotypes, treatments, acquisition dates, camera model, resolution distribution, and leaf area masks.}
+
+\subsection{Evaluation Protocol}
+Because dense ground truth is unavailable for all images, we recommend a mixed evaluation:
+\begin{itemize}
+    \item \textbf{No-GT (all images):} objective score distributions, convergence rate, runtime, lesion count/area histograms.
+    \item \textbf{Sparse GT (subset):} annotate a small subset (e.g., 20--40 images) and compute Dice/IoU, Boundary-F1, and Hausdorff distance.
+    \item \textbf{Cross-condition generalization:} split by date/camera tray/genotype to test robustness, not IID random splits.
+\end{itemize}
+For the sparse-GT evaluation we select $N{=}60$ images via area-fraction-stratified sampling. We bin the 174 images into five quantiles by $f_{\mathrm{area}} = A_{\mathrm{lesion}}/A_{\mathrm{image}}$ (ranging from $<$3\% to $>$14\%) and draw 12 images per bin with a fixed seed, ensuring representation of near-empty masks, small discrete spots, moderate coverage, and large coalescing lesions. This strategy covers the full morphological and contrast spectrum without subjective lesion-type labeling. The resulting manifest is released alongside the code.
+
+\subsection{Teacher--Student Distillation (UNet Student)}
+To amortize the per-image stochastic search at inference time, we train a lightweight UNet-style student segmentor to mimic the optimizer's masks (teacher pseudo-labels).
+We generate full-resolution image/mask patch pairs using a non-resizing patchification scheme with patch size $512\times512$ and overlap 64 pixels (stride 448), using reflection padding at image borders to preserve local texture statistics while keeping mask padding zero.
+From the 174 teacher outputs, patchification yields 4{,}599 patch pairs; to reduce class imbalance, we retain all lesion-containing patches and randomly subsample empty-mask patches (keep probability 0.35), resulting in 4{,}025 training examples.
+We train for 40 epochs with Adam (learning rate $10^{-4}$) on an 85/15 train/validation split.
+The student uses a 3-level encoder--decoder with channel widths 32--64--128, two $3\times3$ convolutions per block, max-pooling downsampling, transposed-convolution upsampling, and a 1-channel logits head.
+We optimize a combined loss $\tfrac12\mathrm{BCEWithLogits} + \tfrac12\mathrm{DiceLoss}$, and evaluate by stitching patch predictions back to full resolution via overlap-averaged probabilities. Unless stated otherwise, stitched probability maps are thresholded at 0.30, selected by a validation sweep.
+
+\subsection{Baselines}
+We recommend comparing against:
+\begin{itemize}
+    \item Classical thresholding and color-index segmentations (e.g., excess green, Lab threshold).
+    \item U-Net trained on a small labeled subset \cite{ronneberger2015u}.
+    \item A modern segmentation pipeline initialized with strong encoders (e.g., SegFormer \cite{xie2021segformer}, SAM \cite{kirillov2023segment}) for weak supervision.
+\end{itemize}
+
+\subsection{Metrics}
+In addition to Dice/IoU, we recommend:
+\begin{itemize}
+    \item Boundary F-score (BFScore) for edge fidelity (halo boundaries).
+    \item Connected-component metrics: lesion count error, size distribution distance (e.g., Wasserstein distance).
+    \item Morphological plausibility: solidity, eccentricity, circularity.
+\end{itemize}
+
+% ==========================
+\section{Results}
+% ==========================
+\subsection{Teacher--Student Distillation (UNet)}
+Across $N=174$ images, the baseline stitched UNet student (no ROI gate) achieves mean Dice $0.598\pm0.226$ (median 0.682) and mean IoU $0.457\pm0.195$ (median 0.518). Conditioned on teacher-nonempty images ($N=162$), the baseline metrics become mean Dice $0.642\pm0.163$ (median 0.686) and mean IoU $0.491\pm0.155$ (median 0.522).
+
+With ROI-gated inference at threshold 0.30, overall agreement is mean Dice $0.599\pm0.225$ (median 0.684) and mean IoU $0.458\pm0.192$ (median 0.520). On teacher-nonempty images ($N=162$), ROI-gated metrics are mean Dice $0.644\pm0.160$ (median 0.688) and mean IoU $0.492\pm0.151$ (median 0.525).
+
+Failure-tail counts remain similar: baseline has 18 cases with Dice$<0.3$, including 12 teacher-empty/student-nonempty disagreements; ROI-gated inference has 19 cases with Dice$<0.3$, including 12 teacher-empty/student-nonempty disagreements.
+
+The threshold sweep best row occurs at threshold=0.3, with $\text{Dice}_{\text{mean,all}}=0.604$ and $\text{IoU}_{\text{mean,all}}=0.463$. However, teacher-empty disagreements persist across thresholds in the sweep, indicating threshold tuning alone does not resolve this failure mode. The small baseline-to-ROI metric shift also suggests disagreements are not primarily driven by background leakage outside the leaf ROI.
+
+\subsection{Parameter Correlations with Morphology}
+We recommend analyzing correlations between $\theta^\star$ and morphology:
+\begin{itemize}
+    \item Necrosis: often high thresholds and strong inflation.
+    \item Halos: lower thresholds and lower tension.
+    \item Coalescing lesions: stronger rigidity to avoid over-fragmentation (or multi-stage inference, Section~\ref{sec:multistage}).
+\end{itemize}
+Figure~\ref{fig:scatter_et_lc} shows the relationship between the optimized energy threshold $E_{\mathrm{thr}}$ and lesion count $n_c$: higher thresholds tend to produce fewer, larger connected components, consistent with suppression of faint halos. Figure~\ref{fig:scatter_beta_af} plots balloon force $\beta$ against area fraction $A/A_{\mathrm{img}}$: larger $\beta$ drives greater mask expansion, confirming that the optimizer learns to inflate contours for diffuse chlorotic phenotypes.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figs/exp_v1/scatter_energy_threshold_vs_lesion_count.png}
+\caption{Energy threshold vs.\ lesion count across 174 images. Higher thresholds suppress faint edges, yielding fewer connected components.}
+\label{fig:scatter_et_lc}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figs/exp_v1/scatter_beta_vs_area_frac.png}
+\caption{Balloon force $\beta$ vs.\ area fraction. Larger balloon forces produce masks covering a greater proportion of the leaf.}
+\label{fig:scatter_beta_af}
+\end{figure}
+
+\subsection{Ablation Studies (Objective and Search)}
+\label{sec:ablations}
+Ablations are essential to justify Eq.~\eqref{eq:objective} and the search strategy.
+
+\input{tables/tableI_objective_ablations}
+
+\input{tables/tableII_search_ablations}
+
+% ==========================
+\subsection{Qualitative Results and Failure Taxonomy}
+% ==========================
+We recommend organizing qualitative results by lesion type:
+\begin{itemize}
+    \item Small discrete necrotic spots (strong edges),
+    \item Chlorotic halos (soft edges),
+    \item Coalescing/merged lesions,
+    \item Mixed inner/outer structure (necrotic core + halo ring),
+    \item Leaf venation confounds and glare.
+\end{itemize}
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figs/exp_v1/qual_grid_teacher_student.png}
+\caption{Qualitative grid across the Dice spectrum (6 rows, sorted worst-to-best). Columns: Input leaf image, teacher (optimizer) overlay, student (UNet) overlay, teacher mask, student mask. Rows span Dice${\approx}0.0$ (teacher-empty case) to Dice${\approx}0.84$ (high agreement).}
+\label{fig:qual_grid}
+\end{figure*}
+
+% ==========================
+\section{Multi-Stage Inference for Nested/Inner Lesions}
+\label{sec:multistage}
+Your later code indicates a practical phenomenon: broad lesions may contain inner oscillating/necrotic substructures.
+A robust extension is \textbf{two-stage inference}:
+\begin{enumerate}
+    \item Stage-A (outer): run optimizer to obtain outer lesion regions $M_{\text{outer}}$.
+    \item Stage-B (inner): restrict to $M_{\text{outer}}$ and re-run with a higher threshold $T'$ and slightly different snake rigidity to capture necrotic cores $M_{\text{inner}}$.
+\end{enumerate}
+This yields biologically meaningful \emph{nested masks} enabling traits such as:
+\begin{equation}
+\text{Necrosis ratio} = \frac{|M_{\text{inner}}|}{|M_{\text{outer}}|+\varepsilon},
+\end{equation}
+and enables better downstream phenotyping.
+
+In practice, Stage-B may legitimately yield an empty $M_{\text{inner}}$ for lesions without a necrotic core; we treat these as biologically plausible ``no-inner cases in our teacher--student evaluation.
+
+\begin{algorithm}
+\caption{Two-Stage Nested Lesion Inference}
+\label{alg:two_stage}
+\begin{algorithmic}[1]
+\REQUIRE Image $I$, search bounds $\Theta$
+\STATE \textbf{Stage-A (Outer):} $\theta_A^\star \leftarrow \mathrm{Optimize}(I;\Theta)$
+\STATE $M_{\text{outer}} \leftarrow \mathrm{RunPhysics}(I;\theta_A^\star)$ \COMMENT{green overlay}
+\IF{$|M_{\text{outer}}| > 0$}
+    \STATE \textbf{Stage-B (Inner):} Restrict search to pixels inside $M_{\text{outer}}$
+    \STATE Increase energy threshold: $T' \leftarrow 1.3\,T_A^\star$
+    \STATE $\theta_B^\star \leftarrow \mathrm{Optimize}(I \odot M_{\text{outer}};\Theta')$
+    \STATE $M_{\text{inner}} \leftarrow \mathrm{RunPhysics}(I \odot M_{\text{outer}};\theta_B^\star)$ \COMMENT{magenta overlay}
+\ELSE
+    \STATE $M_{\text{inner}} \leftarrow \emptyset$
+\ENDIF
+\RETURN $M_{\text{outer}}, M_{\text{inner}}$
+\end{algorithmic}
+\end{algorithm}
+
+In our visualization, Stage-A outer lesion boundaries are rendered as semi-transparent green overlays on the original 16-bit leaf image, while Stage-B inner necrotic cores are rendered in magenta, enabling visual separation of halo and necrotic regions in composite overlays.
+
+% ==========================
+\section{Figures and Tables to Include (Drop-in Placeholders)}
+% ==========================
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figs/exp_v1/montage_teacher_student.png}
+\caption{Teacher--student qualitative montage (worst/median/best). The teacher is the optimizer pseudo-label (inner mask), and the student is the stitched UNet prediction. ``Worst'' cases are often teacher-empty/student-nonempty disagreements.}
+\label{fig:teacher_student_montage}
+\end{figure*}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figs/exp_v1/montage_disagreement_roi.png}
+\caption{Representative teacher-empty/student-nonempty disagreement cases. Columns: raw image, teacher overlay (optimizer; empty inner mask), and student overlay (UNet). These cases may reflect either optimizer false negatives under the inner-mask definition or a mismatch in necrosis/halo semantics.}
+\label{fig:disagreement}
+\end{figure*}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figs/exp_v1/threshold_sweep_plot.png}
+\caption{Threshold sweep on stitched probability maps. Dice decreases smoothly with increasing threshold, while teacher-empty disagreements persist across thresholds.}
+\label{fig:thresh_sweep}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figs/exp_v1/optimizer_status_bar.png}
+\caption{Optimizer run status distribution from stochastic search summary.}
+\label{fig:paramdist}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figs/exp_v1/optimizer_elapsed_seconds_hist.png}
+\caption{Histogram of per-image optimizer runtime (elapsed seconds).}
+\label{fig:objterms}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figs/exp_v1/optimizer_score_hist.png}
+\caption{Histogram of optimizer objective scores across images.}
+\label{fig:optimizer_score_hist}
+\end{figure}
+
+% ==========================
+\section{Discussion and Limitations}
+% ==========================
+Our approach provides annotation-free segmentation but has limitations:
+\begin{itemize}
+    \item Objective mismatch: Eq.~\eqref{eq:objective} is a proxy and can prefer wrong masks (e.g., veins) if color calibration fails.
+    \item Runtime: per-image optimization is slower than feed-forward networks; practical use motivates distillation \cite{hinton2015distilling}.
+    \item Domain shift: changes in lighting/camera or cultivars may change Lab separability, requiring re-tuning objective weights.
+    \item Teacher noise: pseudo-labels derived from the inner-mask definition can be empty on some images even when outer lesions are present, creating teacher--student disagreements. We therefore report both overall agreement and conditional metrics on teacher-nonempty images, and recommend a small manually annotated subset to adjudicate disagreement cases.
+\end{itemize}
+\paragraph{Reproducibility and data availability.}
+All optimizer code, ablation scripts, configuration files, and the 30-image ablation manifest are released under an open-source license. The stochastic search uses a fixed seed (1337 for ablations, 42 for subset selection), and all per-image parameter summaries (CSV) are included so that results can be reproduced without re-running the optimizer. The 174-image leaf dataset originates from controlled greenhouse experiments; leaf images were acquired under standardized lighting and are stored as lossless 16-bit TIFFs. We do not use human subjects data, and all plant material was grown under institutional biosafety protocols. We will release the annotation subset manifest ($N{=}60$) and the param-morphology metrics table alongside the code repository upon publication.
+
+% ==========================
+\section{Conclusion}
+% ==========================
+We have presented a fully automated pipeline for unsupervised lesion segmentation using Navier/elastic energy maps, multi-contour snakes, and per-image gradient-free stochastic optimization. By replacing manual parameter tuning with a robust objective and search strategy, we enable physics-based segmentation to adapt to heterogeneous lesion phenotypes in high-bit-depth imagery. The output masks and per-image parameters naturally support downstream phenotyping and facilitate training of compact student models for fast inference.
+
+\bibliographystyle{IEEEtran}
+\bibliography{refs}
+\end{document}

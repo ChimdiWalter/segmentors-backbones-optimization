@@ -1,0 +1,6 @@
+Next steps for >400 leaves:
+1) expand parent-leaf pool and preserve leakage-safe split strategy.
+2) run full patch-level oracle batches with checkpointed resume.
+3) train patch uncertainty ensemble with larger domain diversity.
+4) calibrate patch-level routing and aggregation thresholds on expanded validation.
+5) re-run geometry and robustness analyses with statistical confidence intervals.

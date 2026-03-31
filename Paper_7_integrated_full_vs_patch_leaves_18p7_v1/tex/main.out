@@ -1,0 +1,56 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Related Work}{}% 2
+\BOOKMARK [1][-]{section.3}{Problem Formulation}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{Physics-Based Lesion Model}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{Whole-Leaf Branch}{section.3}% 5
+\BOOKMARK [2][-]{subsection.3.3}{Patchwise Branch}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.4}{Dual Oracle Targets}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.5}{Error Decomposition}{section.3}% 8
+\BOOKMARK [2][-]{subsection.3.6}{Selective Semi-Amortized Inference}{section.3}% 9
+\BOOKMARK [1][-]{section.4}{Integrated Method}{}% 10
+\BOOKMARK [2][-]{subsection.4.1}{Feature Extraction}{section.4}% 11
+\BOOKMARK [2][-]{subsection.4.2}{Regression Heads}{section.4}% 12
+\BOOKMARK [2][-]{subsection.4.3}{Aggregation Operators}{section.4}% 13
+\BOOKMARK [2][-]{subsection.4.4}{Refinement Budgets}{section.4}% 14
+\BOOKMARK [2][-]{subsection.4.5}{Evaluation Metrics}{section.4}% 15
+\BOOKMARK [1][-]{section.5}{Experimental Setup}{}% 16
+\BOOKMARK [2][-]{subsection.5.1}{Data}{section.5}% 17
+\BOOKMARK [2][-]{subsection.5.2}{Authoritative Matched Split}{section.5}% 18
+\BOOKMARK [2][-]{subsection.5.3}{Patch Extraction Configurations}{section.5}% 19
+\BOOKMARK [2][-]{subsection.5.4}{Training Details}{section.5}% 20
+\BOOKMARK [2][-]{subsection.5.5}{Optimization and Refinement}{section.5}% 21
+\BOOKMARK [1][-]{section.6}{Results}{}% 22
+\BOOKMARK [2][-]{subsection.6.1}{Main Matched Comparison}{section.6}% 23
+\BOOKMARK [2][-]{subsection.6.2}{Oracle Gap Decomposition}{section.6}% 24
+\BOOKMARK [2][-]{subsection.6.3}{Direct Whole-Leaf vs. Patchwise Native-Resolution}{section.6}% 25
+\BOOKMARK [2][-]{subsection.6.4}{Selective Routing and Speedup}{section.6}% 26
+\BOOKMARK [2][-]{subsection.6.5}{Risk-Coverage and Calibration}{section.6}% 27
+\BOOKMARK [2][-]{subsection.6.6}{External-Domain Robustness}{section.6}% 28
+\BOOKMARK [2][-]{subsection.6.7}{Within-Leaf Heterogeneity}{section.6}% 29
+\BOOKMARK [1][-]{section.7}{Ablations}{}% 30
+\BOOKMARK [2][-]{subsection.7.1}{Patch Size and Stride}{section.7}% 31
+\BOOKMARK [2][-]{subsection.7.2}{Backbone Comparison}{section.7}% 32
+\BOOKMARK [2][-]{subsection.7.3}{Per-Parameter Difficulty}{section.7}% 33
+\BOOKMARK [2][-]{subsection.7.4}{Aggregation Method Comparison}{section.7}% 34
+\BOOKMARK [2][-]{subsection.7.5}{Refinement Budget Curves}{section.7}% 35
+\BOOKMARK [1][-]{section.8}{Geometry and Representation Analysis}{}% 36
+\BOOKMARK [1][-]{section.9}{Discussion}{}% 37
+\BOOKMARK [2][-]{subsection.9.1}{When Does Full-Leaf Suffice?}{section.9}% 38
+\BOOKMARK [2][-]{subsection.9.2}{When Does Patchwise Help?}{section.9}% 39
+\BOOKMARK [2][-]{subsection.9.3}{Why Aggregation Matters Less Than Expected}{section.9}% 40
+\BOOKMARK [2][-]{subsection.9.4}{The Oracle Gap as a Fundamental Limit}{section.9}% 41
+\BOOKMARK [2][-]{subsection.9.5}{What Heterogeneity Means Scientifically}{section.9}% 42
+\BOOKMARK [2][-]{subsection.9.6}{The Role of Dataset Scale}{section.9}% 43
+\BOOKMARK [1][-]{section.10}{Statistical Testing}{}% 44
+\BOOKMARK [1][-]{section.11}{Qualitative Analysis}{}% 45
+\BOOKMARK [1][-]{section.12}{Limitations}{}% 46
+\BOOKMARK [1][-]{section.13}{Conclusion}{}% 47
+\BOOKMARK [1][-]{appendix.A}{Detailed Split Statistics}{}% 48
+\BOOKMARK [1][-]{appendix.B}{Full Evaluation Tables}{}% 49
+\BOOKMARK [1][-]{appendix.C}{Aggregation Method Details}{}% 50
+\BOOKMARK [1][-]{appendix.D}{Routing Policy Details}{}% 51
+\BOOKMARK [1][-]{appendix.E}{Provenance and Reproducibility}{}% 52
+\BOOKMARK [1][-]{appendix.F}{Failure Taxonomy Details}{}% 53
+\BOOKMARK [1][-]{appendix.G}{Heterogeneity Details}{}% 54
+\BOOKMARK [1][-]{appendix.H}{Runtime Breakdown}{}% 55
+\BOOKMARK [1][-]{appendix.I}{Assumptions Log}{}% 56

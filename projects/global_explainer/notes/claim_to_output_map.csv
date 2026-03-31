@@ -1,0 +1,16 @@
+paper,claim,evidence_type,source_path,key_metric,verified
+P1,100% convergence on 174 images,optimizer summary,tables/optimizer_summary_stats.csv,174/174 OK,yes
+P1,Topology term contributes +11.12 points,ablation table,experiments/exp_v1/outputs/ablations_objective/,14.80 vs 3.68 median score,yes
+P1,Gradient alignment contributes +5.09 points,ablation table,experiments/exp_v1/outputs/ablations_objective/,14.80 vs 9.71,yes
+P1,Random search reaches 90% of final score,ablation table,experiments/exp_v1/outputs/ablations_search/,14.88 vs 14.95,yes
+P1,Score-tier-dependent landscape geometry,trace surfaces,experiments/exp_v1/outputs/objective_surface_traces_representative_fullbudget_plus/,visual + R-squared,yes
+P1,2 PCs capture 46.5% of variance,PCA analysis,experiments/exp_v1/outputs/parameter_shift_manifold_geometry/,explained variance ratio,yes
+P1,Centroid shift 1.616 std units,PCA analysis,experiments/exp_v1/outputs/optimization_manifold_and_solid3d_final/,standardized distance,yes
+P1,k-NN agreement 0.534 vs 0.33 random,classification test,experiments/exp_v1/outputs/parameter_shift_manifold_geometry/,accuracy ratio,yes
+P1,UNet Dice 0.598 mean,distillation metrics,tables/teacher_student_metrics.csv,mean Dice,yes
+P2,Patchwise nMAE 0.906 vs full-leaf 1.154,matched comparison,experiments/.../integrated_.../E1_matched_comparison.csv,nMAE + Wilcoxon p=0.003,yes
+P2,Oracle gap 0.327 nMAE,dual oracle,experiments/.../integrated_.../E3_oracle_gap_decomposition.csv,constant across aggregations,yes
+P2,Quality-favoring routing 0.556 nMAE at 74.34s,routing study,experiments/.../selective_.../tables/runtime_comparison.csv,policy (0.3 0.7),yes
+P2,4.67x speedup at 0.819 nMAE,routing study,experiments/.../selective_.../tables/runtime_comparison.csv,policy (0.6 0.9),yes
+P2,Calibration monotonic,calibration analysis,experiments/.../selective_.../tables/calibration.csv,5-bin monotonicity,yes
+P2,Cross-collection robustness on 18.7,OOD evaluation,experiments/.../selective_.../tables/ood_robustness.csv,comparable MAE,yes

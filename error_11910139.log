@@ -1,0 +1,16 @@
+usage: nv_optimize_robust_v3_gpu.py [-h] --input INPUT --output OUTPUT
+                                    [--mode {bestch,fused}]
+                                    [--budget-random BUDGET_RANDOM]
+                                    [--topk-refine TOPK_REFINE]
+                                    [--refine-steps REFINE_STEPS]
+                                    [--iters-coarse ITERS_COARSE]
+                                    [--snake-iters-coarse SNAKE_ITERS_COARSE]
+                                    [--iters-final ITERS_FINAL]
+                                    [--snake-iters-final SNAKE_ITERS_FINAL]
+                                    [--downscale DOWNSCALE] [--limit LIMIT]
+                                    [--workers WORKERS]
+                                    [--per-image-seconds PER_IMAGE_SECONDS]
+                                    [--log LOG] [--seed SEED]
+                                    [--device {cpu,cuda}]
+                                    [--gpu-batch GPU_BATCH]
+nv_optimize_robust_v3_gpu.py: error: unrecognized arguments: --sieve-topk 4

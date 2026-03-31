@@ -1,0 +1,718 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{natbib}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{tabularx}
+\graphicspath{{../figs_from_outputs/}}
+\hypersetup{colorlinks=true,linkcolor=blue!60!black,citecolor=green!40!black,urlcolor=blue!60!black}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\thetao}{\boldsymbol{\theta}^{\star}}
+\newcommand{\thetahat}{\hat{\boldsymbol{\theta}}}
+\newcommand{\nmae}{nMAE}
+
+\title{Learning an Optimizer-Derived Physics Parameterization for Lesion Phenotyping}
+\author{Submission-Ready Repository Synthesis}
+\date{March 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This paper isolates the manuscript line in this repository that asks whether an expensive PDE/active-contour lesion optimizer induces a parameter space that is structured enough to be learned, reused, and refined.
+The claim is intentionally narrower than ``learning the physics itself.''
+The teacher is a stochastic optimizer over a hand-designed score, so the target is an optimizer-derived parameterization of lesion morphology rather than a recovered governing law.
+Using the existing optimizer, manifold, solid-3D geometry, qualitative leaf montages, and semi-amortized refinement outputs, we show that the learned target is not arbitrary.
+Two principal components explain 46.5\% of the variance of full solution vectors and 43.0\% of the variance of local-minus-global displacement vectors.
+The global-to-local centroid shift has magnitude 1.616 standardized units, and a 7-nearest-neighbor probe on displacement vectors reaches 0.534 agreement against a 0.33 random baseline for three improvement groups.
+Operationally, semi-amortized refinement around the learned initialization contracts full-leaf \nmae{} from 1.154 for direct prediction to 0.399 with a medium budget at 28.88~s, versus 260.49~s for the full optimizer.
+Leaf-level objective surfaces, optimization traces, parameter histograms, and teacher--student visual montages all reinforce the same conclusion: the optimizer defines a stable coordinate system with coordinate-specific learnability limits.
+The honest interpretation is therefore that the repository supports learning a structured, optimizer-defined physics parameterization that is useful for fast initialization and controlled refinement, not a claim of recovering lesion biophysics from first principles.
+\end{abstract}
+
+\section{Introduction}
+Physics-inspired lesion phenotyping is attractive because it yields interpretable parameters, not just pixel labels.
+The difficulty is that interpretable outputs in this repository come from a costly stochastic search over a seven-parameter PDE/active-contour configuration.
+That search is scientifically interesting precisely because it is not trivial: per-leaf optimization is slow, non-convex, and sensitive to local lesion heterogeneity.
+The practical response has been amortization, and the repository now contains several manuscript lines built on that idea.
+The problem is that those lines answer different questions.
+If they are collapsed into one story, the result is a blurred paper that is weak on both scientific scope and deployment scope.
+
+This manuscript is the long-form paper for the \emph{physics-learning / parameterization} line.
+Its central question is not whether selective routing beats a runtime target and not whether patch aggregation is deployable.
+Its central question is whether the expensive optimizer induces a parameter space that is itself structured enough to be learned, interpreted, and refined.
+That requires a narrower and more honest framing.
+The learned model is not discovering a governing biological law.
+It is learning to emulate the coordinates preferred by a particular physics-inspired inference procedure.
+The scientific value is then in characterizing those coordinates: are they organized, which ones are stable, which ones are teacher-sensitive, and how much real optimization can be saved once a learned predictor places a leaf near a useful basin?
+
+The evidence base for this question already existed in the repository before this manuscript build.
+The optimizer/manifold strengthened outputs provide PCA, t-SNE, convex hulls, covariance ellipsoids, raw three-dimensional parameter plots, representative objective surfaces, convergence traces, and qualitative teacher--student leaf panels.
+What was missing was a clean, standalone synthesis that separated this line from the later full-vs-patch and selective-routing lines.
+This paper provides that separation.
+
+\subsection{Relationship to the Existing Manuscript Lines}
+The repository already contains three distinct manuscript lines that must not be collapsed.
+Table~\ref{tab:lineage} states the relationship explicitly.
+The integrated full-vs-patch manuscript and the Codex-only full-vs-patch manuscript both overlap with this paper only through shared substrate such as the refinement-budget table and parameter-difficulty table.
+The selective semi-amortized runtime-quality manuscript overlaps only through language about amortization and refinement.
+Neither is allowed to become the narrative center here.
+Paper~A is therefore anchored primarily in the optimizer/manifold outputs and uses later manuscripts only where they contribute audited, non-duplicative support for the parameterization claim.
+
+\begin{table}[H]
+\centering
+\caption{Explicit comparison of the three existing manuscript lines and their assignment relative to this paper.}
+\label{tab:lineage}
+\small
+\begin{tabular}{p{0.22\linewidth}p{0.22\linewidth}p{0.23\linewidth}p{0.23\linewidth}}
+\toprule
+Existing line / PDF & Core question & Overlap with Paper~A & What is assigned to Paper~A here \\
+\midrule
+\texttt{integrated\_full\_vs\_patch\_manuscript.pdf} & Full-leaf versus patchwise inference under shared evaluation & Shared refinement-budget and per-parameter comparison tables only & Reuse audited refinement/runtime and parameter-difficulty evidence; exclude routing and deployment narrative \\
+\texttt{main\_integrated\_full\_vs\_patch\_codex\_v1.pdf} & Codex-only integrated replication of the same full-vs-patch line & Corroborative shadow line, not a separate final story & Use as consistency check only; no headline figure family copied into main text \\
+\texttt{main\_speciesref\_fixed-1-1.pdf} & Selective semi-amortized runtime-quality tradeoff, calibration, routing & Shared vocabulary around amortization and refinement & Use selective-study ablations only where they clarify learnability limits; exclude coverage-risk story \\
+Optimizer/manifold strengthened outputs & Geometry and optimization behavior of the teacher target & Primary source line for this paper & PCA, 3D geometry, trace plots, objective surfaces, leaf montages, parameter distributions \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Contributions.}
+\begin{enumerate}[leftmargin=1.5em,itemsep=2pt]
+\item We formalize the target as an \emph{optimizer-derived physics parameterization} rather than an identified physical law, making the scientific claim precise.
+\item We consolidate the repository's geometry analyses into a coherent argument for structured learnability: low-dimensional organization, systematic global-to-local displacement, and above-chance neighborhood predictability of local correction directions.
+\item We show that semi-amortized refinement around the learned initialization contracts error sharply and can improve morphology-oriented summary metrics without rerunning the full optimizer.
+\item We document which coordinates are comparatively stable, which are sensitive to local heterogeneity or teacher conventions, and how those differences should constrain interpretation.
+\item We provide a submission-ready long-form manuscript that remains distinct from the runtime-quality paper while staying fully anchored to existing outputs, figures, tables, and leaf images in the repository.
+\end{enumerate}
+
+\section{Related Work}
+\paragraph{Active contours, PDEs, and physics-inspired imaging.}
+Active contours and related deformable models remain a standard way to connect image evidence with structured boundary inference \citep{A_kass1988,A_chan2001,A_xu1998}.
+Fluid-inspired and PDE-based image models further motivate parameterized dynamics and energy landscapes that trade local fidelity against global regularization \citep{A_navier1823,A_bertalmio2000,A_raissi2019}.
+The repository's lesion solver belongs to this family: a hand-designed score, thresholding stage, and contour evolution together define the latent parameter target.
+
+\paragraph{Amortized and semi-amortized inference.}
+Amortized inference learns a direct map from observations to latent parameters or posterior summaries, replacing repeated optimization with prediction \citep{A_cranmer2020,A_radev2020,A_amos2023}.
+Semi-amortized inference retains per-instance optimization, but starts from the amortized prediction and spends additional compute only where it is justified \citep{A_kim2018,A_marino2018}.
+This paper uses that lens in a scientific imaging setting where the ``teacher'' is not a probabilistic posterior but an expensive black-box optimizer over a physics-inspired score.
+
+\paragraph{Representation learning for scientific images.}
+Frozen image encoders such as ResNet and DINOv2 provide transferable representations that can stabilize parameter prediction when direct labels are scarce \citep{A_he2016,A_oquab2024}.
+Distillation and teacher--student framing are relevant here because the learned predictor is trained against optimizer outputs rather than manual masks \citep{A_hinton2015}.
+The paper therefore treats the solver as a teacher of coordinates, not as a differentiable layer.
+
+\paragraph{Plant phenotyping context.}
+Plant phenotyping pipelines need interpretable, reproducible descriptors of disease severity and morphology, not only segmentation masks \citep{A_mahlein2016,A_mutka2015,A_ubbens2017}.
+That requirement makes parameterization questions scientifically relevant.
+If the optimizer's seven-dimensional coordinates are stable enough to reuse across leaves, they may function as compact phenotype descriptors even when the solver itself is too slow for routine screening.
+
+\section{Problem Setup and Honest Scope}
+Let $x$ denote a preprocessed leaf image and let $\boldsymbol{\theta}\in\Theta\subset\R^7$ collect the solver parameters
+\[
+\boldsymbol{\theta}=(\mu,\lambda,d,\alpha,\beta,\gamma,E_{\mathrm{thr}}).
+\]
+The repository's teacher is a stochastic optimizer over a hand-designed score $S(x,\boldsymbol{\theta})$.
+For each leaf,
+\begin{equation}
+\thetao(x)=\arg\max_{\boldsymbol{\theta}\in\Theta} S(x,\boldsymbol{\theta}).
+\label{eq:oracle}
+\end{equation}
+A learned predictor then produces $\thetahat_0=f_\phi(x)$, and semi-amortized refinement applies a budget-limited local search
+\begin{equation}
+\thetahat_{b+1}=\mathcal{R}(x,\thetahat_b;B),
+\label{eq:refine}
+\end{equation}
+where $B$ denotes the available search budget.
+
+The crucial interpretive decision is to treat Eq.~\eqref{eq:oracle} as an optimizer-defined target map, not as direct biological truth.
+The score depends on preprocessing, contour extraction, search limits, and implementation details.
+A network that predicts $\thetao(x)$ is therefore learning the coordinate system preferred by this inference pipeline.
+That still matters scientifically because the coordinates are interpretable and can be refined, but it is not equivalent to identifying the biophysics of lesion development from first principles.
+
+\subsection{What Counts as Learnability in This Paper}
+A parameterization is considered learnable here if three conditions hold simultaneously.
+First, image features must predict optimizer targets better than trivial or visibly mis-specified models.
+Second, the target cloud must show geometry that is more organized than random scatter.
+Third, the learned prediction must land close enough to useful basins that short real optimization contracts error predictably.
+This definition is stricter than ``a regressor can fit a table'' and weaker than ``the model recovers the governing physics.''
+That middle position is exactly what the repository supports.
+
+\subsection{Primary Data and Provenance}
+The primary image collections in this repository are \texttt{leaves} and \texttt{18.7}, and both collections contain leaf images.
+For Paper~A, however, the core evidentiary base is the optimizer/manifold line built mainly on the \texttt{leaves} collection.
+The geometry analyses draw on 150 audited local patch comparisons together with full-leaf solutions, and the shared refinement-budget table uses a 35-leaf full-leaf test split.
+The second collection, \texttt{18.7}, remains relevant repository context but is not the driver of the manifold claims in this paper.
+No heavy new optimization or training runs were launched for this manuscript build.
+All main figures and tables are reused from existing repository outputs, with only lightweight gapfill summaries already present in \texttt{dual\_paper\_build\_codex/gapfill}.
+
+\section{Experimental Evidence Families}
+Paper~A relies on five evidence families.
+First, PCA, t-SNE, hull, ellipsoid, and raw three-dimensional parameter plots characterize the shape of the solution cloud.
+Second, representative objective surfaces and best-score-so-far traces characterize the search landscape itself.
+Third, parameter histograms, optimizer status summaries, and scatter plots characterize the empirical distribution learned by the teacher.
+Fourth, refinement-budget and morphology-fidelity tables quantify how much value is recovered by spending extra compute around the learned initialization.
+Fifth, qualitative leaf montages show where teacher and amortized predictions visibly agree or disagree.
+Taken together, these assets support a full paper because they answer complementary questions about structure, optimization, and biological interpretation.
+
+\section{Results}
+\subsection{The Optimizer-Induced Solution Cloud Has Coherent Geometry}
+Figure~\ref{fig:geom_main} shows the main geometry evidence.
+The solution cloud is not uniformly scattered throughout the seven-dimensional box.
+Two principal components explain 46.5\% of the variance of full solution vectors, while two components explain 43.0\% of the variance of local-minus-global displacement vectors.
+That alone does not prove a low-dimensional manifold in the strict mathematical sense, but it does show that the dominant variation is concentrated rather than arbitrary.
+The centroid shift from global to local solutions is 1.616 standardized units, which is far larger than numerical jitter and therefore indicates systematic displacement.
+
+The neighborhood probe is especially useful because it tests whether nearby displacements correspond to similar optimization outcomes.
+A 7-nearest-neighbor classifier on the displacement cloud reaches 0.534 agreement for the three improvement groups (local better, neutral, local worse), versus a 0.33 random baseline.
+That value is far from perfect separability, which is expected in a noisy optimization problem.
+It is still strong enough to reject the idea that local corrections behave like random perturbations with no reusable organization.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig1_manifold_pca2d_global_local_dD.png}
+    \caption{PCA projection of global and local solution clouds.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig2_solid3d_convex_hull_global_local.png}
+    \caption{Convex-hull overlap and displacement in three dimensions.}
+\end{subfigure}
+
+\vspace{0.5em}
+\begin{subfigure}[t]{0.58\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig3_gapfill_geometry_summary_compact.png}
+    \caption{Compact audited summary of the geometry metrics.}
+\end{subfigure}
+\caption{Primary geometry evidence for the optimizer-derived parameterization. Global and local solutions occupy related but displaced regions with substantial low-dimensional structure.}
+\label{fig:geom_main}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Core geometry metrics for the optimizer-derived parameterization.}
+\label{tab:geometry}
+\small
+\begin{tabular}{p{0.46\linewidth}p{0.16\linewidth}p{0.26\linewidth}}
+\toprule
+Quantity & Value & Interpretation \\
+\midrule
+Variance explained by first two PCs of full vectors & 46.5\% & Moderate low-dimensional organization \\
+Variance explained by first two PCs of displacement vectors & 43.0\% & Local corrections also lie on structured directions \\
+Centroid shift magnitude, global to local & 1.616 std & Systematic displacement, not optimization noise \\
+7-NN agreement on local-improvement groups & 0.534 & Above the 0.33 random baseline \\
+Positive-$\Delta D$ patches & 73 & Local re-optimization often helps \\
+Negative-$\Delta D$ patches & 48 & A substantial failure region remains \\
+Neutral patches & 29 & Small indifferent subset \\
+Dominant displacement coordinate & \texttt{energy\_threshold} & Largest mean shift between global and local solutions \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Three-Dimensional Structure and Groupwise Shifts Clarify What Moves Locally}
+The main PCA plot is only the first pass.
+Figure~\ref{fig:geom_secondary} shows that the solution cloud remains interpretable when viewed through additional diagnostics.
+Neighbor-consistency analysis indicates that nearby points in the embedding correspond to meaningfully related teacher targets rather than arbitrary projection artifacts.
+The mean-delta plot further shows that local re-optimization is not isotropic: some parameters hardly move while others shift consistently.
+The PCA-3D and covariance-ellipsoid views confirm that global and local clouds overlap substantially but occupy offset volumes.
+Finally, the positive-versus-negative displacement surface plot makes clear that useful local corrections and harmful local corrections are not drawn from identical regions.
+This is exactly the kind of structure a learned initializer can exploit.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig5_manifold_embedding_consistency.png}
+    \caption{Embedding-neighbor consistency.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig6_manifold_mean_delta_parameters.png}
+    \caption{Mean global-to-local displacement by parameter.}
+\end{subfigure}
+
+\vspace{0.5em}
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig7_manifold_pca3d_global_local_dD.png}
+    \caption{PCA-3D view of the structured displacement.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig8_solid3d_covariance_ellipsoids.png}
+    \caption{Covariance ellipsoids for global and local solutions.}
+\end{subfigure}
+\caption{Secondary geometry views. Together they show that local correction directions are structured, anisotropic, and only partially overlapping with the global cloud.}
+\label{fig:geom_secondary}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig9_solid3d_pos_neg_dD.png}
+    \caption{Positive versus negative local-improvement regions.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig10_solid3d_raw_threshold_beta_mu.png}
+    \caption{Raw threshold--$\beta$--$\mu$ structure in solution space.}
+\end{subfigure}
+\caption{Raw three-dimensional views reinforce that the teacher target is organized around a few recurring axes rather than filling parameter space uniformly.}
+\label{fig:geom_raw}
+\end{figure}
+
+\subsection{Coordinate-Specific Difficulty Reveals the Boundary of the Learnability Claim}
+The repository's per-parameter comparison makes the scientific boundary of the paper much sharper.
+Not all coordinates are equally predictable, and that matters for interpretation.
+Table~\ref{tab:perparam} shows that patch-aware or local information helps for $\mu$, $\lambda$, $\alpha$, $\beta$, and $\gamma$, while full-leaf prediction is better for diffusion rate and substantially better for \texttt{energy\_threshold}.
+This means that learnability is not an all-or-nothing property of the vector.
+Some coordinates behave like local morphology descriptors; others behave more like global control variables or teacher-specific calibration terms.
+
+The special role of \texttt{energy\_threshold} appears repeatedly throughout the evidence.
+It is the largest mean displacement coordinate, it is hard to align across global and local settings, and it correlates with lesion-count statistics in the strengthened optimization plots.
+That makes it a scientifically important parameter, but also the coordinate on which overclaiming would be most misleading.
+Strong performance on more geometrically stable coordinates does not automatically imply stable physical meaning for \texttt{energy\_threshold}.
+
+\begin{table}[H]
+\centering
+\caption{Per-parameter difficulty for full-leaf (FL) and patch-aware (PA) prediction. Lower \nmae{} is better.}
+\label{tab:perparam}
+\small
+\begin{tabular}{lccc}
+\toprule
+Parameter & FL \nmae{} & PA \nmae{} & Better branch \\
+\midrule
+$\mu$ & 0.451 & 0.255 & Patch-aware \\
+$\lambda$ & 1.567 & 1.168 & Patch-aware \\
+diffusion\_rate & 0.907 & 0.942 & Full-leaf \\
+$\alpha$ & 3.234 & 2.687 & Patch-aware \\
+$\beta$ & 1.043 & 0.391 & Patch-aware \\
+$\gamma$ & 0.433 & 0.219 & Patch-aware \\
+energy\_threshold & 0.444 & 0.787 & Full-leaf \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Figure~\ref{fig:correlation} provides two concrete views of how teacher coordinates interact with leaf-level morphology.
+The $\beta$--area-fraction scatter shows that contour rigidity is not independent of visible lesion extent, while the energy-threshold-versus-lesion-count scatter shows that thresholding behavior is tied to the effective number of extracted lesion components.
+The threshold sweep plot further illustrates that these parameters affect the teacher's behavior through a structured response surface rather than through arbitrary noise.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig26_scatter_beta_vs_area_frac.png}
+    \caption{$\beta$ versus lesion area fraction.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig27_scatter_energy_threshold_vs_lesion_count.png}
+    \caption{Energy threshold versus lesion count.}
+\end{subfigure}
+
+\vspace{0.5em}
+\begin{subfigure}[t]{0.58\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig29_threshold_sweep_plot.png}
+    \caption{Threshold sweep through the teacher's operating range.}
+\end{subfigure}
+\caption{Teacher-target correlations with morphology-oriented summary quantities. These are descriptive plots rather than causal proofs, but they show that the learned parameterization is anchored to observable leaf structure.}
+\label{fig:correlation}
+\end{figure}
+
+\subsection{Semi-Amortized Refinement Converts Structured Initialization Into Practical Value}
+The manifold argument matters only if it produces operational value.
+Figure~\ref{fig:refine} and Table~\ref{tab:refine} show that it does.
+Direct full-leaf prediction starts at \nmae{} 1.154 with runtime 2.98~s.
+A tiny refinement budget already contracts error to 0.434 at 11.03~s.
+A medium budget reaches 0.399 at 28.88~s, and a large budget reaches 0.337 at 55.00~s.
+The full optimizer is still far better at 0.026, but it costs 260.49~s.
+The steep early drop means that the amortized predictor is not landing in arbitrary parts of parameter space.
+It lands close enough to useful basins that a small number of real search steps recovers a large fraction of the attainable quality gain.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.78\linewidth]{A_fig4_gapfill_refinement_contraction_curve.png}
+\caption{Error contraction under increasing refinement budgets. The strong early drop indicates that the learned predictor lands near useful optimizer basins.}
+\label{fig:refine}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Representative refinement budgets for full-leaf inference.}
+\label{tab:refine}
+\small
+\begin{tabular}{lccc}
+\toprule
+Budget & Steps & Runtime (s) & Test \nmae{} \\
+\midrule
+Direct & 0 & 2.98 & 1.154 \\
+Tiny & 3 & 11.03 & 0.434 \\
+Small & 6 & 17.97 & 0.423 \\
+Medium & 12 & 28.88 & 0.399 \\
+Large & 24 & 55.00 & 0.337 \\
+Full optimizer & 832 & 260.49 & 0.026 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Refinement is also visible through morphology-oriented summary metrics.
+Table~\ref{tab:morph} shows that medium refinement reduces contour-count error from 41.34 to 39.46 and reduces area-fraction error from 0.0233 to 0.0229 relative to direct prediction.
+The mean score associated with medium refinement slightly exceeds the stored mean oracle score in this audited table.
+We do \emph{not} interpret that as beating the oracle.
+The safer interpretation is that the score is stochastic and implementation-dependent, while the contour and area summaries confirm that moderate refinement produces a small but real morphological improvement over direct prediction.
+
+\begin{table}[H]
+\centering
+\caption{Morphology-oriented summaries under refinement budgets.}
+\label{tab:morph}
+\small
+\begin{tabular}{lcccc}
+\toprule
+Budget & Contour count error & Area-frac. error & Mean score & Stored oracle score \\
+\midrule
+Direct & 41.34 & 0.0233 & 17.111 & 18.053 \\
+Tiny & 40.60 & 0.0255 & 17.791 & 18.053 \\
+Small & 46.69 & 0.0282 & 17.854 & 18.053 \\
+Medium & 39.46 & 0.0229 & 18.243 & 18.053 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Representation Choice Matters, But Simpler Heads Often Respect the Teacher Better}
+The selective-study ablations are useful to Paper~A only where they clarify what kinds of predictive maps are stable against the teacher target.
+Table~\ref{tab:repr} summarizes the key result: simple linear or nearest-neighbor heads outperform larger MLP heads on this parameterization problem.
+A ResNet-18 ridge model reaches test MAE 0.0965, while DINOv2 ridge reaches 0.1240, and a 10-nearest-neighbor head reaches 0.0789.
+By contrast, the MLP variants are markedly worse.
+This pattern is consistent with the idea that the learned target is structured but data-limited.
+The best model class is the one that respects a compact, smooth geometry without overfitting noise.
+
+Phenotype consistency tells a similar story.
+The mean PCA distance between predicted and reference phenotypes is lowest for the simple mean baseline (0.245) and the ResNet ridge model (0.260), while DINO ridge rises to 0.380 and the MLP rises to 0.444.
+Again, the lesson is not that the problem is trivial.
+The lesson is that the repository supports a moderately structured, modest-data regime where simpler maps can align with the teacher more reliably than higher-capacity nonlinear heads.
+
+\begin{table}[H]
+\centering
+\caption{Model-family evidence relevant to parameterization learnability.}
+\label{tab:repr}
+\small
+\begin{tabular}{p{0.36\linewidth}cc}
+\toprule
+Model family / summary & Test MAE & Phenotype PCA distance \\
+\midrule
+Simple mean baseline & 0.0780 & 0.245 \\
+10-nearest-neighbor head & 0.0789 & 0.264 \\
+ResNet-18 ridge & 0.0965 & 0.260 \\
+DINOv2 ridge & 0.1240 & 0.380 \\
+Ensemble & 0.1091 & 0.279 \\
+DINOv2 MLP & 0.1888--0.4129 & 0.444 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Leaf-Level Visual Evidence Confirms That the Learned Map Is Useful but Imperfect}
+Figures~\ref{fig:qualitative} and \ref{fig:cases} connect the parameter-space story back to actual leaves.
+The teacher--student montage and qualitative grid show that direct predictions often capture the large lesion pattern correctly while drifting on fine boundary placement or small disconnected regions.
+The disagreement ROI montage makes that failure mode concrete: errors are concentrated in localized, morphologically meaningful regions rather than spread uniformly across the image.
+That observation supports the semi-amortized logic of the paper.
+If errors are local and structured, real refinement has something to correct.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig11_montage_teacher_student.png}
+    \caption{Teacher--student montage across representative leaves.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig12_montage_disagreement_roi.png}
+    \caption{Disagreement regions of interest.}
+\end{subfigure}
+
+\vspace{0.5em}
+\begin{subfigure}[t]{0.70\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig13_qual_grid_teacher_student.png}
+    \caption{Qualitative grid of teacher versus amortized outputs.}
+\end{subfigure}
+\caption{Leaf-level qualitative evidence. Direct amortized prediction captures much of the lesion structure, but residual disagreement remains localized and therefore amenable to targeted refinement.}
+\label{fig:qualitative}
+\end{figure}
+
+Representative objective surfaces and convergence traces explain why this behavior occurs.
+The projected energy-threshold and $\mu$/$\beta$ surfaces show broad low-score plateaus separated from narrower high-score basins.
+The best-score-so-far traces are punctuated, not smooth, which is exactly what one expects from a stochastic optimizer in a structured but non-convex landscape.
+A learned predictor is valuable because it skips poor regions of the landscape.
+Real refinement remains necessary because the final basin still contains sharp local structure.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.31\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig30_leaf0163_surface_beta.png}
+    \caption{Leaf 0163: threshold vs $\beta$.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.31\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig31_leaf0163_surface_mu.png}
+    \caption{Leaf 0163: threshold vs $\mu$.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.31\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig32_leaf0163_trajectory.png}
+    \caption{Leaf 0163: best score so far.}
+\end{subfigure}
+
+\vspace{0.4em}
+\begin{subfigure}[t]{0.31\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig33_leaf0205_surface_beta.png}
+    \caption{Leaf 0205: threshold vs $\beta$.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.31\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig34_leaf0205_surface_mu.png}
+    \caption{Leaf 0205: threshold vs $\mu$.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.31\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig35_leaf0205_trajectory.png}
+    \caption{Leaf 0205: best score so far.}
+\end{subfigure}
+
+\vspace{0.4em}
+\begin{subfigure}[t]{0.31\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig36_leaf0274_surface_beta.png}
+    \caption{Leaf 0274: threshold vs $\beta$.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.31\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig37_leaf0274_surface_mu.png}
+    \caption{Leaf 0274: threshold vs $\mu$.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.31\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig38_leaf0274_trajectory.png}
+    \caption{Leaf 0274: best score so far.}
+\end{subfigure}
+\caption{Representative optimization landscapes and traces for three leaves. The surfaces differ by leaf, but all show anisotropy and non-convexity. This is why a learned initialization helps yet does not eliminate the need for real refinement.}
+\label{fig:cases}
+\end{figure}
+
+\section{Discussion}
+\subsection{What the Evidence Supports}
+The repository supports a precise and defendable statement.
+It supports learning an optimizer-derived parameterization that has meaningful internal structure, is predictable enough to initialize inference, and benefits substantially from short instance-specific refinement.
+That is already a scientifically useful result.
+It means the seven-parameter vector is not just an opaque computational artifact.
+It behaves like a reusable coordinate system for lesion morphology under this inference pipeline.
+
+\subsection{What the Evidence Does Not Support}
+The evidence does not justify a stronger claim that the network has learned lesion biophysics from first principles.
+The teacher is a bounded stochastic optimization procedure over a hand-designed score.
+Some coordinates, especially \texttt{energy\_threshold}, are tightly coupled to the solver's conventions.
+The right interpretation is therefore \emph{learning the parameterization of a physics-inspired inference system}.
+That distinction is not a weakness.
+It is what keeps the paper technically honest.
+
+\subsection{Why This Paper Is Distinct From the Runtime-Quality Paper}
+Paper~B asks an operational question: how to allocate compute between direct prediction, patch processing, short refinement, and full fallback when the oracle is expensive.
+Its main evidence families are risk--coverage curves, calibration plots, routing thresholds, patch ablations, and runtime denominators.
+Paper~A asks a representational question: what is learnable in the teacher's coordinate system and how does that structure interact with semi-amortized refinement?
+Its main evidence families are manifold geometry, optimization landscapes, parameter distributions, and leaf-level qualitative teacher--student comparisons.
+The two papers share substrate, not narrative.
+
+\subsection{Limitations}
+Three limitations remain.
+First, all targets are optimizer-defined rather than externally validated biological ground truth.
+Second, the geometry evidence is strong enough to support structured learnability claims but not strong enough to guarantee globally smooth interpolation across all disease phenotypes.
+Third, the dataset scale remains moderate, so the conclusions should be read as repository-level evidence rather than a universal statement about all crops, imaging setups, or disease regimes.
+
+\section{Conclusion}
+This paper turns the optimizer/manifold line in the repository into a standalone, submission-ready manuscript.
+The results support a careful but useful claim: the expensive lesion optimizer defines a structured, reusable parameterization that can be learned well enough for fast initialization and improved further through semi-amortized refinement.
+The manifold evidence, raw 3D geometry, leaf-level optimization plots, parameter distributions, morphology summaries, and qualitative montages all point in the same direction.
+The learned model is not discovering the governing laws of lesion formation.
+It is learning the coordinate system induced by a physics-inspired oracle, and that coordinate system is structured enough to matter scientifically and computationally.
+
+\appendix
+\clearpage
+\section{Extended Geometry Diagnostics}
+The appendix collects the remaining figure families that support the paper without changing its headline claim.
+Figure~\ref{fig:app_geom1} shows groupwise centroid shifts, the radar summary of parameter means, and the t-SNE view of the displacement cloud.
+Figure~\ref{fig:app_geom2} adds the parallel-coordinate view of patch-type displacement, pairwise delta correlations, and density isosurfaces.
+These views are descriptive rather than inferential, but they confirm that the main PCA story is not an artifact of a single projection choice.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_figA1_centroid_shift_groups.png}
+    \caption{Centroid shift groups by local improvement category.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_figA2_radar_group_means.png}
+    \caption{Radar summary of group means.}
+\end{subfigure}
+
+\vspace{0.5em}
+\begin{subfigure}[t]{0.60\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_figA3_tsne2d_delta_ddgroup.png}
+    \caption{t-SNE view of the displacement cloud.}
+\end{subfigure}
+\caption{Additional geometry views supporting the main manifold argument.}
+\label{fig:app_geom1}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_figA4_parallel_delta_patchtype.png}
+    \caption{Parallel-coordinate displacement by patch type.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_figA5_param3d_delta_correlation.png}
+    \caption{Correlation structure among displacement coordinates.}
+\end{subfigure}
+
+\vspace{0.5em}
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_figA6_param3d_delta_pairplot.png}
+    \caption{Pairwise displacement views.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_figA7_density_isosurfaces.png}
+    \caption{Density isosurfaces of the solution cloud.}
+\end{subfigure}
+\caption{Secondary geometric diagnostics for the optimizer-derived parameterization.}
+\label{fig:app_geom2}
+\end{figure}
+
+\clearpage
+\section{Optimizer and Target Distributions}
+The next figure families characterize the empirical distribution learned by the teacher.
+The optimizer-score histogram, elapsed-time histogram, and status bar show that the target-generation process is itself heterogeneous.
+Area and contour-count histograms show that the leaf dataset presents nontrivial morphology variation even before considering the seven-parameter target.
+These plots are important because they explain why a single smooth global regressor is insufficient for the whole problem.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig14_optimizer_score_hist.png}
+    \caption{Distribution of optimizer scores.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig15_optimizer_elapsed_seconds_hist.png}
+    \caption{Distribution of optimizer runtime.}
+\end{subfigure}
+
+\vspace{0.5em}
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig16_optimizer_status_bar.png}
+    \caption{Optimizer status counts.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig17_area_px_hist.png}
+    \caption{Leaf lesion area distribution.}
+\end{subfigure}
+
+\vspace{0.5em}
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig18_n_contours_hist.png}
+    \caption{Number of contours per leaf.}
+\end{subfigure}
+\caption{Optimizer and dataset heterogeneity visible before model fitting.}
+\label{fig:app_optimizer}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.31\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig19_param_mu_hist.png}
+    \caption{$\mu$}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.31\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig20_param_lambda_hist.png}
+    \caption{$\lambda$}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.31\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig21_param_diffusion_rate_hist.png}
+    \caption{$d$}
+\end{subfigure}
+
+\vspace{0.4em}
+\begin{subfigure}[t]{0.31\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig22_param_alpha_hist.png}
+    \caption{$\alpha$}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.31\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig23_param_beta_hist.png}
+    \caption{$\beta$}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.31\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig24_param_gamma_hist.png}
+    \caption{$\gamma$}
+\end{subfigure}
+
+\vspace{0.4em}
+\begin{subfigure}[t]{0.42\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig25_param_energy_threshold_hist.png}
+    \caption{energy\_threshold}
+\end{subfigure}
+\caption{Teacher-target parameter histograms. Some coordinates occupy compact ranges, while others spread widely or show boundary effects. This helps explain why coordinate-specific learnability differs.}
+\label{fig:app_paramhists}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig28_scatter_teacher_vs_pred_area_frac.png}
+    \caption{Teacher versus predicted area fraction.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{A_fig29_threshold_sweep_plot.png}
+    \caption{Threshold sweep revisited.}
+\end{subfigure}
+\caption{Additional descriptive plots linking the teacher target to observable lesion morphology.}
+\label{fig:app_teacherpred}
+\end{figure}
+
+\bibliographystyle{plainnat}
+\bibliography{refs_physics_learning}
+\end{document}

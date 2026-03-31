@@ -1,0 +1,11 @@
+Matched pairs: 174
+Missing teacher: 0
+Missing student: 0
+
+Summary:
+Dice  mean/std: 0.5992672164001018 0.22480663112395075
+IoU   mean/std: 0.4580512737344191 0.19168379060121352
+Dice  median  : 0.6840661567511463
+IoU   median  : 0.5198334228812983
+
+Saved: experiments/exp_v1/outputs/teacher_student_metrics_roi_thr0p30.csv

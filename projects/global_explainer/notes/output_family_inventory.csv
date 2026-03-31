@@ -1,0 +1,58 @@
+path,type,experiment_family,contents,supports_paper1,supports_paper2,status,notes
+experiments/exp_v1/outputs/ablations_objective/,experiment,ablation_objective,6 ablation variants of objective function; 366 files,yes,no,complete,Core ablation study for optimizer paper
+experiments/exp_v1/outputs/ablations_search/,experiment,ablation_search,5 search strategy variants; 305 files,yes,no,complete,Search strategy comparison for optimizer paper
+experiments/exp_v1/outputs/objective_surface_traces_fullstudy/,experiment,surface_traces,Full-budget trace analysis; 196 files,yes,no,complete,Objective landscape visualization
+experiments/exp_v1/outputs/objective_surface_traces_representative_fullbudget_plus/,experiment,surface_traces_representative,Representative 9-leaf traces; 33 files,yes,no,complete,Curated subset for manuscript figures
+experiments/exp_v1/outputs/parameter_shift_manifold_geometry/,experiment,manifold_geometry,PCA/UMAP manifold analysis; 38 files,yes,no,complete,Parameter space geometry study
+experiments/exp_v1/outputs/optimization_manifold_and_solid3d_final/,experiment,manifold_3d,Comprehensive manifold + 3D geometry; 27 files,yes,no,complete,Final manifold and solid geometry analysis
+experiments/exp_v1/outputs/optimization_surface_analysis/,experiment,surface_analysis,Surface visualization; 97 files,yes,no,complete,Optimization landscape characterization
+experiments/exp_v1/outputs/optimization_surface_analysis_codex/,experiment,surface_analysis_codex,Codex-generated surface analysis; 30 files,yes,no,complete,Independent surface analysis replication
+experiments/exp_v1/outputs/parameter_shift_3d_analysis/,experiment,param_3d,3D parameter geometry; variable files,yes,no,complete,Base 3D parameter shift analysis
+experiments/exp_v1/outputs/parameter_shift_3d_analysis_solid/,experiment,param_3d_solid,Solid 3D parameter geometry; variable files,yes,no,complete,Solid rendering variant
+experiments/exp_v1/outputs/parameter_shift_3d_analysis_solid_codex/,experiment,param_3d_codex,Codex 3D parameter geometry; variable files,yes,no,complete,Independent Codex replication of 3D analysis
+experiments/exp_v1/outputs/integrated_full_vs_patch_leaves_18p7_v1/,experiment,full_vs_patch,Primary full-vs-patch comparison; 164 files,no,yes,complete,Core comparison for deployment line
+experiments/exp_v1/outputs/integrated_full_vs_patch_leaves_18p7_codex_v1/,experiment,full_vs_patch_codex,Extended codex analysis; 14519 files,no,yes,complete,Large-scale Codex-generated comparison
+experiments/exp_v1/outputs/integrated_full_vs_patch_leaves_18p7_codex_v1_slurm_shadow_v1/,experiment,full_vs_patch_slurm,SLURM shadow replication; 7630 files,no,yes,complete,Independent SLURM-based replication
+experiments/exp_v1/outputs/selective_semiamortized_fullstudy174_v3/,experiment,routing_policy,Routing policy study v3; 173 files,no,yes,complete,Latest routing policy evaluation
+experiments/exp_v1/outputs/selective_semiamortized_fullstudy174_v2/,experiment,routing_policy_v2,Earlier routing version; 115 files,no,yes,superseded,Superseded by v3
+experiments/exp_v1/outputs/selective_semiamortized_patchstudy_leaves_18p7_v1/,experiment,patch_routing,Massive patch routing study; 154697 files,no,yes,complete,Largest output family; feeds Paper_5 and Paper_6_v2
+experiments/exp_v1/outputs/selective_semiamortized_integrated_fullleaf_patch_study/,experiment,integrated_routing,Integrated full-leaf and patch routing; 97 files,no,yes,complete,Combined routing analysis
+experiments/exp_v1/outputs/selective_semiamortized_patch_fullstudy_leaves_18p7_v2/,experiment,patch_routing_v2,Extended patch study; 5762 files,no,yes,complete,Follow-up to massive patch study
+experiments/exp_v1/outputs/dual_paper_build_codex/,experiment,dual_paper_build,Evidence matrix and gap analysis and reference audit; 45 files,yes,yes,complete,Cross-paper assembly and audit artifacts
+experiments/exp_v1/outputs/unet_infer_on_leaves/,experiment,unet_inference,UNet predictions on leaves; 522 files,yes,no,complete,Distillation results used in optimizer paper
+experiments/exp_v1/outputs/patch_transfer_morphology_filled/,experiment,morphology,Morphology transfer analysis; 52 files,yes,yes,complete,Cross-line morphological comparison
+experiments/exp_v1/outputs/optimizer_summary/,experiment,optimizer_stats,Optimizer statistics summary; 16 files,yes,no,complete,Aggregated optimizer performance metrics
+experiments/exp_v1/outputs/experiment_summary_master/,experiment,master_summary,Master summary document; 7 files,yes,yes,complete,Top-level experiment coordination document
+fig1/,figures,channel_analysis,Channel-level analysis figures,yes,no,diagnostic,Top-level figure directories fig1-fig7
+fig2/,figures,channel_analysis,Channel-level analysis figures,yes,no,diagnostic,Top-level figure directories fig1-fig7
+fig3/,figures,channel_analysis,Channel-level analysis figures,yes,no,diagnostic,Top-level figure directories fig1-fig7
+fig4/,figures,channel_analysis,Channel-level analysis figures,yes,no,diagnostic,Top-level figure directories fig1-fig7
+fig5/,figures,channel_analysis,Channel-level analysis figures,yes,no,diagnostic,Top-level figure directories fig1-fig7
+fig6/,figures,channel_analysis,Channel-level analysis figures,yes,no,diagnostic,Top-level figure directories fig1-fig7
+fig7/,figures,channel_analysis,Channel-level analysis figures,yes,no,diagnostic,Top-level figure directories fig1-fig7
+fig_bestch_vs_fused/,figures,convergence_comparison,Best-channel vs fused convergence v1,yes,no,diagnostic,Convergence comparison figures
+fig_bestch_vs_fused_v2/,figures,convergence_comparison,Best-channel vs fused convergence v2,yes,no,diagnostic,Updated convergence comparison
+fig_bestch_vs_fused_v3/,figures,convergence_comparison,Best-channel vs fused convergence v3,yes,no,diagnostic,Latest convergence comparison
+figs/,figures,montages_histograms,Teacher-student montages and score/runtime histograms and threshold sweeps,yes,yes,active,Shared figure directory for both lines
+conv_modes/,figures,mode_analysis,Convolution mode analysis,yes,no,diagnostic,Mode comparison figures
+conv_modes_fixed/,figures,mode_analysis,Fixed convolution mode analysis,yes,no,diagnostic,Corrected mode comparison
+conv_G_vs_B/,figures,channel_comparison,Green vs Blue channel comparison,yes,no,diagnostic,Channel pair analysis
+conv_G_vs_R/,figures,channel_comparison,Green vs Red channel comparison,yes,no,diagnostic,Channel pair analysis
+18.7/,data,external_domain,80+ processed leaf images from external domain,yes,yes,active,Primary external validation dataset
+leaves/,data,primary_images,Primary leaf image dataset,yes,yes,active,Core training/evaluation data
+leaves_patches/,data,patch_images,Patch-level leaf images,no,yes,active,Patch data for deployment line
+mask_patches/,data,patch_masks,Ground-truth patch masks,no,yes,active,Patch mask data for deployment line
+cpu_output_2/,results,optimization,Optimization outputs with parameter encoding,yes,no,complete,CPU-based optimization results
+cpu_output_3/,results,optimization,Optimization outputs with parameter encoding,yes,no,complete,CPU-based optimization results
+navier_opt_bestch/,results,optimization,Optimization trace logs for best channel,yes,no,complete,Trace data for optimizer paper
+fast_physics_results/,results,physics_prediction,Physics-informed prediction results,no,yes,complete,Fast physics inference outputs
+fast_physics_results_dino/,results,physics_prediction,DINO-based physics prediction results,no,yes,complete,DINO backbone variant
+final_dino_sam2_results/,results,sam2_inference,SAM2 + DINO inference outputs,no,yes,complete,SAM2 with DINO features
+final_resnet_sam2_results/,results,sam2_inference,SAM2 + ResNet inference outputs,no,yes,complete,SAM2 with ResNet features
+unet_direct_results/,results,unet_inference,Direct UNet inference outputs,no,yes,complete,UNet baseline results
+results_bbox/,results,inference_variant,Bounding-box guided inference,no,yes,complete,Inference variant comparison
+results_fixed/,results,inference_variant,Fixed-parameter inference,no,yes,complete,Inference variant comparison
+results_manual/,results,inference_variant,Manual-parameter inference,no,yes,complete,Inference variant comparison
+results_sam2/,results,inference_variant,SAM2 inference outputs,no,yes,complete,Inference variant comparison
+tables/,results,metrics,Teacher-student metrics CSVs and optimizer summary and threshold/postprocess sweeps,yes,yes,active,Shared metrics for both papers
+models/,shared,checkpoints,Saved model checkpoints,yes,yes,active,Shared model storage

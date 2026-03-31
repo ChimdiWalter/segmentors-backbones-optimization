@@ -1,0 +1,16 @@
+MATH SUMMARY (PAPER A)
+======================
+Core mathematical objects:
+- Oracle target: theta*(x) = argmax_theta S(x, theta)
+- Learned initialization: theta_hat_0 = f_phi(x)
+- Semi-amortized refinement: theta_hat_{b+1} = R(x, theta_hat_b; B)
+
+How the math is used:
+- The paper does not derive a new optimizer.
+- The equations are used to define the teacher, the learned predictor, and the refinement operator clearly enough for review.
+- Geometry summaries are descriptive rather than theorem-driven: PCA variance explained, centroid displacement, and neighborhood agreement are treated as empirical evidence for structure.
+
+Important interpretive guardrails:
+- The argmax target is optimizer-defined, not biological ground truth.
+- Geometry is used to support structured learnability, not to claim exact manifold identifiability.
+- Refinement equations support the argument that learned initialization has operational value, not that amortization replaces optimization.

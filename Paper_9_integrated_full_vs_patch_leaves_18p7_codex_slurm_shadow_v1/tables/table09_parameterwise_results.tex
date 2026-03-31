@@ -1,0 +1,40 @@
+\begin{table}[t]
+\centering
+\caption{Parameter-wise difficulty summary.}
+\label{tab:paramwise}
+\scriptsize
+\begin{tabular}{lllllll}
+\toprule
+branch\_method & target\_name & parameter & mae & rmse & r2 & difficulty\_rank \\
+\midrule
+full\_direct & full\_target & mu & 0.1184 & 0.1445 & 0.0832 & 2.0000 \\
+full\_direct & full\_target & lambda & 0.1222 & 0.1513 & -0.4185 & 1.0000 \\
+full\_direct & full\_target & diffusion\_rate & 0.0866 & 0.1154 & -0.9717 & 4.0000 \\
+full\_direct & full\_target & alpha & 0.0518 & 0.0653 & -21.3748 & 7.0000 \\
+full\_direct & full\_target & beta & 0.0797 & 0.1045 & -0.9575 & 5.0000 \\
+full\_direct & full\_target & gamma & 0.0691 & 0.1019 & -0.6238 & 6.0000 \\
+full\_direct & full\_target & energy\_threshold & 0.1131 & 0.1531 & -0.6466 & 3.0000 \\
+full\_direct & patch\_target & mu & 0.0722 & 0.0919 & -0.4488 & 5.0000 \\
+full\_direct & patch\_target & lambda & 0.0796 & 0.0997 & -1.0775 & 3.0000 \\
+full\_direct & patch\_target & diffusion\_rate & 0.0739 & 0.0964 & -3.0120 & 4.0000 \\
+full\_direct & patch\_target & alpha & 0.0506 & 0.0655 & -82.2983 & 7.0000 \\
+full\_direct & patch\_target & beta & 0.0515 & 0.0654 & -3.1253 & 6.0000 \\
+full\_direct & patch\_target & gamma & 0.0941 & 0.1169 & -1.0432 & 2.0000 \\
+full\_direct & patch\_target & energy\_threshold & 0.1129 & 0.1352 & -2.8244 & 1.0000 \\
+patch\_direct & full\_target & mu & 0.1369 & 0.1574 & -0.0874 & 1.0000 \\
+patch\_direct & full\_target & lambda & 0.1187 & 0.1425 & -0.2591 & 2.0000 \\
+patch\_direct & full\_target & diffusion\_rate & 0.0684 & 0.0835 & -0.0319 & 5.0000 \\
+patch\_direct & full\_target & alpha & 0.0120 & 0.0144 & -0.0924 & 7.0000 \\
+patch\_direct & full\_target & beta & 0.0654 & 0.0731 & 0.0420 & 6.0000 \\
+patch\_direct & full\_target & gamma & 0.0902 & 0.1064 & -0.7716 & 4.0000 \\
+patch\_direct & full\_target & energy\_threshold & 0.1103 & 0.1258 & -0.1121 & 3.0000 \\
+patch\_direct & patch\_target & mu & 0.0619 & 0.0755 & 0.0210 & 2.0000 \\
+patch\_direct & patch\_target & lambda & 0.0575 & 0.0728 & -0.1093 & 4.0000 \\
+patch\_direct & patch\_target & diffusion\_rate & 0.0388 & 0.0470 & 0.0472 & 5.0000 \\
+patch\_direct & patch\_target & alpha & 0.0059 & 0.0072 & -0.0208 & 7.0000 \\
+patch\_direct & patch\_target & beta & 0.0250 & 0.0308 & 0.0844 & 6.0000 \\
+patch\_direct & patch\_target & gamma & 0.0659 & 0.0855 & -0.0925 & 1.0000 \\
+patch\_direct & patch\_target & energy\_threshold & 0.0578 & 0.0688 & 0.0114 & 3.0000 \\
+\bottomrule
+\end{tabular}
+\end{table}

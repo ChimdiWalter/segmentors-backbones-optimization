@@ -1,0 +1,22 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Relationship to the Existing Manuscript Lines}{section.1}% 2
+\BOOKMARK [1][-]{section.2}{Related Work}{}% 3
+\BOOKMARK [1][-]{section.3}{Problem Setup and Honest Scope}{}% 4
+\BOOKMARK [2][-]{subsection.3.1}{What Counts as Learnability in This Paper}{section.3}% 5
+\BOOKMARK [2][-]{subsection.3.2}{Primary Data and Provenance}{section.3}% 6
+\BOOKMARK [1][-]{section.4}{Experimental Evidence Families}{}% 7
+\BOOKMARK [1][-]{section.5}{Results}{}% 8
+\BOOKMARK [2][-]{subsection.5.1}{The Optimizer-Induced Solution Cloud Has Coherent Geometry}{section.5}% 9
+\BOOKMARK [2][-]{subsection.5.2}{Three-Dimensional Structure and Groupwise Shifts Clarify What Moves Locally}{section.5}% 10
+\BOOKMARK [2][-]{subsection.5.3}{Coordinate-Specific Difficulty Reveals the Boundary of the Learnability Claim}{section.5}% 11
+\BOOKMARK [2][-]{subsection.5.4}{Semi-Amortized Refinement Converts Structured Initialization Into Practical Value}{section.5}% 12
+\BOOKMARK [2][-]{subsection.5.5}{Representation Choice Matters, But Simpler Heads Often Respect the Teacher Better}{section.5}% 13
+\BOOKMARK [2][-]{subsection.5.6}{Leaf-Level Visual Evidence Confirms That the Learned Map Is Useful but Imperfect}{section.5}% 14
+\BOOKMARK [1][-]{section.6}{Discussion}{}% 15
+\BOOKMARK [2][-]{subsection.6.1}{What the Evidence Supports}{section.6}% 16
+\BOOKMARK [2][-]{subsection.6.2}{What the Evidence Does Not Support}{section.6}% 17
+\BOOKMARK [2][-]{subsection.6.3}{Why This Paper Is Distinct From the Runtime-Quality Paper}{section.6}% 18
+\BOOKMARK [2][-]{subsection.6.4}{Limitations}{section.6}% 19
+\BOOKMARK [1][-]{section.7}{Conclusion}{}% 20
+\BOOKMARK [1][-]{appendix.A}{Extended Geometry Diagnostics}{}% 21
+\BOOKMARK [1][-]{appendix.B}{Optimizer and Target Distributions}{}% 22

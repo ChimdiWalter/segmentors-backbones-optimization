@@ -1,0 +1,13 @@
+table_label,description,source_data_path,notes
+tab:substrates,Audited experimental substrates,Paper_5/manuscript_blackbox_runtime/,35-leaf matched + 174-leaf selective + 28-leaf cross-collection
+tab:mainB,Matched full-leaf vs patchwise comparison,experiments/exp_v1/outputs/integrated_full_vs_patch_leaves_18p7_v1/evaluation/E1_matched_comparison.csv,5 aggregation methods on 35 leaves
+tab:statsB,Paired statistical tests,experiments/exp_v1/outputs/integrated_full_vs_patch_leaves_18p7_v1/evaluation/E12_statistical_tests.csv,Wilcoxon p-values and bootstrap CIs
+tab:routingB,Selected routing policies,experiments/exp_v1/outputs/selective_semiamortized_fullstudy174_v3/tables/runtime_comparison.csv,3 audited policies with nMAE and runtime
+tab:runtimesB,Reference runtimes,experiments/exp_v1/outputs/selective_semiamortized_fullstudy174_v3/tables/runtime_comparison.csv,6 modes from direct to full optimizer
+tab:calibB,Calibration bins,experiments/exp_v1/outputs/selective_semiamortized_fullstudy174_v3/tables/calibration.csv,5 bins with uncertainty and error
+tab:patchB,Patch extraction ablation,experiments/exp_v1/outputs/integrated_full_vs_patch_leaves_18p7_v1/evaluation/E4_patch_ablation.csv,3 patch size/stride configurations
+tab:ablationB,Direct model ablations,experiments/exp_v1/outputs/selective_semiamortized_fullstudy174_v3/,Direct prediction model comparison
+tab:morphB,Morphology fidelity,experiments/exp_v1/outputs/selective_semiamortized_fullstudy174_v3/,Contour/area errors across refinement budgets
+tab:phenoB,Phenotype consistency,experiments/exp_v1/outputs/selective_semiamortized_fullstudy174_v3/,Phenotype PCA distance by method
+tab:strataB,Difficulty stratification,experiments/exp_v1/outputs/selective_semiamortized_fullstudy174_v3/,Extreme vs typical parameter difficulty
+tab:oodB,Cross-collection robustness,experiments/exp_v1/outputs/selective_semiamortized_fullstudy174_v3/tables/ood_robustness.csv,ID vs 18.7 MAE comparison

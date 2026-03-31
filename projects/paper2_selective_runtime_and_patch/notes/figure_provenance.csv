@@ -1,0 +1,16 @@
+figure_label,filename,source_path,description
+fig:setup_main(a),B_fig01_pipeline_schematic.pdf,Paper_5/manuscript_blackbox_runtime/figs_from_outputs/,Branch structure: direct patchwise refinement fallback
+fig:setup_main(b),B_fig02_dataset_split.pdf,Paper_5/manuscript_blackbox_runtime/figs_from_outputs/,Dataset and split accounting
+fig:setup_main(c),B_fig03_main_comparison.pdf,Paper_5/manuscript_blackbox_runtime/figs_from_outputs/,Main matched comparison bar chart
+fig:setup_main(d),B_fig05_oracle_gap.pdf,Paper_5/manuscript_blackbox_runtime/figs_from_outputs/,Oracle-gap decomposition
+fig:frontierB(a),B_fig04_runtime_quality_pareto.pdf,Paper_5/manuscript_blackbox_runtime/figs_from_outputs/,Runtime-quality Pareto from integrated study
+fig:frontierB(b),B_fig38_gapfill_runtime_frontier.png,experiments/exp_v1/outputs/dual_paper_build_codex/gapfill/,Gapfill frontier with denominator-explicit points
+fig:frontierB(c),B_fig08_refinement_curves.pdf,Paper_5/manuscript_blackbox_runtime/figs_from_outputs/,Shared refinement-budget behavior
+fig:frontierB(d),B_fig19_selective_pareto_real.pdf,Paper_5/manuscript_blackbox_runtime/figs_from_outputs/,Selective full-study Pareto
+fig:calibrationB,B_fig09_risk_coverage.pdf + B_fig10_calibration.pdf + B_fig28_selective_risk_coverage.pdf + B_fig27_selective_calibration.pdf,Paper_5/manuscript_blackbox_runtime/figs_from_outputs/,Risk-coverage and calibration for both studies
+fig:branchB,B_fig11_aggregation_comparison.pdf + B_fig06_patch_ablation.pdf + B_fig12_heterogeneity.pdf + B_fig14_parameter_difficulty.pdf,Paper_5/manuscript_blackbox_runtime/figs_from_outputs/,Branch anatomy subfigures
+fig:selectiveB,B_fig21_method_comparison.pdf + B_fig24_selective_thresholds.pdf + B_fig20_score_recovery.pdf + B_fig22_learning_curves.pdf,Paper_5/manuscript_blackbox_runtime/figs_from_outputs/,Selective study analysis
+fig:phenoB,B_fig25_phenotype_pca.pdf + B_fig26_per_param_scatter.pdf,Paper_5/manuscript_blackbox_runtime/figs_from_outputs/,Phenotype consistency
+fig:leafB,B_fig17_leaf_comparison.png + B_fig34_representative_leaf_routing.pdf,Paper_5/manuscript_blackbox_runtime/figs_from_outputs/,Leaf-level visual comparison and routing
+fig:failureB,B_fig18_failure_taxonomy.pdf + B_fig35_failure_case_montage.pdf + B_fig36_external_18p7_panel.pdf,Paper_5/manuscript_blackbox_runtime/figs_from_outputs/,Failure and cross-collection analysis
+fig:robustB,B_fig07_backbone_comparison.pdf + B_fig23_ood_robustness.pdf,Paper_5/manuscript_blackbox_runtime/figs_from_outputs/,Backbone and domain robustness

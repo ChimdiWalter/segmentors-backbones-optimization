@@ -1,0 +1,91 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\title{Patchwise Selective Semi-Amortized Physics Inference for Spatially Heterogeneous Lesion Phenotyping}
+\author{Patch Study Draft v1}
+\date{March 17, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This manuscript defines a \textbf{new patch-level study} that is distinct from the existing full-leaf selective semi-amortized paper. The new question is whether uncertainty-aware patchwise physics inference can recover within-leaf spatial heterogeneity, support reliable patch-to-leaf aggregation, and remain robust on external-domain leaves. We build reproducible dense and lesion-aware patch manifests from the 174-leaf primary set and the 18.7 external set, enforce parent-leaf leakage-safe splits, and stage real patch-level oracle/refinement/modeling jobs through resume-safe SLURM pipelines. This draft reports completed data/split/heterogeneity infrastructure and provides the full protocol for heavy optimization/training stages.
+\end{abstract}
+
+\section{Full-Leaf vs Patch Distinctness}
+The prior manuscript studies one parameter vector per full leaf. This new paper changes the unit of inference to patches and introduces: (i) patch-level routing and refinement, (ii) patch-to-leaf aggregation operators, and (iii) within-leaf heterogeneity descriptors. Therefore this is not a revision of the full-leaf manuscript but a separate study design and contribution.
+
+\section{Problem Formulation}
+Given patches $I_{p}$ extracted from a parent leaf $L$, we define patch oracle parameters
+\begin{equation}
+\theta^{*}_{p}=\arg\min_{\theta} \mathcal{S}(I_{p},\theta),
+\end{equation}
+patch prediction $\hat{\theta}_{p}=f_{\phi}(I_{p})$, uncertainty $u_{p}$ from ensembles, and routing policy
+\begin{equation}
+\pi(u_p)\in\{\text{direct},\text{refine},\text{fallback}\}.
+\end{equation}
+Leaf-level estimates are aggregated from patch outputs via mean, uncertainty-weighted, lesion-weighted, top-$k$ confident, and route-mixture operators.
+
+\section{Data and Patch Construction}
+Two source domains are used: primary \texttt{leaves} and external \texttt{18.7}. We construct dense and lesion-aware patches at \{224,256\} with strides \{112,128\}. Parent-leaf identity is preserved in all manifests to prevent leakage.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\linewidth]{/cluster/VAST/kazict-lab/e/lesion_phes/code/segmentors_backbones/experiments/exp_v1/outputs/selective_semiamortized_patchstudy_leaves_18p7_v1/figures/patch_extraction_examples.png}
+\caption{Patch extraction examples (dense-grid overlay) on primary and external leaves.}
+\end{figure}
+
+\section{Current Run Artifacts (Completed)}
+Completed outputs in this run include:
+\begin{itemize}[leftmargin=*]
+\item Patch manifests: \texttt{patch\_manifest\_all.csv}, \texttt{patch\_manifest\_dense.csv}, \texttt{patch\_manifest\_lesionaware.csv}.
+\item Leakage-safe split family: leaf-level, patch-level, pseudo-OOD, domain, parameter-extremes, and learning-curve subsets.
+\item Initial heterogeneity baselines from lesion-fraction proxies.
+\item SLURM/tmux resume-safe job scaffolding for heavy stages.
+\end{itemize}
+
+\begin{table}[h]
+\centering
+\caption{Patch counts from current manifests.}
+\begin{tabular}{lccc}
+\toprule
+Selection & Domain & Num Patches & Num Parent Leaves \\
+\midrule
+dense & leaves & 194,704 & 174 \\
+dense & 18.7 & 105,582 & 78 \\
+lesionaware & leaves & 101,673 & 174 \\
+lesionaware & 18.7 & 50,994 & 77 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Staged Heavy Experiments}
+The following are configured but intentionally not fabricated in this local turn:
+\begin{enumerate}[leftmargin=*]
+\item Real patch-level oracle optimization at scale.
+\item Patch-level model training and uncertainty calibration.
+\item Patch-level real short-refinement benchmarking.
+\item Full geometry/manifold/hull analysis on learned/refined/oracle patch parameters.
+\end{enumerate}
+These stages are submitted/resumed via \texttt{slurm/submit\_all.sh} and logged in \texttt{reports/submitted\_jobs.txt}.
+
+\section{Discussion}
+Initial patch manifests already show strong domain asymmetry and broad within-leaf lesion-fraction variation, supporting the central patch-study hypothesis: spatially heterogeneous leaves require local inference and selective compute allocation across patches instead of single-vector full-leaf predictions.
+
+\section{Conclusion}
+This draft establishes a distinct patchwise selective semi-amortized study framework with reproducible data/split infrastructure and resume-safe execution for heavy stages. It is a separate paper track from the full-leaf manuscript and targets spatial heterogeneity and patch-to-leaf aggregation as primary contributions.
+
+\bibliographystyle{plain}
+\bibliography{../bib/references_patchstudy_v1}
+
+\appendix
+\section{Execution Notes}
+All study artifacts in this draft are written under:
+\texttt{experiments/exp\_v1/outputs/selective\_semiamortized\_patchstudy\_leaves\_18p7\_v1/}.
+
+\end{document}

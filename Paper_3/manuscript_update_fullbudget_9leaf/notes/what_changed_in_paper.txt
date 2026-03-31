@@ -1,0 +1,30 @@
+What Changed in the Paper (fullbudget9 update)
+===============================================
+
+1. NEW SECTION: "Trace-Based Objective-Surface Analysis" in Results
+   - Describes the representative 9-leaf full-budget rerun
+   - Explains 3 high / 3 median / 3 low selection strategy
+   - Reports trace-based surface geometry findings
+   - Includes figures: score surfaces, convergence trajectories, density plots
+
+2. UPDATED: Discussion section
+   - Added paragraph on objective landscape geometry
+   - Strengthened interpretation of random vs refine phases
+   - Added note on parameter-surface flatness for low-score leaves
+
+3. NEW FIGURES (main text):
+   - Representative score surface (energy_threshold vs beta) for high/median/low
+   - Convergence trajectory (best_score_so_far) for high/median/low
+
+4. NEW FIGURES (appendix):
+   - Full surface/trajectory/density plots for all 9 leaves
+
+5. NEW: Mathematical notation for trace-based objective surfaces
+   - Definition of candidate trace set T_i
+   - Projected pairwise surface definition
+   - Distinction from geometric/manifold embeddings
+
+6. UPDATED: Bibliography
+   - Added references for black-box optimization landscape analysis
+
+7. PRESERVED: All existing content, figures, tables, TODOs

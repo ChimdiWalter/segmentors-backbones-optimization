@@ -1,0 +1,19 @@
+analysis,metric,value,interpretation
+PCA_full_vectors,variance_2PCs,46.5%,Moderately low-dimensional; supports amortized prediction
+PCA_deltas,variance_2PCs,43.0%,Parameter shifts also structured in low-D
+PCA_centroid_shift,magnitude_std_units,1.616,Systematic directional shift from global to local
+kNN_dD_group,agreement,0.534,Above random (0.33); shift direction predicts improvement
+kNN_patch_type,agreement,0.488,Near random (0.50); interior/boundary not separable by shift
+positive_dD_patches,count,73,Majority of patches benefit from local re-optimization
+negative_dD_patches,count,48,Substantial minority where local optimization hurts
+neutral_dD_patches,count,29,Small fraction with negligible change
+interior_delta_centroid,energy_threshold,-29.7,Interior patches shift threshold similarly to boundary
+boundary_delta_centroid,energy_threshold,-28.3,Confirms overlap between interior/boundary shifts
+dominant_shift_param,parameter,energy_threshold,Largest magnitude mean shift across all patches
+global_centroid_PC1,value,-0.758,Global parameters cluster on negative PC1
+local_centroid_PC1,value,0.758,Local parameters cluster on positive PC1
+tSNE_separation,qualitative,moderate,dD groups show partial clustering in t-SNE 2D
+convex_hull_overlap,global_vs_local,partial,Hulls overlap but centroids are displaced
+covariance_ellipsoid,ratio_vol_local/global,~0.8,Local cloud slightly more compact than global
+density_isosurface,peak_shift,visible,Density peaks displaced along PC1 direction
+pos_vs_neg_dD_hulls,separation,partial,Positive-dD cloud displaced from negative-dD cloud

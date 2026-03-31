@@ -1,0 +1,120 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{ronneberger2015u}
+\citation{he2017mask}
+\citation{xie2021segformer}
+\citation{kirillov2023segment}
+\citation{kass1988snakes}
+\citation{ronneberger2015u}
+\citation{oquab2023dinov2}
+\citation{hinton2015distilling}
+\citation{kass1988snakes}
+\citation{caselles1997geodesic}
+\citation{chan2001active}
+\citation{xu1998gvf}
+\@writefile{toc}{\contentsline {section}{\numberline {I}Introduction}{1}{section.1}\protected@file@percent }
+\citation{bertalmio2000navier}
+\citation{berry2018color,plantcv2025}
+\citation{ronneberger2015u}
+\citation{he2017mask}
+\citation{chen2018deeplabv3plus}
+\citation{xie2021segformer}
+\citation{kirillov2023segment}
+\citation{oquab2023dinov2}
+\citation{yu2020hyperparam}
+\citation{gehan2017high}
+\citation{plantcv2025}
+\citation{xu1998gvf}
+\@writefile{toc}{\contentsline {section}{\numberline {II}Related Work}{2}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-A}}Active Contours, Level Sets, and External Forces}{2}{subsection.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-B}}PDEs and Fluid Dynamics in Vision}{2}{subsection.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-C}}Segmentation Models (2015--2025): CNNs, Transformers, and Foundation Models}{2}{subsection.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-D}}Black-Box and Hyperparameter Optimization for Vision}{2}{subsection.2.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-E}}Plant Phenotyping Context and Tooling}{2}{subsection.2.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {III}Problem Setup and Notation}{2}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {IV}Mathematical Framework}{2}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Navier-Stokes Diffusion for Edge Enhancement}{2}{subsection.4.1}\protected@file@percent }
+\newlabel{eq:diffusion_update}{{2}{2}{Navier-Stokes Diffusion for Edge Enhancement}{equation.2}{}}
+\citation{berry2018color,plantcv2025}
+\citation{yu2020hyperparam}
+\citation{berry2018color}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {\mbox  {IV-A}0a}Seed vs.\ Image Gradients.}{3}{paragraph.4.1.0.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {\mbox  {IV-A}0b}Edge-gating.}{3}{paragraph.4.1.0.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {\mbox  {IV-A}0c}Stability note.}{3}{paragraph.4.1.0.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Active Contour Dynamics (Snakes)}{3}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {\mbox  {IV-B}0a}Multi-lesion handling.}{3}{paragraph.4.2.0.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {V}Methodology: Stochastic Parameter Search}{3}{section.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Overview of the Optimization Loop}{3}{subsection.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}The Heuristic Objective Function}{3}{subsection.5.2}\protected@file@percent }
+\newlabel{sec:objective}{{\mbox  {V-B}}{3}{The Heuristic Objective Function}{subsection.5.2}{}}
+\newlabel{eq:objective}{{7}{3}{The Heuristic Objective Function}{equation.7}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {V-B}1}Gradient Alignment ($\mathcal  {G}$)}{3}{subsubsection.5.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {V-B}2}Chromatic Separability ($\mathcal  {C}$)}{3}{subsubsection.5.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {V-B}3}Topological Reward (Lesion Multiplicity)}{3}{subsubsection.5.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {V-B}4}Penalty Terms}{3}{subsubsection.5.2.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-C}}Random-Restart Stochastic Hill Climbing}{3}{subsection.5.3}\protected@file@percent }
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Stochastic Parameter Optimization (per image)}}{3}{algorithm.1}\protected@file@percent }
+\citation{ronneberger2015u}
+\citation{xie2021segformer}
+\citation{kirillov2023segment}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {\mbox  {V-C}0a}Why gradient-free?}{4}{paragraph.5.3.0.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Implementation Details and Engineering Choices}{4}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-A}}16-bit Handling, Masking, and Channel Fusion}{4}{subsection.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}Scale-Aware Candidate Filtering}{4}{subsection.6.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-C}}Runtime Controls: Downscaling, Timeouts, and Parallelism}{4}{subsection.6.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Experiments}{4}{section.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-A}}Dataset}{4}{subsection.7.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-B}}Evaluation Protocol}{4}{subsection.7.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-C}}Teacher--Student Distillation (UNet Student)}{4}{subsection.7.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-D}}Baselines}{4}{subsection.7.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-E}}Metrics}{4}{subsection.7.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {VIII}Results}{4}{section.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-A}}Teacher--Student Distillation (UNet)}{4}{subsection.8.1}\protected@file@percent }
+\citation{hinton2015distilling}
+\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Objective ablations on the 30-image stratified subset. Each row removes one term from the composite objective (Eq.~\ref {eq:objective}).}}{5}{table.1}\protected@file@percent }
+\newlabel{tab:abl_obj}{{I}{5}{Objective ablations on the 30-image stratified subset. Each row removes one term from the composite objective (Eq.~\ref {eq:objective})}{table.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Search-strategy ablations on the 30-image stratified subset. Each row changes one knob of the stochastic search while keeping the full objective.}}{5}{table.2}\protected@file@percent }
+\newlabel{tab:abl_search}{{II}{5}{Search-strategy ablations on the 30-image stratified subset. Each row changes one knob of the stochastic search while keeping the full objective}{table.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-B}}Parameter Correlations with Morphology}{5}{subsection.8.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-C}}Ablation Studies (Objective and Search)}{5}{subsection.8.3}\protected@file@percent }
+\newlabel{sec:ablations}{{\mbox  {VIII-C}}{5}{Ablation Studies (Objective and Search)}{subsection.8.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-D}}Qualitative Results and Failure Taxonomy}{5}{subsection.8.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {IX}Multi-Stage Inference for Nested/Inner Lesions}{5}{section.9}\protected@file@percent }
+\newlabel{sec:multistage}{{IX}{5}{Multi-Stage Inference for Nested/Inner Lesions}{section.9}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {X}Figures and Tables to Include (Drop-in Placeholders)}{5}{section.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {XI}Discussion and Limitations}{5}{section.11}\protected@file@percent }
+\bibstyle{IEEEtran}
+\bibdata{refs}
+\bibcite{ronneberger2015u}{1}
+\bibcite{he2017mask}{2}
+\bibcite{xie2021segformer}{3}
+\bibcite{kirillov2023segment}{4}
+\bibcite{kass1988snakes}{5}
+\bibcite{oquab2023dinov2}{6}
+\bibcite{hinton2015distilling}{7}
+\bibcite{caselles1997geodesic}{8}
+\bibcite{chan2001active}{9}
+\bibcite{xu1998gvf}{10}
+\bibcite{bertalmio2000navier}{11}
+\bibcite{berry2018color}{12}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Teacher--student qualitative montage (worst/median/best). The teacher is the optimizer pseudo-label (inner mask), and the student is the stitched UNet prediction. ``Worst'' cases are often teacher-empty/student-nonempty disagreements.}}{6}{figure.1}\protected@file@percent }
+\newlabel{fig:teacher_student_montage}{{1}{6}{Teacher--student qualitative montage (worst/median/best). The teacher is the optimizer pseudo-label (inner mask), and the student is the stitched UNet prediction. ``Worst'' cases are often teacher-empty/student-nonempty disagreements}{figure.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Representative teacher-empty/student-nonempty disagreement cases. Columns: raw image, teacher overlay (optimizer; empty inner mask), and student overlay (UNet). These cases may reflect either optimizer false negatives under the inner-mask definition or a mismatch in necrosis/halo semantics.}}{6}{figure.2}\protected@file@percent }
+\newlabel{fig:disagreement}{{2}{6}{Representative teacher-empty/student-nonempty disagreement cases. Columns: raw image, teacher overlay (optimizer; empty inner mask), and student overlay (UNet). These cases may reflect either optimizer false negatives under the inner-mask definition or a mismatch in necrosis/halo semantics}{figure.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {XII}Conclusion}{6}{section.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{References}{6}{section*.1}\protected@file@percent }
+\bibcite{plantcv2025}{13}
+\bibcite{chen2018deeplabv3plus}{14}
+\bibcite{yu2020hyperparam}{15}
+\bibcite{gehan2017high}{16}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Threshold sweep on stitched probability maps. Dice decreases smoothly with increasing threshold, while teacher-empty disagreements persist across thresholds.}}{7}{figure.3}\protected@file@percent }
+\newlabel{fig:thresh_sweep}{{3}{7}{Threshold sweep on stitched probability maps. Dice decreases smoothly with increasing threshold, while teacher-empty disagreements persist across thresholds}{figure.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Optimizer run status distribution from stochastic search summary.}}{7}{figure.4}\protected@file@percent }
+\newlabel{fig:paramdist}{{4}{7}{Optimizer run status distribution from stochastic search summary}{figure.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Histogram of per-image optimizer runtime (elapsed seconds).}}{7}{figure.5}\protected@file@percent }
+\newlabel{fig:objterms}{{5}{7}{Histogram of per-image optimizer runtime (elapsed seconds)}{figure.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Histogram of optimizer objective scores across images.}}{7}{figure.6}\protected@file@percent }
+\newlabel{fig:optimizer_score_hist}{{6}{7}{Histogram of optimizer objective scores across images}{figure.6}{}}
+\gdef \@abspage@last{7}

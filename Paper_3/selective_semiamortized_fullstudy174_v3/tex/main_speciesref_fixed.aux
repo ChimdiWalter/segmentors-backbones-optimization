@@ -1,0 +1,245 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
+\HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
+\global\let\oldcontentsline\contentsline
+\gdef\contentsline#1#2#3#4{\oldcontentsline{#1}{#2}{#3}}
+\global\let\oldnewlabel\newlabel
+\gdef\newlabel#1#2{\newlabelxx{#1}#2}
+\gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
+\AtEndDocument{\ifx\hyper@anchor\@undefined
+\let\contentsline\oldcontentsline
+\let\newlabel\oldnewlabel
+\fi}
+\fi}
+\global\let\hyper@last\relax 
+\gdef\HyperFirstAtBeginDocument#1{#1}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{singh2021plantdoc}
+\citation{mahlein2016plant}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}}
+\newlabel{sec:intro}{{1}{1}{Introduction}{section.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{Motivation.}{1}{section*.1}}
+\citation{oquab2024dinov2}
+\citation{darcet2024vision}
+\citation{he2016deep}
+\citation{kingma2014auto}
+\citation{cranmer2020frontier}
+\citation{papamakarios2019sequential}
+\citation{amos2023tutorial}
+\citation{kim2018semi}
+\citation{marino2018iterative}
+\citation{wang2020tent}
+\citation{geifman2017selective}
+\citation{shalev2010trading}
+\citation{kamath2020selective}
+\@writefile{toc}{\contentsline {paragraph}{Approach.}{2}{section*.2}}
+\@writefile{toc}{\contentsline {paragraph}{Contributions.}{2}{section*.3}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{2}{section.2}}
+\newlabel{sec:related}{{2}{2}{Related Work}{section.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Amortized and Semi-Amortized Inference}{2}{subsection.2.1}}
+\@writefile{toc}{\contentsline {paragraph}{Amortized inference.}{2}{section*.4}}
+\@writefile{toc}{\contentsline {paragraph}{Semi-amortized inference.}{2}{section*.5}}
+\citation{lakshminarayanan2017simple}
+\citation{ovadia2019can}
+\citation{guo2017calibration}
+\citation{kuleshov2018accurate}
+\citation{oquab2024dinov2}
+\citation{darcet2024vision}
+\citation{he2016deep}
+\citation{raissi2019physics}
+\citation{karniadakis2021physics}
+\citation{kass1988snakes}
+\citation{chan2001active}
+\citation{mutka2015image}
+\citation{mahlein2016plant}
+\citation{singh2021plantdoc}
+\citation{ubbens2017deep}
+\citation{li2014review}
+\citation{trapeznikov2013supervised}
+\citation{shahriari2016taking}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Selective Prediction and Abstention}{3}{subsection.2.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Uncertainty Quantification}{3}{subsection.2.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Foundation Models for Visual Representation}{3}{subsection.2.4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Physics-Informed and Phenotyping Models}{3}{subsection.2.5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.6}Cost-Sensitive and Adaptive Computation}{3}{subsection.2.6}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Problem Formulation}{3}{section.3}}
+\newlabel{sec:problem}{{3}{3}{Problem Formulation}{section.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Physics-Based Parameter Estimation}{3}{subsection.3.1}}
+\newlabel{eq:optimization}{{1}{3}{Physics-Based Parameter Estimation}{equation.3.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{Full optimizer.}{4}{section*.6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Amortized Prediction}{4}{subsection.3.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Selective Semi-Amortized Framework}{4}{subsection.3.3}}
+\newlabel{eq:routing}{{3}{4}{Selective Semi-Amortized Framework}{equation.3.3}{}}
+\@writefile{toc}{\contentsline {paragraph}{Constrained selection objective.}{4}{section*.7}}
+\newlabel{eq:constrained}{{7}{4}{Constrained selection objective}{equation.3.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Refinement Operator}{4}{subsection.3.4}}
+\citation{oquab2024dinov2}
+\citation{darcet2024vision}
+\citation{he2016deep}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Method}{5}{section.4}}
+\newlabel{sec:method}{{4}{5}{Method}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Feature Extraction}{5}{subsection.4.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Regression Heads}{5}{subsection.4.2}}
+\@writefile{toc}{\contentsline {paragraph}{B0: Constant mean.}{5}{section*.8}}
+\@writefile{toc}{\contentsline {paragraph}{B0b: $k$-Nearest neighbors ($k=5$).}{5}{section*.9}}
+\@writefile{toc}{\contentsline {paragraph}{B1: Ridge regression.}{5}{section*.10}}
+\@writefile{toc}{\contentsline {paragraph}{B2: Multi-layer perceptron (MLP).}{5}{section*.11}}
+\@writefile{toc}{\contentsline {paragraph}{B3: Deep ensemble (5$\times $MLP).}{5}{section*.12}}
+\newlabel{eq:uncertainty}{{10}{5}{B3: Deep ensemble (5$\times $MLP)}{equation.4.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Real Short Refinement}{5}{subsection.4.3}}
+\newlabel{sec:refinement}{{4.3}{5}{Real Short Refinement}{subsection.4.3}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Real Short Refinement}}{6}{algorithm.1}}
+\newlabel{alg:refinement}{{1}{6}{Real Short Refinement}{algorithm.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{Distinction from interpolation-based refinement.}{6}{section*.13}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Selective Policy}{6}{subsection.4.4}}
+\newlabel{sec:policy}{{4.4}{6}{Selective Policy}{subsection.4.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Phenotype Consistency Metrics}{6}{subsection.4.5}}
+\@writefile{toc}{\contentsline {paragraph}{PCA displacement.}{6}{section*.14}}
+\@writefile{toc}{\contentsline {paragraph}{Convex hull overlap.}{6}{section*.15}}
+\@writefile{toc}{\contentsline {paragraph}{Centroid shift.}{6}{section*.16}}
+\@writefile{toc}{\contentsline {paragraph}{Covariance ellipsoid.}{7}{section*.17}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Experimental Setup}{7}{section.5}}
+\newlabel{sec:experiments}{{5}{7}{Experimental Setup}{section.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Dataset}{7}{subsection.5.1}}
+\@writefile{toc}{\contentsline {paragraph}{Primary dataset.}{7}{section*.18}}
+\@writefile{toc}{\contentsline {paragraph}{External test set.}{7}{section*.19}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Splits and Robustness Design}{7}{subsection.5.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Evaluation Metrics}{7}{subsection.5.3}}
+\@writefile{toc}{\contentsline {paragraph}{Parameter accuracy.}{7}{section*.20}}
+\@writefile{toc}{\contentsline {paragraph}{Physics score recovery.}{7}{section*.21}}
+\@writefile{toc}{\contentsline {paragraph}{Morphology fidelity.}{7}{section*.22}}
+\@writefile{toc}{\contentsline {paragraph}{Runtime.}{7}{section*.23}}
+\@writefile{toc}{\contentsline {paragraph}{Calibration.}{8}{section*.24}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Results}{8}{section.6}}
+\newlabel{sec:results}{{6}{8}{Results}{section.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Baseline Comparison}{8}{subsection.6.1}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Baseline test-set results (35 test leaves). MAE and $R^2$ are aggregated across 7 normalized parameters.}}{8}{table.1}}
+\newlabel{tab:baselines}{{1}{8}{Baseline test-set results (35 test leaves). MAE and $R^2$ are aggregated across 7 normalized parameters}{table.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Real Refinement Results}{8}{subsection.6.2}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Real refinement results (35 test leaves). Scores are from actual PDE + active contour evaluation.}}{8}{table.2}}
+\newlabel{tab:refinement}{{2}{8}{Real refinement results (35 test leaves). Scores are from actual PDE + active contour evaluation}{table.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Score recovery relative to the optimizer objective.}{9}{section*.25}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Selective Policy Analysis}{9}{subsection.6.3}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Runtime--quality Pareto frontier. Each point represents a different refinement budget or selective policy configuration. The best selective policy (star) achieves MAE 0.071 at 74.7\tmspace  +\thinmuskip {.1667em}s/leaf, a $3.5\times $ speedup over the full optimizer.}}{9}{figure.1}}
+\newlabel{fig:pareto}{{1}{9}{Runtime--quality Pareto frontier. Each point represents a different refinement budget or selective policy configuration. The best selective policy (star) achieves MAE 0.071 at 74.7\,s/leaf, a $3.5\times $ speedup over the full optimizer}{figure.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Qualitative Leaf Cases}{9}{subsection.6.4}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Physics score recovery by refinement budget. Medium-budget refinement (12 steps) reaches a higher mean objective value than the stored full-optimizer result on this test split (18.24 vs.\ 18.05), indicating that the amortized starting point can reach alternative local optima.}}{10}{figure.2}}
+\newlabel{fig:score_recovery}{{2}{10}{Physics score recovery by refinement budget. Medium-budget refinement (12 steps) reaches a higher mean objective value than the stored full-optimizer result on this test split (18.24 vs.\ 18.05), indicating that the amortized starting point can reach alternative local optima}{figure.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.5}Selective Policy Landscape}{10}{subsection.6.5}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Selective policy grid search. $(q_1, q_2)$ are the quantile thresholds for direct/refine/fallback routing.}}{10}{table.3}}
+\newlabel{tab:policy_landscape}{{3}{10}{Selective policy grid search. $(q_1, q_2)$ are the quantile thresholds for direct/refine/fallback routing}{table.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.6}Calibration Analysis}{10}{subsection.6.6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.7}Risk-Coverage Tradeoff}{10}{subsection.6.7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.8}OOD Robustness}{11}{subsection.6.8}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces ID vs.\ pseudo-OOD performance (MAE / $R^2$). OOD split: batch D (28 leaves, highest DSC camera IDs).}}{11}{table.4}}
+\newlabel{tab:ood}{{4}{11}{ID vs.\ pseudo-OOD performance (MAE / $R^2$). OOD split: batch D (28 leaves, highest DSC camera IDs)}{table.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.9}Score-Tier Stratification}{11}{subsection.6.9}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.10}Phenotype Consistency}{11}{subsection.6.10}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.10.1}Convex Hull and Centroid Analysis}{11}{subsubsection.6.10.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.10.2}Displacement Analysis}{11}{subsubsection.6.10.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.11}Morphology Fidelity}{11}{subsection.6.11}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Ablation Studies}{11}{section.7}}
+\newlabel{sec:ablations}{{7}{11}{Ablation Studies}{section.7}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Morphology fidelity by refinement budget.}}{12}{table.5}}
+\newlabel{tab:morphology}{{5}{12}{Morphology fidelity by refinement budget}{table.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Backbone Comparison}{12}{subsection.7.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Regression Head Comparison}{12}{subsection.7.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}Ensemble Size}{12}{subsection.7.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}Refinement Budget}{12}{subsection.7.4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.5}Learning Curve}{12}{subsection.7.5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.6}Feature Dimensionality Reduction}{12}{subsection.7.6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.7}Confidence-Based Subgroup Analysis}{12}{subsection.7.7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.8}Per-Parameter Difficulty}{13}{subsection.7.8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.9}Score-Tier Subgroups}{13}{subsection.7.9}}
+\@writefile{toc}{\contentsline {section}{\numberline {8}Discussion}{13}{section.8}}
+\newlabel{sec:discussion}{{8}{13}{Discussion}{section.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.1}The Mean-Baseline Challenge}{13}{subsection.8.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.2}Refinement as Deployment Intelligence}{13}{subsection.8.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.3}Score Recovery Relative to Stored Optimizer Results}{13}{subsection.8.3}}
+\citation{shahriari2016taking}
+\citation{angelopoulos2023conformal}
+\bibstyle{plain}
+\bibdata{../bib/references_speciesref_fixed}
+\bibcite{amos2023tutorial}{1}
+\bibcite{angelopoulos2023conformal}{2}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.4}Limitations and Future Directions}{14}{subsection.8.4}}
+\@writefile{toc}{\contentsline {paragraph}{Dataset scale.}{14}{section*.26}}
+\@writefile{toc}{\contentsline {paragraph}{Pseudo-OOD evaluation.}{14}{section*.27}}
+\@writefile{toc}{\contentsline {paragraph}{External test limitations.}{14}{section*.28}}
+\@writefile{toc}{\contentsline {paragraph}{Refinement strategies.}{14}{section*.29}}
+\@writefile{toc}{\contentsline {paragraph}{Conformal prediction.}{14}{section*.30}}
+\@writefile{toc}{\contentsline {paragraph}{Multi-objective routing.}{14}{section*.31}}
+\@writefile{toc}{\contentsline {section}{\numberline {9}Conclusion}{14}{section.9}}
+\bibcite{chan2001active}{3}
+\bibcite{cranmer2020frontier}{4}
+\bibcite{darcet2024vision}{5}
+\bibcite{shalev2010trading}{6}
+\bibcite{geifman2017selective}{7}
+\bibcite{guo2017calibration}{8}
+\bibcite{he2016deep}{9}
+\bibcite{kamath2020selective}{10}
+\bibcite{karniadakis2021physics}{11}
+\bibcite{kass1988snakes}{12}
+\bibcite{kim2018semi}{13}
+\bibcite{kingma2014auto}{14}
+\bibcite{kuleshov2018accurate}{15}
+\bibcite{lakshminarayanan2017simple}{16}
+\bibcite{li2014review}{17}
+\bibcite{mahlein2016plant}{18}
+\bibcite{marino2018iterative}{19}
+\bibcite{mutka2015image}{20}
+\bibcite{oquab2024dinov2}{21}
+\bibcite{ovadia2019can}{22}
+\bibcite{papamakarios2019sequential}{23}
+\bibcite{raissi2019physics}{24}
+\bibcite{shahriari2016taking}{25}
+\bibcite{singh2021plantdoc}{26}
+\bibcite{trapeznikov2013supervised}{27}
+\bibcite{ubbens2017deep}{28}
+\bibcite{wang2020tent}{29}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Representative qualitative panel on real maize leaves from the primary set. Each tile reports uncertainty, routing decision, and \(\theta \)-vector summaries (predicted/refined/oracle).}}{17}{figure.3}}
+\newlabel{fig:qual_primary}{{3}{17}{Representative qualitative panel on real maize leaves from the primary set. Each tile reports uncertainty, routing decision, and \(\theta \)-vector summaries (predicted/refined/oracle)}{figure.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Failure-case montage on real primary-set maize leaves: low-uncertainty success, medium-uncertainty refine case, high-uncertainty fallback case, and a hard phenotype-extreme case.}}{18}{figure.4}}
+\newlabel{fig:qual_failure}{{4}{18}{Failure-case montage on real primary-set maize leaves: low-uncertainty success, medium-uncertainty refine case, high-uncertainty fallback case, and a hard phenotype-extreme case}{figure.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces External 18.7 qualitative panel with real maize leaf images. Uncertainty and inferred routing are shown under the best policy thresholds \((q_1{=}0.5, q_2{=}0.7)\). Oracle parameter vectors are unavailable.}}{19}{figure.5}}
+\newlabel{fig:qual_external}{{5}{19}{External 18.7 qualitative panel with real maize leaf images. Uncertainty and inferred routing are shown under the best policy thresholds \((q_1{=}0.5, q_2{=}0.7)\). Oracle parameter vectors are unavailable}{figure.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Calibration plot: ensemble uncertainty (red) correlates positively with actual prediction error (blue bars). Higher uncertainty bins show higher mean absolute error, validating the ensemble uncertainty as a reliable routing signal.}}{20}{figure.6}}
+\newlabel{fig:calibration}{{6}{20}{Calibration plot: ensemble uncertainty (red) correlates positively with actual prediction error (blue bars). Higher uncertainty bins show higher mean absolute error, validating the ensemble uncertainty as a reliable routing signal}{figure.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Risk-coverage curve. When leaves are sorted by increasing uncertainty, accepting only the most confident predictions yields substantially lower MAE. The mean baseline (dashed) is beaten at coverages below ${\sim }60\%$.}}{20}{figure.7}}
+\newlabel{fig:risk_coverage}{{7}{20}{Risk-coverage curve. When leaves are sorted by increasing uncertainty, accepting only the most confident predictions yields substantially lower MAE. The mean baseline (dashed) is beaten at coverages below ${\sim }60\%$}{figure.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Phenotype consistency: oracle (blue) vs.\ predicted (red) parameters in PC1--PC2 space. Lines connect corresponding leaves. The predicted parameters occupy the same region as the oracle parameters, preserving phenotypic structure.}}{21}{figure.8}}
+\newlabel{fig:phenotype}{{8}{21}{Phenotype consistency: oracle (blue) vs.\ predicted (red) parameters in PC1--PC2 space. Lines connect corresponding leaves. The predicted parameters occupy the same region as the oracle parameters, preserving phenotypic structure}{figure.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Convex hulls in PC1--PC2 space for oracle (blue), ensemble (red), and refined (green) parameters. Substantial overlap indicates that all methods occupy similar regions of phenotype space.}}{21}{figure.9}}
+\newlabel{fig:hull}{{9}{21}{Convex hulls in PC1--PC2 space for oracle (blue), ensemble (red), and refined (green) parameters. Substantial overlap indicates that all methods occupy similar regions of phenotype space}{figure.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Covariance ellipsoids ($2\sigma $) in PC1--PC2 space. Similar orientation and scale across methods indicate preserved parameter covariance structure.}}{22}{figure.10}}
+\newlabel{fig:ellipsoids}{{10}{22}{Covariance ellipsoids ($2\sigma $) in PC1--PC2 space. Similar orientation and scale across methods indicate preserved parameter covariance structure}{figure.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces PCA displacement analysis. Left: oracle $\to $ ensemble. Center: oracle $\to $ refined (medium budget). Right: ensemble predictions colored by uncertainty. Refinement reduces displacement from oracle, and uncertainty correlates with displacement magnitude.}}{22}{figure.11}}
+\newlabel{fig:displacement}{{11}{22}{PCA displacement analysis. Left: oracle $\to $ ensemble. Center: oracle $\to $ refined (medium budget). Right: ensemble predictions colored by uncertainty. Refinement reduces displacement from oracle, and uncertainty correlates with displacement magnitude}{figure.11}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Ensemble size ablation. MAE decreases with ensemble size, with diminishing returns beyond $k{=}3$. We use $k{=}5$ for a balance of quality and computational cost.}}{23}{figure.12}}
+\newlabel{fig:ensemble_size}{{12}{23}{Ensemble size ablation. MAE decreases with ensemble size, with diminishing returns beyond $k{=}3$. We use $k{=}5$ for a balance of quality and computational cost}{figure.12}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces Learning curve: Ridge regression on DINOv2 features. Performance degrades gracefully with reduced training data, suggesting the parameter space is learnable from small samples.}}{23}{figure.13}}
+\newlabel{fig:learning_curve}{{13}{23}{Learning curve: Ridge regression on DINOv2 features. Performance degrades gracefully with reduced training data, suggesting the parameter space is learnable from small samples}{figure.13}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Per-parameter scatter plots: oracle vs.\ ensemble predictions, colored by uncertainty. Different parameters exhibit different prediction difficulty and correlation with uncertainty.}}{23}{figure.14}}
+\newlabel{fig:per_param}{{14}{23}{Per-parameter scatter plots: oracle vs.\ ensemble predictions, colored by uncertainty. Different parameters exhibit different prediction difficulty and correlation with uncertainty}{figure.14}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces Performance by optimizer score tier. Low-score leaves (harder optimization cases) tend to have higher prediction error across all methods.}}{24}{figure.15}}
+\newlabel{fig:score_tier}{{15}{24}{Performance by optimizer score tier. Low-score leaves (harder optimization cases) tend to have higher prediction error across all methods}{figure.15}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Additional Figures}{25}{appendix.A}}
+\newlabel{app:figures}{{A}{25}{Additional Figures}{appendix.A}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces Residual distributions (oracle $-$ predicted) for each of the 7 physics parameters. Most residuals are centered near zero with parameter-specific spread.}}{25}{figure.16}}
+\newlabel{fig:residuals}{{16}{25}{Residual distributions (oracle $-$ predicted) for each of the 7 physics parameters. Most residuals are centered near zero with parameter-specific spread}{figure.16}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces DINOv2 feature space (PCA projection), colored by data split. Train, validation, and test sets are well-mixed in feature space.}}{25}{figure.17}}
+\newlabel{fig:feature_pca}{{17}{25}{DINOv2 feature space (PCA projection), colored by data split. Train, validation, and test sets are well-mixed in feature space}{figure.17}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {B}Selective Policy Full Grid}{25}{appendix.B}}
+\newlabel{app:policy}{{B}{25}{Selective Policy Full Grid}{appendix.B}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces Selective routing decisions visualized in parameter PCA space. Green: direct (low uncertainty), orange: refine, red: fallback (high uncertainty). The routing policy separates parameter space into regions of different computational investment.}}{26}{figure.18}}
+\newlabel{fig:routing_pca}{{18}{26}{Selective routing decisions visualized in parameter PCA space. Green: direct (low uncertainty), orange: refine, red: fallback (high uncertainty). The routing policy separates parameter space into regions of different computational investment}{figure.18}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {19}{\ignorespaces Distribution of PCA displacement from oracle parameters. Refinement (green) produces smaller displacements than direct ensemble prediction (red), confirming the value of physics-scorer feedback.}}{26}{figure.19}}
+\newlabel{fig:displacement_hist}{{19}{26}{Distribution of PCA displacement from oracle parameters. Refinement (green) produces smaller displacements than direct ensemble prediction (red), confirming the value of physics-scorer feedback}{figure.19}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {20}{\ignorespaces 3D PCA visualization of oracle (blue), ensemble (red), and refined (green) parameters. All three sets occupy the same region of the 3D parameter manifold.}}{27}{figure.20}}
+\newlabel{fig:pca_3d}{{20}{27}{3D PCA visualization of oracle (blue), ensemble (red), and refined (green) parameters. All three sets occupy the same region of the 3D parameter manifold}{figure.20}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {21}{\ignorespaces Backbone comparison: DINOv2 vs.\ ResNet-18 for ridge regression. ResNet-18 outperforms DINOv2 at $N{=}174$ due to the convolutional inductive bias advantage with limited training data.}}{27}{figure.21}}
+\newlabel{fig:backbone}{{21}{27}{Backbone comparison: DINOv2 vs.\ ResNet-18 for ridge regression. ResNet-18 outperforms DINOv2 at $N{=}174$ due to the convolutional inductive bias advantage with limited training data}{figure.21}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Full selective policy grid search (12 configurations).}}{28}{table.6}}
+\newlabel{tab:full_grid}{{6}{28}{Full selective policy grid search (12 configurations)}{table.6}{}}

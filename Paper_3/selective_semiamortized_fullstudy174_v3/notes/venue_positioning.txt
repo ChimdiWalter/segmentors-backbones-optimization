@@ -1,0 +1,35 @@
+Venue Positioning — v3 Full Study
+====================================
+
+TARGET VENUE MATRIX:
+
+1. Plant Phenomics (journal)
+   Fit: EXCELLENT — direct domain match
+   Strengths: physics-based phenotyping, soybean disease, deployment focus
+   Evidence needed: biological interpretation, field relevance, comparison to existing tools
+
+2. Plant Methods (journal)
+   Fit: EXCELLENT — methodological contribution to plant science
+   Strengths: practical deployment pipeline, runtime analysis
+   Evidence needed: reproducibility, open-source potential
+
+3. Frontiers in Plant Science (journal)
+   Fit: GOOD — computational phenotyping section
+   Strengths: OOD robustness, uncertainty quantification
+
+4. CVPR/ICCV Workshop on Agriculture Vision
+   Fit: GOOD — CV + agriculture intersection
+   Strengths: foundation models, uncertainty, deployment
+   Evidence needed: stronger CV baselines, comparison to other vision methods
+
+5. NeurIPS / ICML (workshop on Bayesian methods or uncertainty)
+   Fit: MODERATE — selective inference + uncertainty
+   Strengths: semi-amortized inference framework, selective prediction theory
+   Evidence needed: more formal theoretical analysis
+
+6. IEEE TPAMI / Pattern Recognition
+   Fit: MODERATE — if framed as general selective inference
+   Evidence needed: broader experimental scope
+
+RECOMMENDED PRIMARY TARGET: Plant Phenomics or Plant Methods
+RECOMMENDED SECONDARY: Agriculture Vision workshop at CVPR

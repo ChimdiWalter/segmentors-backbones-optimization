@@ -1,0 +1,39 @@
+figure_label,filename,source_path,description
+fig:paramdist_status,optimizer_status_bar.png,figures/exp_v1/optimizer_status_bar.png,Optimizer run status distribution bar chart
+fig:objterms_runtime,optimizer_elapsed_seconds_hist.png,figures/exp_v1/optimizer_elapsed_seconds_hist.png,Per-image optimizer runtime histogram (elapsed seconds)
+fig:optimizer_score_hist,optimizer_score_hist.png,figures/exp_v1/optimizer_score_hist.png,Histogram of optimizer objective scores across images
+fig:thresh_sweep,threshold_sweep_plot.png,figures/exp_v1/threshold_sweep_plot.png,Threshold sweep on stitched probability maps
+fig:teacher_student_montage,montage_teacher_student.png,figures/exp_v1/montage_teacher_student.png,Teacher-student qualitative montage (worst/median/best)
+fig:disagreement,montage_disagreement_roi.png,figures/exp_v1/montage_disagreement_roi.png,Teacher-empty/student-nonempty disagreement cases
+fig:scatter_et_lc,scatter_energy_threshold_vs_lesion_count.png,figures/exp_v1/scatter_energy_threshold_vs_lesion_count.png,Energy threshold vs lesion count scatter (174 images)
+fig:scatter_beta_af,scatter_beta_vs_area_frac.png,figures/exp_v1/scatter_beta_vs_area_frac.png,Balloon force beta vs area fraction scatter
+fig:surface_high,surface_DSC_0198_segment_1_segmented_smoothed__surface_energy_threshold_vs_beta.png,figures/9leaf/surface_DSC_0198_segment_1_segmented_smoothed__surface_energy_threshold_vs_beta.png,Trace-based objective surface (T vs beta) for high-score leaf DSC_0198
+fig:surface_med,surface_DSC_0379_segment_1_segmented_smoothed__surface_energy_threshold_vs_beta.png,figures/9leaf/surface_DSC_0379_segment_1_segmented_smoothed__surface_energy_threshold_vs_beta.png,Trace-based objective surface (T vs beta) for median-score leaf DSC_0379
+fig:surface_low,surface_DSC_0261_segment_1_segmented_smoothed__surface_energy_threshold_vs_beta.png,figures/9leaf/surface_DSC_0261_segment_1_segmented_smoothed__surface_energy_threshold_vs_beta.png,Trace-based objective surface (T vs beta) for low-score leaf DSC_0261
+fig:trajectory_high,traj_DSC_0198_segment_1_segmented_smoothed__trajectory_best_score_so_far.png,figures/9leaf/traj_DSC_0198_segment_1_segmented_smoothed__trajectory_best_score_so_far.png,Convergence trajectory (best score so far) for high-score leaf DSC_0198
+fig:pca2d_global_local,pca2d_global_local_dD.png,figures/manifold/pca2d_global_local_dD.png,PCA 2D projection of global vs local parameter vectors colored by delta-D
+fig:mean_delta,mean_delta_parameters.png,figures/manifold/mean_delta_parameters.png,Mean parameter shift profile (global to local) across 150 patches
+fig:cov_ellipsoids,pca3d_covariance_ellipsoids.png,figures/solid3d/pca3d_covariance_ellipsoids.png,Covariance ellipsoids (2-sigma) for global and local parameter clouds in PCA space
+fig:qual_grid,qual_grid_teacher_student.png,figures/exp_v1/qual_grid_teacher_student.png,Qualitative grid across Dice spectrum (6 rows worst to best)
+fig:patch_area_err_hist,hist_area_frac_error.png,figures/exp_v1/hist_area_frac_error.png,Distribution of signed area-fraction error (predicted minus teacher)
+fig:patch_count_err_hist,hist_count_error.png,figures/exp_v1/hist_count_error.png,Distribution of signed lesion-count error (predicted minus teacher)
+fig:patch_area_scatter,scatter_teacher_vs_pred_area_frac.png,figures/exp_v1/scatter_teacher_vs_pred_area_frac.png,Teacher vs predicted lesion area fraction scatter
+fig:appendix_optimizer_outputs (a),n_contours_hist.png,figures/exp_v1/n_contours_hist.png,Appendix A: connected-component count distribution
+fig:appendix_optimizer_outputs (b),area_px_hist.png,figures/exp_v1/area_px_hist.png,Appendix A: mask area (pixels) distribution
+fig:appendix_param_hists (a),param_mu_hist.png,figures/exp_v1/param_mu_hist.png,Appendix A: optimized mu distribution
+fig:appendix_param_hists (b),param_lambda_hist.png,figures/exp_v1/param_lambda_hist.png,Appendix A: optimized lambda distribution
+fig:appendix_param_hists (c),param_diffusion_rate_hist.png,figures/exp_v1/param_diffusion_rate_hist.png,Appendix A: optimized diffusion rate distribution
+fig:appendix_param_hists (d),param_alpha_hist.png,figures/exp_v1/param_alpha_hist.png,Appendix A: optimized alpha distribution
+fig:appendix_param_hists (e),param_beta_hist.png,figures/exp_v1/param_beta_hist.png,Appendix A: optimized beta distribution
+fig:appendix_param_hists (f),param_gamma_hist.png,figures/exp_v1/param_gamma_hist.png,Appendix A: optimized gamma distribution
+fig:appendix_param_hists (g),param_energy_threshold_hist.png,figures/exp_v1/param_energy_threshold_hist.png,Appendix A: optimized energy threshold distribution
+fig:appendix_traj_high (a),traj_DSC_0166_segment_1_segmented_smoothed__trajectory_best_score_so_far.png,figures/9leaf/traj_DSC_0166_segment_1_segmented_smoothed__trajectory_best_score_so_far.png,Appendix B: convergence trajectory high-score leaf DSC_0166
+fig:appendix_traj_high (b),traj_DSC_0163_segment_1_segmented_smoothed__trajectory_best_score_so_far.png,figures/9leaf/traj_DSC_0163_segment_1_segmented_smoothed__trajectory_best_score_so_far.png,Appendix B: convergence trajectory high-score leaf DSC_0163
+fig:appendix_traj_med (a),traj_DSC_0274_segment_1_segmented_smoothed__trajectory_best_score_so_far.png,figures/9leaf/traj_DSC_0274_segment_1_segmented_smoothed__trajectory_best_score_so_far.png,Appendix B: convergence trajectory median-score leaf DSC_0274
+fig:appendix_traj_med (b),traj_DSC_0205_segment_1_segmented_smoothed__trajectory_best_score_so_far.png,figures/9leaf/traj_DSC_0205_segment_1_segmented_smoothed__trajectory_best_score_so_far.png,Appendix B: convergence trajectory median-score leaf DSC_0205
+fig:appendix_traj_low (a),traj_DSC_0185_segment_1_segmented_smoothed__trajectory_best_score_so_far.png,figures/9leaf/traj_DSC_0185_segment_1_segmented_smoothed__trajectory_best_score_so_far.png,Appendix B: convergence trajectory low-score leaf DSC_0185
+fig:appendix_traj_low (b),traj_DSC_0199_segment_1_segmented_smoothed__trajectory_best_score_so_far.png,figures/9leaf/traj_DSC_0199_segment_1_segmented_smoothed__trajectory_best_score_so_far.png,Appendix B: convergence trajectory low-score leaf DSC_0199
+fig:appendix_solid3d (a),pca3d_convex_hull_global_local.png,figures/solid3d/pca3d_convex_hull_global_local.png,Appendix C: convex hulls global vs local in PCA space
+fig:appendix_solid3d (b),pca3d_positive_vs_negative_dD_surfaces.png,figures/solid3d/pca3d_positive_vs_negative_dD_surfaces.png,Appendix C: positive vs negative delta-D surfaces
+fig:appendix_manifold (a),tsne2d_delta_ddgroup.png,figures/manifold/tsne2d_delta_ddgroup.png,Appendix C: t-SNE of parameter shifts colored by delta-D group
+fig:appendix_manifold (b),pca_centroid_shift_groups.png,figures/manifold/pca_centroid_shift_groups.png,Appendix C: PCA centroid shift by delta-D group

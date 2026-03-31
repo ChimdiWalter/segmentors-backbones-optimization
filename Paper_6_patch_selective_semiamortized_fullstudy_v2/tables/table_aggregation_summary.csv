@@ -1,0 +1,7 @@
+method,leaf_mae_vs_fullleaf_oracle
+lesion_weighted,10.021644093773581
+mean_direct,10.021078131415628
+robust_median,10.027057040821422
+selective_mixture,7.989240080118179
+topk_confident,10.035468209873546
+uncertainty_weighted,10.022467884150418

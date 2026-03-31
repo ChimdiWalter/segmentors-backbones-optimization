@@ -1,0 +1,24 @@
+\BOOKMARK [1][-]{section.1}{Project Overview}{}% 1
+\BOOKMARK [1][-]{section.2}{Paper Split Rationale}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Why Two Papers?}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{What Belongs Where}{section.2}% 4
+\BOOKMARK [1][-]{section.3}{Paper 1: Gradient-Free Stochastic Optimization of Navier-Stokes Active Contours}{}% 5
+\BOOKMARK [2][-]{subsection.3.1}{Central Question}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.2}{Key Results}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.3}{Manuscript Details}{section.3}% 8
+\BOOKMARK [1][-]{section.4}{Paper 2: Black-Box Selective Semi-Amortized Inference}{}% 9
+\BOOKMARK [2][-]{subsection.4.1}{Central Question}{section.4}% 10
+\BOOKMARK [2][-]{subsection.4.2}{Key Results}{section.4}% 11
+\BOOKMARK [2][-]{subsection.4.3}{Manuscript Details}{section.4}% 12
+\BOOKMARK [1][-]{section.5}{Experimental Infrastructure}{}% 13
+\BOOKMARK [2][-]{subsection.5.1}{Data}{section.5}% 14
+\BOOKMARK [2][-]{subsection.5.2}{Optimizer}{section.5}% 15
+\BOOKMARK [2][-]{subsection.5.3}{Student Models}{section.5}% 16
+\BOOKMARK [1][-]{section.6}{Key Figure Guide}{}% 17
+\BOOKMARK [2][-]{subsection.6.1}{Paper 1 Figures}{section.6}% 18
+\BOOKMARK [2][-]{subsection.6.2}{Paper 2 Figures}{section.6}% 19
+\BOOKMARK [1][-]{section.7}{Strongest Evidence}{}% 20
+\BOOKMARK [2][-]{subsection.7.1}{Paper 1}{section.7}% 21
+\BOOKMARK [2][-]{subsection.7.2}{Paper 2}{section.7}% 22
+\BOOKMARK [1][-]{section.8}{What Was Reused vs New}{}% 23
+\BOOKMARK [1][-]{section.9}{Provenance}{}% 24

@@ -1,0 +1,187 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\hypersetup{colorlinks=true,linkcolor=blue!60!black,citecolor=green!40!black,urlcolor=blue!60!black}
+
+\title{Global Explainer:\\Dual-Paper Project for Physics-Based Lesion Phenotyping}
+\author{Chimdi Walter Ndubuisi and Toni Kazic}
+\date{March 2026}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Project Overview}
+
+This document explains the full body of work behind two journal-ready manuscripts on automated, unsupervised lesion segmentation using Navier-Stokes active contours with per-image physics parameter optimization.
+
+The core pipeline treats lesion segmentation as a black-box optimization problem: for each of 174 high-resolution soybean leaf images, a stochastic search finds the 7-parameter vector $\theta = (\mu, \lambda, d, \alpha, \beta, \gamma, E_{\mathrm{thr}})$ that maximizes a no-ground-truth heuristic objective combining gradient alignment, chromatic separability, and topological constraints. The full optimizer costs approximately 260 seconds per leaf.
+
+This expensive but effective oracle creates a natural two-paper structure: one paper about \emph{building and analyzing the oracle itself}, and one paper about \emph{approximating it efficiently for deployment}.
+
+\section{Paper Split Rationale}
+
+\subsection{Why Two Papers?}
+
+The repository contains evidence for two distinct scientific contributions that are stronger when presented separately than when collapsed together:
+
+\begin{enumerate}
+\item \textbf{Paper 1 (Optimizer/Oracle):} The design, analysis, and characterization of the physics-based optimizer. This includes the objective function, search strategy, ablations, trace-based landscape analysis, and parameter-cloud geometry. The contribution is methodological: a new way to do unsupervised physics-based segmentation.
+
+\item \textbf{Paper 2 (Deployment/Runtime):} The operational problem of approximating the expensive oracle at deployment time. This includes selective semi-amortized routing, full-leaf vs patchwise comparison, calibration, runtime-quality tradeoffs, and failure analysis. The contribution is practical: explicit operating points for practitioners with limited compute.
+\end{enumerate}
+
+\subsection{What Belongs Where}
+
+\begin{itemize}
+\item \textbf{Paper 1 only:} Objective function design, search strategy, ablation studies, trace-based surface reconstruction, parameter-manifold geometry (PCA, t-SNE, UMAP, solid 3D), distillation as secondary consequence.
+\item \textbf{Paper 2 only:} Selective routing policy, runtime-quality Pareto frontier, calibration/risk-coverage, aggregation method comparison, oracle gap quantification, failure taxonomy, cross-collection robustness.
+\item \textbf{Shared (minimal):} Refinement budget table (different framing in each), per-parameter difficulty (optimizer interpretation in P1 vs routing interpretation in P2).
+\end{itemize}
+
+\section{Paper 1: Gradient-Free Stochastic Optimization of Navier-Stokes Active Contours}
+
+\subsection{Central Question}
+Can a gradient-free stochastic optimizer reliably find per-image physics parameters for Navier-Stokes active contour segmentation without ground truth?
+
+\subsection{Key Results}
+\begin{itemize}
+\item 100\% convergence on all 174 images (mean score 21.10, mean runtime 258s)
+\item Objective ablations: topology term contributes +11.12 points, gradient alignment +5.09 points
+\item Search ablations: random exploration reaches $\sim$90\% of final score; refinement adds $\sim$10\%
+\item Trace-based surface analysis on 9 representative leaves reveals score-tier-dependent landscape geometry: sharp peaks for high-score leaves, flat surfaces for low-score leaves
+\item Parameter-cloud geometry: 2 PCs capture 46.5\% of variance, centroid shift 1.616 standardized units from global to local optimization
+\item $k$-NN agreement 0.534 (vs 0.33 random baseline) shows parameter shift direction predicts optimization success
+\item UNet student: mean Dice 0.598 (median 0.682) across 174 images
+\item Local re-optimization reduces count error by 35\%
+\end{itemize}
+
+\subsection{Manuscript Details}
+18-page IEEEtran journal paper. 19 main-text figures, 3 tables, 27 verified references. Three appendices with additional optimizer diagnostics, trace plots, and geometry supplementary figures.
+
+\section{Paper 2: Black-Box Selective Semi-Amortized Inference}
+
+\subsection{Central Question}
+How should compute be allocated between direct prediction, short refinement, and full optimization for deployment?
+
+\subsection{Key Results}
+\begin{itemize}
+\item On 35-leaf matched split: patchwise mean aggregation achieves nMAE 0.906 vs full-leaf 1.154 (21.5\% improvement, $p=0.003$)
+\item Oracle gap: 0.327 nMAE (irreducible mismatch between full-leaf and aggregated patch oracles)
+\item Selective routing operating points:
+  \begin{itemize}
+  \item Quality-favoring: 0.556 nMAE at 74.34s (3.50$\times$ speedup)
+  \item Balanced: 0.577 nMAE at 60.48s (4.31$\times$ speedup)
+  \item Max-speedup: 0.819 nMAE at 55.77s (4.67$\times$ speedup)
+  \end{itemize}
+\item Calibration directionally correct (monotonic uncertainty-error relationship)
+\item Failure taxonomy: Both good 29\%, FL only 20\%, Patch only 20\%, Both bad 31\%
+\item Cross-collection robustness on 28 external leaves from 18.7 collection
+\end{itemize}
+
+\subsection{Manuscript Details}
+20-page article-class paper. 9 multi-panel main-text figures, 13 tables, 19 verified references. 5 appendix figure families.
+
+\section{Experimental Infrastructure}
+
+\subsection{Data}
+\begin{itemize}
+\item \textbf{Primary:} 174 soybean leaf images, 16-bit TIFF, $\sim$3900$\times$1340 px
+\item \textbf{External:} 78 images from collection 18.7 (cross-domain evaluation)
+\item \textbf{Patches:} 224$\times$224 px at stride 112, $\sim$275 patches/leaf (47,916 total)
+\end{itemize}
+
+\subsection{Optimizer}
+Random-restart stochastic hill climbing. 64 random candidates, top-4 refined with 12 steps each, downscale $s=0.75$. 7 physics parameters: viscosity $\mu$, elastic coupling $\lambda$, diffusion rate $d$, tension $\alpha$, rigidity/balloon $\beta$, inflation $\gamma$, energy threshold $E_{\mathrm{thr}}$.
+
+\subsection{Student Models}
+\begin{itemize}
+\item UNet: patch-based (512$\times$512), 3-level encoder-decoder, BCE+Dice loss, 40 epochs
+\item Feature extraction: DINOv2 (384D CLS token), ResNet-18 (512D avg-pool), Handcrafted (45D color+texture+shape)
+\item Regression heads: Ridge ($\alpha=1.0$), MLP (2 hidden layers), Ensemble (5 models with std uncertainty)
+\end{itemize}
+
+\section{Key Figure Guide}
+
+\subsection{Paper 1 Figures}
+\begin{itemize}
+\item Figs 1--3: Optimizer status, runtime, score histograms $\rightarrow$ \texttt{figures/exp\_v1/optimizer\_*.png}
+\item Fig 4: Threshold sweep $\rightarrow$ \texttt{figures/exp\_v1/threshold\_sweep\_plot.png}
+\item Figs 5--6: Teacher-student montage and disagreement $\rightarrow$ \texttt{figures/exp\_v1/montage\_*.png}
+\item Figs 7--8: Parameter-morphology scatter $\rightarrow$ \texttt{figures/exp\_v1/scatter\_*.png}
+\item Figs 9--11: Trace-based objective surfaces (3 score tiers) $\rightarrow$ \texttt{figures/9leaf/surface\_*.png}
+\item Fig 12: Convergence trajectory $\rightarrow$ \texttt{figures/9leaf/traj\_*.png}
+\item Figs 13--15: PCA, mean delta, covariance ellipsoids $\rightarrow$ \texttt{figures/manifold/*.png} and \texttt{figures/solid3d/*.png}
+\end{itemize}
+
+\subsection{Paper 2 Figures}
+\begin{itemize}
+\item fig:setup\_main: Pipeline + main comparison + oracle gap $\rightarrow$ \texttt{figures/B\_fig01--05*.pdf}
+\item fig:frontierB: Runtime-quality Pareto $\rightarrow$ \texttt{figures/B\_fig04,08,19,38*.pdf}
+\item fig:calibrationB: Risk-coverage + calibration $\rightarrow$ \texttt{figures/B\_fig09,10,27,28*.pdf}
+\item fig:failureB: Failure taxonomy + cross-collection $\rightarrow$ \texttt{figures/B\_fig18,35,36*.pdf}
+\end{itemize}
+
+\section{Strongest Evidence}
+
+\subsection{Paper 1}
+\begin{enumerate}
+\item \textbf{Ablation tables} (Tables I--II): Systematic justification of each objective term and search strategy choice
+\item \textbf{Trace-based surfaces} (Figs 9--11): Direct visualization of the true objective landscape explored by the optimizer
+\item \textbf{PCA manifold} (Fig 13, centroid shift 1.616 std units): Demonstrates structured, non-random parameter organization
+\end{enumerate}
+
+\subsection{Paper 2}
+\begin{enumerate}
+\item \textbf{Matched comparison} (Tab mainB, $p=0.003$): Rigorous statistical evidence for patchwise advantage
+\item \textbf{Pareto frontier} (Fig frontierB): Multiple explicit operating points, not a single threshold
+\item \textbf{Oracle gap} (0.327 nMAE): Honest quantification of fundamental resolution mismatch
+\end{enumerate}
+
+\section{What Was Reused vs New}
+
+Almost all evidence was reused from existing experimental outputs. The repository contained extensive outputs from:
+\begin{itemize}
+\item Production optimizer run (174 leaves)
+\item Objective and search ablations (30-image subset, 11 variants)
+\item 9-leaf representative trace study
+\item Parameter manifold geometry study (150 patches, 15 leaves)
+\item Integrated full-vs-patch comparison (35-leaf matched split)
+\item Selective semi-amortized routing study (174 leaves)
+\item Patchwise selective study (1,059+ patches)
+\item Teacher-student UNet distillation
+\end{itemize}
+
+Only lightweight synthesis assets were new:
+\begin{itemize}
+\item Runtime frontier plot (from \texttt{dual\_paper\_build\_codex/gapfill/})
+\item Risk overlay plot (from same)
+\item Three TODO placeholders in Paper 1 resolved with factual text
+\end{itemize}
+
+No heavy optimization reruns or new model training was performed.
+
+\section{Provenance}
+
+Detailed inventories are in \texttt{notes/}:
+\begin{itemize}
+\item \texttt{repository\_audit.txt} — Full directory-level audit
+\item \texttt{manuscript\_line\_inventory.csv} — All manuscript versions tracked
+\item \texttt{output\_family\_inventory.csv} — All experimental output families
+\item \texttt{dual\_paper\_evidence\_matrix.csv} — Claim-to-evidence mapping
+\item \texttt{dual\_paper\_gap\_analysis.txt} — What was weak or missing
+\item \texttt{dual\_paper\_distinction.txt} — How the two papers differ
+\item \texttt{reference\_master\_audit.csv} — All references verified
+\item \texttt{reference\_quarantine.txt} — Problematic references flagged
+\item \texttt{figure\_and\_table\_guide.csv} — Per-figure interpretation
+\item \texttt{claim\_to\_output\_map.csv} — Claims mapped to evidence
+\end{itemize}
+
+\end{document}

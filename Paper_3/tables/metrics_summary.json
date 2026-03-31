@@ -1,0 +1,51 @@
+{
+  "baseline": {
+    "n_total": 174,
+    "n_teacher_nonempty": 162,
+    "n_dice_lt_0p3": 18,
+    "n_low_teacher_empty_student_nonempty": 12,
+    "dice_mean_all": 0.597991319953848,
+    "dice_std_all": 0.22644459628297048,
+    "dice_median_all": 0.682254485924805,
+    "iou_mean_all": 0.4574064431974205,
+    "iou_std_all": 0.1947402337006864,
+    "iou_median_all": 0.5177437677644862,
+    "dice_mean_teacher_nonempty": 0.6422869732837627,
+    "dice_std_teacher_nonempty": 0.16270163654073944,
+    "dice_median_teacher_nonempty": 0.6862952047646018,
+    "iou_mean_teacher_nonempty": 0.491288401952785,
+    "iou_std_teacher_nonempty": 0.15492311207217643,
+    "iou_median_teacher_nonempty": 0.5224120739302995
+  },
+  "roi": {
+    "n_total": 174,
+    "n_teacher_nonempty": 162,
+    "n_dice_lt_0p3": 19,
+    "n_low_teacher_empty_student_nonempty": 12,
+    "dice_mean_all": 0.5992672164001018,
+    "dice_std_all": 0.22480663112395075,
+    "dice_median_all": 0.6840661567511463,
+    "iou_mean_all": 0.4580512737344191,
+    "iou_std_all": 0.19168379060121352,
+    "iou_median_all": 0.5198334228812983,
+    "dice_mean_teacher_nonempty": 0.6436573805778871,
+    "dice_std_teacher_nonempty": 0.15986027479069925,
+    "dice_median_teacher_nonempty": 0.6883048612843029,
+    "iou_mean_teacher_nonempty": 0.49198099771474646,
+    "iou_std_teacher_nonempty": 0.15061473625934066,
+    "iou_median_teacher_nonempty": 0.5247445713224919
+  },
+  "threshold_best": {
+    "threshold": 0.3,
+    "n_total": 174.0,
+    "dice_mean_all": 0.6039386208751555,
+    "iou_mean_all": 0.4629534643498451,
+    "dice_median_all": 0.6874927215390025,
+    "iou_median_all": 0.5238011321854674,
+    "n_teacher_nonempty": 162.0,
+    "dice_mean_teacher_nonempty": 0.6486748150140559,
+    "iou_mean_teacher_nonempty": 0.4972463135609447,
+    "hallucinations_teacher_empty_student_nonempty": 12.0,
+    "misses_teacher_nonempty_student_empty": 0.0
+  }
+}

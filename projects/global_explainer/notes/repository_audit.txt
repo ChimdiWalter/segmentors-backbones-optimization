@@ -1,0 +1,177 @@
+================================================================================
+REPOSITORY AUDIT — Phase 1
+================================================================================
+Date:       2026-03-30
+Root:       /cluster/VAST/kazict-lab/e/lesion_phes/code/segmentors_backbones/
+Auditor:    Automated (Claude Code)
+================================================================================
+
+1  PURPOSE
+----------
+This repository supports a two-line research programme on lesion phenotyping:
+
+  LINE 1 (OPTIMIZER / CHARACTERIZATION)
+    Gradient-free stochastic optimization of Navier-Stokes active contours,
+    parameter manifold geometry, ablation studies.
+
+  LINE 2 (DEPLOYMENT / DISTILLATION)
+    Zero-shot segmentation via physics-informed knowledge distillation,
+    selective semi-amortized inference, full-vs-patch comparison, runtime-
+    quality tradeoffs.
+
+Several manuscripts serve both lines simultaneously.
+
+================================================================================
+2  MANUSCRIPT INVENTORY  (13 directories)
+================================================================================
+
+Dir                                                    Line    Completeness
+------------------------------------------------------+-------+------------
+Paper1_Optimization/                                   OPT        early draft
+Paper2_Distillation/                                   DEP        early draft
+Paper_3/                                               BOTH       95%
+Paper_4/                                               OPT        100%
+Paper_5/                                               DEP        100%
+Paper_6_patch_selective_semiamortized/                  DEP        40%
+Paper_6_patch_selective_semiamortized_fullstudy_v2/     DEP        95%
+Paper_7_integrated_fullleaf_patch_selective_study/      BOTH       98%
+Paper_7_integrated_full_vs_patch_leaves_18p7_v1/        BOTH       100%
+Paper_7_integrated_full_vs_patch_leaves_18p7_v2_...     BOTH       0% (empty)
+Paper_8_integrated_full_vs_patch_leaves_18p7_codex_v1/  BOTH       0% (empty)
+Paper_9_..._codex_slurm_shadow_v1/                     BOTH       100%
+(dataset_segmentation/ also contains related scripts)
+
+Key observations:
+  - Paper_4 and Paper_5 are the two finalized, submission-ready manuscripts.
+  - Paper_3 is the integrated predecessor; largely superseded by 4+5 but
+    contains the richest figure set (51+ figures).
+  - Paper_7_v1 is the strongest matched comparison study (100% complete).
+  - Paper_9 is an independent Codex replication (100% complete).
+  - Two placeholders (v2_fromscratch, codex_v1) are empty shells.
+  - Paper_6 (original) is an abandoned partial; its fullstudy_v2 successor
+    is nearly complete at 95%.
+
+================================================================================
+3  EXPERIMENT OUTPUT FAMILIES
+================================================================================
+
+Location: experiments/exp_v1/outputs/   (36+ subdirectories)
+
+Family                                          Files     Line
+-----------------------------------------------+--------+------
+ablations_objective/                              366     OPT
+ablations_search/                                 305     OPT
+objective_surface_traces_fullstudy/               196     OPT
+objective_surface_traces_representative_...        33     OPT
+parameter_shift_manifold_geometry/                 38     OPT
+optimization_manifold_and_solid3d_final/            27     OPT
+optimization_surface_analysis/                     97     OPT
+optimization_surface_analysis_codex/               30     OPT
+parameter_shift_3d_analysis/ (+solid, +codex)     var     OPT
+integrated_full_vs_patch_leaves_18p7_v1/          164     DEP
+integrated_full_vs_patch_..._codex_v1/         14,519     DEP
+integrated_..._codex_v1_slurm_shadow_v1/        7,630     DEP
+selective_semiamortized_fullstudy174_v3/          173     DEP
+selective_semiamortized_patchstudy_..._v1/    154,697     DEP
+selective_semiamortized_fullstudy174_v2/          115     DEP
+selective_semiamortized_integrated_...             97     DEP
+selective_semiamortized_patch_..._v2/           5,762     DEP
+dual_paper_build_codex/                            45     BOTH
+unet_infer_on_leaves/                             522     OPT
+patch_transfer_morphology_filled/                  52     BOTH
+optimizer_summary/                                 16     OPT
+experiment_summary_master/                          7     BOTH
+
+Total tracked experiment files: ~185,000+
+
+The selective_semiamortized_patchstudy_leaves_18p7_v1/ directory dominates
+by file count (154,697 files); this is the massive patch routing study that
+feeds Paper_5 and Paper_6_v2.
+
+================================================================================
+4  FIGURE DIRECTORIES (top-level)
+================================================================================
+
+Directory                        Purpose                     Line
+--------------------------------+---------------------------+------
+fig1/ - fig7/                    Channel-level analysis       OPT
+fig_bestch_vs_fused/ (v1-v3)     Convergence comparison       OPT
+figs/                            Montages, histograms         BOTH
+conv_modes/, conv_modes_fixed/   Mode analysis                OPT
+conv_G_vs_B/, conv_G_vs_R/       Channel comparison           OPT
+
+================================================================================
+5  DATA AND RESULT DIRECTORIES
+================================================================================
+
+Category   Directory                            Notes
+---------+------------------------------------+---------------------------
+DATA       18.7/                                80+ processed leaf images
+DATA       leaves/, leaves_patches/             Primary training data
+DATA       mask_patches/                        Ground-truth masks
+OPT        cpu_output_2/, cpu_output_3/         Optimization + params
+OPT        navier_opt_bestch/                   Trace logs
+OPT        navier_output_*/                     Various opt outputs
+DEP        fast_physics_results/                Physics predictions
+DEP        fast_physics_results_dino/           DINO-based predictions
+DEP        final_dino_sam2_results/             SAM2 + DINO
+DEP        final_resnet_sam2_results/           SAM2 + ResNet
+DEP        unet_direct_results/                 UNet direct outputs
+DEP        results_bbox/                        Bounding-box inference
+DEP        results_fixed/                       Fixed-param inference
+DEP        results_manual/                      Manual-param inference
+DEP        results_sam2/                        SAM2 inference
+BOTH       tables/                              Metrics CSVs, sweeps
+SHARED     models/                              Saved checkpoints
+
+================================================================================
+6  KEY STANDALONE FILES
+================================================================================
+
+  refs.bib, refs_1.bib            Bibliography files
+  collect_leaf_tapes_report.csv   Data lineage tracking
+  unet_biological_analysis.csv    UNet biological metrics
+  paper3.pdf                      Prior PDF snapshot
+  *.py (various)                  Analysis, optimization, evaluation scripts
+
+================================================================================
+7  STRUCTURAL OBSERVATIONS
+================================================================================
+
+a) Naming drift: Paper numbering is sequential but Paper_6 has two versions
+   and Paper_7 has three variants. The naming convention is
+   Paper_N_<description>_<version>/.
+
+b) Empty placeholders: Paper_7_v2_fromscratch and Paper_8_codex_v1 are 0%
+   complete — these should either be populated or removed before submission.
+
+c) Data scale: The experiment outputs exceed 185,000 files. Any CI or
+   packaging step must account for this volume.
+
+d) Bibliography fragmentation: refs.bib appears in multiple locations with
+   varying entry counts (5-47). A single canonical bibliography would reduce
+   maintenance burden.
+
+e) No .gitignore covers the large data/output directories. The git status
+   shows many untracked paths.
+
+f) The dataset_segmentation/ subtree contains its own training pipeline
+   (dataset.py, run.py, eval.py, checkpoints, SLURM logs) and appears
+   semi-independent.
+
+g) Paper_4 (Optimizer) and Paper_5 (Deployment) are the two complete,
+   submission-ready manuscripts and represent the primary deliverables.
+
+================================================================================
+8  SUMMARY COUNTS
+================================================================================
+
+  Manuscript directories:     13  (7 complete/near-complete, 2 empty, 4 partial)
+  Experiment output families: 22+
+  Top-level figure dirs:      10+
+  Data/result directories:    16+
+  Estimated total files:      185,000+
+
+================================================================================
+END OF AUDIT
+================================================================================

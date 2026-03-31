@@ -1,0 +1,25 @@
+Distinctness Notes — v2 Full Study
+====================================
+This paper is DISTINCT from the optimizer paper (Paper 3 existing):
+
+1. DIFFERENT QUESTION: How to efficiently deploy physics inference
+   (not how to build the optimizer/objective).
+
+2. DIFFERENT METHOD: Frozen backbone → regression → selective routing
+   (not random-restart hill climbing).
+
+3. DIFFERENT CONTRIBUTION: Runtime–quality Pareto with real refinement
+   (not objective surface analysis or teacher–student distillation).
+
+4. KEY FRAMING: The optimizer is infrastructure. This paper is deployment intelligence.
+
+5. REAL REFINEMENT: All refinement results use actual PDE + contour scoring.
+   This is verified by refinement_protocol.txt and the scored outputs in
+   refinement_results.csv.
+
+Limitations:
+- N=174 is small; mean baseline competitive with learned models.
+- Pseudo-OOD uses batch proxy, not true distribution shift.
+- Perturbation-based refinement; gradient-based could be better.
+
+Venue positioning: Plant Phenomics, CVPR workshops, or applications-focused ML venues.

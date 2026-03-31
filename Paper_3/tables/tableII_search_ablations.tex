@@ -1,0 +1,16 @@
+\begin{table*}[t]
+\centering
+\caption{Search-strategy ablations on the 30-image stratified subset. Each row changes one knob of the stochastic search while keeping the full objective.}
+\label{tab:abl_search}
+\begin{tabular}{lcccccc}
+\toprule
+Setting & OK\% $\uparrow$ & Non-empty\% $\uparrow$ & Med.\ score $\uparrow$ & Med.\ area & Med.\ $n_c$ & Med.\ time (s) $\downarrow$ \\
+\midrule
+Full pipeline (ours) & 100\% & 100\% & 14.95 & 560319 & 133 & 4046.5 \\
+Random-only (no refine) & 100\% & 100\% & 14.88 & 593739 & 128 & 4060.7 \\
+Low budget ($K{=}16$) & 100\% & 100\% & 14.91 & 646707 & 146 & 4225.3 \\
+No downscale ($s{=}1.0$) & 100\% & 100\% & 16.58 & 604191 & 153 & 5427.9 \\
+Fast (60 s timeout) & 100\% & 100\% & 14.44 & 588752 & 135 & 4419.0 \\
+\bottomrule
+\end{tabular}
+\end{table*}

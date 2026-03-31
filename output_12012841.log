@@ -1,0 +1,3 @@
+========== nv_optimize_inner_mask (SAVES NECROTIC MASK + ALL PARAMS) ==========
+Mode: fused | Workers: 1 | Budget: 64
+[1/174] DSC_0018_segment_1_segmented_smoothed.tif: ok score=13.754382960901777

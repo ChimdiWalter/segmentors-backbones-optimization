@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99d (TeX Live 2018)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: main_speciesref_fixed.aux
+The style file: plain.bst
+Database file #1: ../bib/references_speciesref_fixed.bib
+You've used 29 entries,
+            2118 wiz_defined-function locations,
+            654 strings with 8918 characters,
+and the built_in function-call counts, 11269 in all, are:
+= -- 1120
+> -- 555
+< -- 8
++ -- 219
+- -- 188
+* -- 805
+:= -- 1819
+add.period$ -- 87
+call.type$ -- 29
+change.case$ -- 179
+chr.to.int$ -- 0
+cite$ -- 29
+duplicate$ -- 420
+empty$ -- 844
+format.name$ -- 188
+if$ -- 2368
+int.to.chr$ -- 0
+int.to.str$ -- 29
+missing$ -- 29
+newline$ -- 148
+num.names$ -- 58
+pop$ -- 171
+preamble$ -- 1
+purify$ -- 150
+quote$ -- 0
+skip$ -- 332
+stack$ -- 0
+substring$ -- 794
+swap$ -- 119
+text.length$ -- 8
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 116
+warning$ -- 0
+while$ -- 108
+width$ -- 31
+write$ -- 317

@@ -1,0 +1,24 @@
+Optimizer Summary (computed from CSVs)
+
+- n_total: 174
+- n_ok: 174
+- ok_fraction: 1.0
+- score_mean: 21.096285523617063
+- score_std: 6.062468057107751
+- score_median: 19.59071829581336
+- score_p10: 15.432232436046116
+- score_p90: 28.332539472180645
+- elapsed_seconds_mean: 258.1076981623968
+- elapsed_seconds_std: 125.43384210199896
+- elapsed_seconds_median: 241.97587168216705
+- elapsed_seconds_p10: 130.4550053358078
+- elapsed_seconds_p90: 388.6363500595093
+- n_contours_mean: 297.764367816092
+- n_contours_std: 266.33907871391324
+- n_contours_median: 187.0
+- area_px_mean: 388476.0689655172
+- area_px_std: 318948.4798447343
+- area_px_median: 323899.0
+
+Status counts:
+- ok: 174

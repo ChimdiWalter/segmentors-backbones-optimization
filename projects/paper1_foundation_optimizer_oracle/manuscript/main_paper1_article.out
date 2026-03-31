@@ -1,0 +1,51 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Related Work}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Active Contours, Level Sets, and External Forces}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{PDEs and Fluid Dynamics in Vision}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{Segmentation Models \(2015\2052025\): CNNs, Transformers, and Foundation Models}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.4}{Black-Box and Hyperparameter Optimization for Vision}{section.2}% 6
+\BOOKMARK [2][-]{subsection.2.5}{Plant Phenotyping Context and Tooling}{section.2}% 7
+\BOOKMARK [1][-]{section.3}{Problem Setup and Notation}{}% 8
+\BOOKMARK [2][-]{subsection.3.1}{Candidate Trace Sets and Projected Surfaces}{section.3}% 9
+\BOOKMARK [2][-]{subsection.3.2}{Parameter-Cloud Geometry}{section.3}% 10
+\BOOKMARK [1][-]{section.4}{Mathematical Framework}{}% 11
+\BOOKMARK [2][-]{subsection.4.1}{Navier-Stokes Diffusion for Edge Enhancement}{section.4}% 12
+\BOOKMARK [2][-]{subsection.4.2}{Active Contour Dynamics \(Snakes\)}{section.4}% 13
+\BOOKMARK [1][-]{section.5}{Methodology: Stochastic Parameter Search}{}% 14
+\BOOKMARK [2][-]{subsection.5.1}{Overview of the Optimization Loop}{section.5}% 15
+\BOOKMARK [2][-]{subsection.5.2}{The Heuristic Objective Function}{section.5}% 16
+\BOOKMARK [3][-]{subsubsection.5.2.1}{Gradient Alignment \(G\)}{subsection.5.2}% 17
+\BOOKMARK [3][-]{subsubsection.5.2.2}{Chromatic Separability \(C\)}{subsection.5.2}% 18
+\BOOKMARK [3][-]{subsubsection.5.2.3}{Topological Reward \(Lesion Multiplicity\)}{subsection.5.2}% 19
+\BOOKMARK [3][-]{subsubsection.5.2.4}{Penalty Terms}{subsection.5.2}% 20
+\BOOKMARK [2][-]{subsection.5.3}{Random-Restart Stochastic Hill Climbing}{section.5}% 21
+\BOOKMARK [1][-]{section.6}{Implementation Details and Engineering Choices}{}% 22
+\BOOKMARK [2][-]{subsection.6.1}{16-bit Handling, Masking, and Channel Fusion}{section.6}% 23
+\BOOKMARK [2][-]{subsection.6.2}{Scale-Aware Candidate Filtering}{section.6}% 24
+\BOOKMARK [2][-]{subsection.6.3}{Runtime Controls: Downscaling, Timeouts, and Parallelism}{section.6}% 25
+\BOOKMARK [1][-]{section.7}{Experiments}{}% 26
+\BOOKMARK [2][-]{subsection.7.1}{Dataset}{section.7}% 27
+\BOOKMARK [2][-]{subsection.7.2}{Evaluation Protocol}{section.7}% 28
+\BOOKMARK [2][-]{subsection.7.3}{Teacher\205Student Distillation \(UNet Student\)}{section.7}% 29
+\BOOKMARK [2][-]{subsection.7.4}{Baselines}{section.7}% 30
+\BOOKMARK [2][-]{subsection.7.5}{Metrics}{section.7}% 31
+\BOOKMARK [1][-]{section.8}{Results}{}% 32
+\BOOKMARK [2][-]{subsection.8.1}{Teacher\205Student Distillation \(UNet\)}{section.8}% 33
+\BOOKMARK [2][-]{subsection.8.2}{Parameter Correlations with Morphology}{section.8}% 34
+\BOOKMARK [2][-]{subsection.8.3}{Ablation Studies \(Objective and Search\)}{section.8}% 35
+\BOOKMARK [2][-]{subsection.8.4}{Trace-Based Objective-Surface Analysis}{section.8}% 36
+\BOOKMARK [3][-]{subsubsection.8.4.1}{Score Surfaces}{subsection.8.4}% 37
+\BOOKMARK [3][-]{subsubsection.8.4.2}{Optimization Trajectories}{subsection.8.4}% 38
+\BOOKMARK [3][-]{subsubsection.8.4.3}{Landscape Geometry Across Score Tiers}{subsection.8.4}% 39
+\BOOKMARK [2][-]{subsection.8.5}{Parameter-Cloud Geometry and Manifold Structure}{section.8}% 40
+\BOOKMARK [3][-]{subsubsection.8.5.1}{PCA Separation of Global and Local Optima}{subsection.8.5}% 41
+\BOOKMARK [3][-]{subsubsection.8.5.2}{Mean Parameter Shift Profile}{subsection.8.5}% 42
+\BOOKMARK [3][-]{subsubsection.8.5.3}{Solid 3D Geometry: Covariance Ellipsoids and Convex Hulls}{subsection.8.5}% 43
+\BOOKMARK [3][-]{subsubsection.8.5.4}{Neighbor Consistency and Predictive Structure}{subsection.8.5}% 44
+\BOOKMARK [2][-]{subsection.8.6}{Qualitative Results and Failure Taxonomy}{section.8}% 45
+\BOOKMARK [1][-]{section.9}{Multi-Stage Inference for Nested/Inner Lesions}{}% 46
+\BOOKMARK [1][-]{section.10}{Discussion and Limitations}{}% 47
+\BOOKMARK [1][-]{section.11}{Conclusion}{}% 48
+\BOOKMARK [1][-]{section.12}{Additional Optimizer Diagnostics}{}% 49
+\BOOKMARK [1][-]{section.13}{Trace-Based Surface and Trajectory Supplementary Plots}{}% 50
+\BOOKMARK [1][-]{section.14}{Parameter-Cloud Geometry Supplementary Plots}{}% 51

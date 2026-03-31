@@ -1,0 +1,103 @@
+FIGURE / TABLE SELECTION PLAN — Strengthened Manuscript
+========================================================
+Date: 2026-03-12
+
+MAIN PAPER FIGURES
+-------------------
+1. fig:paramdist_status — Optimizer status bar
+   Why: Shows 100% convergence across 174 images; establishes reliability.
+
+2. fig:objterms_runtime — Runtime histogram
+   Why: Documents computational cost; relevant for practical deployment.
+
+3. fig:optimizer_score_hist — Score histogram
+   Why: Characterizes the score distribution; motivates tier-based analysis.
+
+4. fig:thresh_sweep — Threshold sweep plot
+   Why: Justifies threshold=0.30 selection; shows disagreement persistence.
+
+5. fig:teacher_student_montage — Teacher-student montage
+   Why: Qualitative evidence of distillation quality.
+
+6. fig:disagreement — Disagreement montage (ROI-gated)
+   Why: Honest failure reporting; shows semantic mismatch.
+
+7. fig:scatter_et_lc — Energy threshold vs lesion count scatter
+   Why: Reveals physics parameter-morphology relationships.
+
+8. fig:scatter_beta_af — Beta vs area fraction scatter
+   Why: Confirms inflation force governs expansion.
+
+9. fig:surface_high — Trace surface (high-score leaf, T vs beta)
+   Why: Demonstrates sharp exploitable landscape.
+
+10. fig:surface_med — Trace surface (median-score leaf)
+    Why: Shows intermediate landscape behavior.
+
+11. fig:surface_low — Trace surface (low-score leaf)
+    Why: Contrasts with sharp high-score landscape.
+
+12. fig:trajectory_high — Convergence trajectory (high-score)
+    Why: Shows random-to-refine transition and gain.
+
+13. fig:pca2d_global_local [NEW] — PCA 2D global vs local (dD colored)
+    Why: Key manifold geometry result; shows systematic shift structure.
+
+14. fig:mean_delta [NEW] — Mean delta parameter bar chart
+    Why: Identifies dominant shift parameters.
+
+15. fig:cov_ellipsoids [NEW] — Covariance ellipsoids with centroid shift
+    Why: Solid 3D visualization of solution organization.
+
+16. fig:qual_grid — Qualitative grid across Dice spectrum
+    Why: Comprehensive visual assessment.
+
+17. fig:patch_area_err_hist — Area fraction error histogram
+    Why: Morphological fidelity evidence.
+
+18. fig:patch_count_err_hist — Count error histogram
+    Why: Shows 35% count error reduction from local optimization.
+
+19. fig:patch_area_scatter — Teacher vs predicted area scatter
+    Why: Documents systematic underestimation.
+
+MAIN PAPER TABLES
+------------------
+1. tab:abl_obj (Table I) — Objective ablations
+   Why: Justifies every objective term.
+
+2. tab:abl_search (Table II) — Search strategy ablations
+   Why: Validates search design decisions.
+
+3. tab:patch_morph_transfer — Patch morphology transfer
+   Why: Novel phenotyping-relevant evaluation beyond overlap.
+
+APPENDIX FIGURES
+-----------------
+A1. fig:appendix_optimizer_outputs — n_contours and area histograms
+    Why: Morphological distribution context.
+
+A2. fig:appendix_param_hists — 7 parameter histograms
+    Why: Full parameter distribution characterization.
+
+A3. fig:appendix_traj_high — Additional high-score trajectories (2 leaves)
+A4. fig:appendix_traj_med — Median-score trajectories (2 leaves)
+A5. fig:appendix_traj_low — Low-score trajectories (2 leaves)
+    Why: Broader trajectory evidence across tiers.
+
+A6. fig:appendix_solid3d [NEW] — Convex hulls + positive/negative dD surfaces
+    Why: Additional geometric evidence for parameter organization.
+
+A7. fig:appendix_manifold [NEW] — t-SNE + centroid shift groups
+    Why: Nonlinear embedding and group-level geometry.
+
+DIAGNOSTIC ONLY (NOT IN PAPER)
+-------------------------------
+- Postprocess sweep results
+- Codex-style renderings
+- Param predictor experiments
+- Full-study 174-leaf traces
+- optimization_surface_analysis cross-sections (superseded by traces)
+- radar_group_means (too specialized for paper)
+- parallel_delta_by_patchtype (covered by kNN result)
+- embedding_neighbor_consistency (result stated numerically in text)

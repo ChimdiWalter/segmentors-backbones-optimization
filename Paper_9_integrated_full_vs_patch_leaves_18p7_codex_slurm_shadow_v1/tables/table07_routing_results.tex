@@ -1,0 +1,18 @@
+\begin{table}[t]
+\centering
+\caption{Routing policies satisfying explicit speedup targets.}
+\label{tab:routing}
+\scriptsize
+\begin{tabular}{lllllll}
+\toprule
+branch & fraction\_refined & mae\_vs\_full\_target & runtime\_mean\_sec & speedup\_vs\_full\_leaf\_full\_opt & speedup\_vs\_patch\_full\_refinement & speedup\_target \\
+\midrule
+full & 0.1000 & 0.0869 & 40.1530 & 10.7658 & nan & 1.5000 \\
+full & 0.1000 & 0.0869 & 40.1530 & 10.7658 & nan & 2.0000 \\
+full & 0.1000 & 0.0869 & 40.1530 & 10.7658 & nan & 4.0000 \\
+patch & 0.3000 & 0.0844 & 7.5288 & nan & 2.1762 & 1.5000 \\
+patch & 0.3000 & 0.0844 & 7.5288 & nan & 2.1762 & 2.0000 \\
+patch & 0.1000 & 0.0852 & 2.7751 & nan & 5.9040 & 4.0000 \\
+\bottomrule
+\end{tabular}
+\end{table}

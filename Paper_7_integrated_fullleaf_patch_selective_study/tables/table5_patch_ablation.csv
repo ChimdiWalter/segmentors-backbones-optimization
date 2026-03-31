@@ -1,0 +1,4 @@
+config,patch_size,stride,overlap_frac,total_patches,mean_patches_per_leaf,leaf_agg_mae_selective,mean_heterogeneity,relative_compute
+224_s224_nooverlap,224,224,0.0,348,2.0,9.187626092135906,,0.5
+224_s112_halfoverlap,224,112,0.5,870,5.0,7.989240080118179,,1.0
+224_s56_highoverlap,224,56,0.75,1740,10.0,7.58977807611227,,2.0

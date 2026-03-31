@@ -1,0 +1,41 @@
+Mathematical Additions Summary — v3
+======================================
+
+NEW MATHEMATICAL CONTENT (not in v2 pilot):
+
+1. FORMAL PROBLEM STATEMENT (Section 3.1)
+   - θ* = argmin S(I, θ) — physics parameter optimization
+   - Bounded parameter space Θ ⊂ R^7
+   - Full optimizer: K(R+1) = 832 evaluations
+
+2. AMORTIZED PREDICTION (Section 3.2)
+   - f_φ: R^{HxWx3} → Θ mapping definition
+   - Amortization gap: Δ_amort = E[||θ̂ - θ*||]
+
+3. SELECTIVE ROUTING POLICY (Section 3.3)
+   - π(u) → {direct, refine, fallback}
+   - Threshold-based routing: τ_low, τ_high
+   - Cost model: c_direct, c_refine(S), c_fallback
+
+4. CONSTRAINED OPTIMIZATION FORMULATION (Section 3.3)
+   - min E[c(π(u(I)))] s.t. E[ℓ(θ_π, θ*)] ≤ ε
+   - Runtime-quality constrained selection
+
+5. REFINEMENT OPERATOR (Section 3.3)
+   - R_S: Θ × I → Θ formal definition
+   - Perturbation: δ_k ~ Uniform(-1,1) · η · ρ^s · range_k
+   - Acceptance criterion: S(I, θ') > S(I, θ_best) + ε_tol
+   - Early stopping after P rejections
+
+6. ENSEMBLE UNCERTAINTY (Section 4.2)
+   - θ̂_ens = (1/M) Σ f_m(φ(I))
+   - u(I) = (1/7) Σ_k √((1/M) Σ_m (f_{m,k} - θ̂_{ens,k})²)
+
+7. PHENOTYPE CONSISTENCY METRICS (Section 4.5)
+   - PCA displacement: Δ_PCA = (1/n) Σ ||z_i - ẑ_i||_2
+   - Convex hull volumes: Hull({z_i}), Hull({ẑ_i})
+   - Centroid shift: Δ_centroid = ||mean(z) - mean(ẑ)||_2
+   - Covariance ellipsoid comparison
+
+8. ALGORITHM PSEUDOCODE
+   - Algorithm 1: Real Short Refinement with early stopping

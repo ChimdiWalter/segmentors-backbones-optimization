@@ -1,0 +1,21 @@
+#!/bin/bash
+#SBATCH --job-name=training_job_cpu
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=32G
+#SBATCH --time=1-00:00:00
+#SBATCH --partition=general           # <-- change this to your CPU partition name if different
+#SBATCH --output=output_%j.log
+#SBATCH --error=error_%j.log
+
+# Activate venv and cd as you already do
+source /cluster/VAST/kazict-lab/e/lesion_phes/lesenv/bin/activate
+cd /cluster/VAST/kazict-lab/e/lesion_phes/code/segmentors_backbones || { echo "Directory not found"; exit 1; }
+
+python3.11 navier_optimize_hellbender_updatecsv.py  \
+  --input  /cluster/VAST/kazict-lab/e/lesion_phes/code/segmentors_backbones/leaves \
+  --output /cluster/VAST/kazict-lab/e/lesion_phes/code/segmentors_backbones/cpu_output_3 \
+  --mode fused \
+  --workers 1
+
+echo "Training job completed!"

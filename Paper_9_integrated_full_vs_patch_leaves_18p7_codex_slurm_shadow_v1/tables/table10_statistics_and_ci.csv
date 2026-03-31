@@ -1,0 +1,2 @@
+comparison,mean_delta_mae,ci_low,ci_high,wilcoxon_stat,p_value,effect_size_std_units
+patch_direct_minus_full_direct_vs_full_target,-0.005553354976000301,-0.010863651024095583,0.00028746334351713526,1508.0,0.06114102961587877,-0.2129245444595204

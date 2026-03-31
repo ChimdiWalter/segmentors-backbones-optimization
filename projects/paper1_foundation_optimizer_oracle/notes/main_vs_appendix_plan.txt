@@ -1,0 +1,66 @@
+Main Paper vs. Appendix Content Plan
+=====================================
+
+MAIN PAPER
+----------
+19 figures, 3 tables, 2 algorithms.
+
+Figures (in order of appearance):
+
+  Fig 1  (fig:paramdist_status)       Optimizer run status bar chart
+  Fig 2  (fig:objterms_runtime)       Per-image optimizer runtime histogram
+  Fig 3  (fig:optimizer_score_hist)   Optimizer objective score histogram
+  Fig 4  (fig:thresh_sweep)           Threshold sweep on stitched probability maps
+  Fig 5  (fig:teacher_student_montage) Teacher-student qualitative montage (full-width)
+  Fig 6  (fig:disagreement)           Teacher-empty/student-nonempty disagreement montage (full-width)
+  Fig 7  (fig:scatter_et_lc)          Energy threshold vs. lesion count scatter
+  Fig 8  (fig:scatter_beta_af)        Balloon force beta vs. area fraction scatter
+  Fig 9  (fig:surface_high)           Trace-based objective surface, high-score leaf (DSC_0198)
+  Fig 10 (fig:surface_med)            Trace-based objective surface, median-score leaf (DSC_0379)
+  Fig 11 (fig:surface_low)            Trace-based objective surface, low-score leaf (DSC_0261)
+  Fig 12 (fig:trajectory_high)        Convergence trajectory, high-score leaf (DSC_0198)
+  Fig 13 (fig:pca2d_global_local)     PCA 2D projection of global vs. local parameter vectors
+  Fig 14 (fig:mean_delta)             Mean parameter shift profile (global -> local)
+  Fig 15 (fig:cov_ellipsoids)         Covariance ellipsoids (2-sigma) in PCA space
+  Fig 16 (fig:qual_grid)              Qualitative grid across Dice spectrum (full-width)
+  Fig 17 (fig:patch_area_err_hist)    Area-fraction error histogram (global vs. local)
+  Fig 18 (fig:patch_count_err_hist)   Lesion-count error histogram (global vs. local)
+  Fig 19 (fig:patch_area_scatter)     Teacher vs. predicted area fraction scatter
+
+Tables:
+
+  Table I   (tab:abl_obj)             Objective ablations (6 variants, 30-image subset)
+  Table II  (tab:abl_search)          Search-strategy ablations (5 variants, 30-image subset)
+  Table III (tab:patch_morph_transfer) Patch-level morphology transfer (150 patches, 15 leaves)
+
+Algorithms:
+
+  Algorithm 1  Stochastic Parameter Optimization (per image)
+  Algorithm 2  Two-Stage Nested Lesion Inference
+
+
+APPENDICES
+----------
+
+Appendix A: Additional Optimizer Diagnostics
+  - Optimizer output morphology distributions:
+      (a) Connected-component count histogram (n_contours_hist.png)
+      (b) Mask area (pixels) histogram (area_px_hist.png)
+  - Empirical distributions of 7 optimized parameters:
+      (a) mu, (b) lambda, (c) diffusion rate,
+      (d) alpha, (e) beta, (f) gamma, (g) energy threshold
+
+Appendix B: Trace-Based Surface and Trajectory Supplementary Plots
+  - Convergence trajectories for additional leaves across score tiers:
+      High-score:  DSC_0166, DSC_0163
+      Median-score: DSC_0274, DSC_0205
+      Low-score:   DSC_0185, DSC_0199
+  (6 trajectory plots total, shown as 3 paired figure* environments)
+
+Appendix C: Parameter-Cloud Geometry Supplementary Plots
+  - Solid-3D geometry:
+      (a) Convex hulls: global vs. local in PCA space
+      (b) Positive vs. negative delta-D surfaces
+  - Manifold embeddings:
+      (a) t-SNE of parameter shifts colored by delta-D group
+      (b) PCA centroid shift by delta-D group

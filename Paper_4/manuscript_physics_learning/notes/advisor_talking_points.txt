@@ -1,0 +1,9 @@
+ADVISOR TALKING POINTS (PAPER A)
+================================
+1. The paper is not claiming to learn lesion biophysics from first principles.
+2. The actual claim is stronger and more defensible: the optimizer defines a structured parameterization that can be learned and refined.
+3. The central evidence is not just one PCA plot; it is the combination of manifold geometry, 3D displacement views, objective surfaces, convergence traces, and qualitative leaf montages.
+4. The shared full-vs-patch line is used only where it clarifies refinement and parameter-specific difficulty, not as the narrative center.
+5. The most reviewer-resistant sentence is: we are learning the coordinate system induced by a physics-inspired oracle, not the laws themselves.
+6. For plant biologists: emphasize interpretable parameter summaries and morphology-linked diagnostics.
+7. For computer scientists: emphasize target geometry, coordinate-specific difficulty, and steep early refinement contraction.

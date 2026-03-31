@@ -1,0 +1,24 @@
+Teacher-Student Metrics Summary (computed from CSVs)
+
+Baseline (teacher_student_metrics.csv)
+- N total: 174
+- N teacher-nonempty: 162
+- Dice all: mean/std/median = 0.5980 / 0.2264 / 0.6823
+- IoU all: mean/std/median = 0.4574 / 0.1947 / 0.5177
+- Dice teacher-nonempty: mean/std/median = 0.6423 / 0.1627 / 0.6863
+- IoU teacher-nonempty: mean/std/median = 0.4913 / 0.1549 / 0.5224
+- Count Dice < 0.3: 18
+- Within Dice < 0.3: teacher_empty & student_nonempty = 12
+
+ROI-gated thr=0.30 (teacher_student_metrics_roi_thr0p30.csv)
+- N total: 174
+- N teacher-nonempty: 162
+- Dice all: mean/std/median = 0.5993 / 0.2248 / 0.6841
+- IoU all: mean/std/median = 0.4581 / 0.1917 / 0.5198
+- Dice teacher-nonempty: mean/std/median = 0.6437 / 0.1599 / 0.6883
+- IoU teacher-nonempty: mean/std/median = 0.4920 / 0.1506 / 0.5247
+- Count Dice < 0.3: 19
+- Within Dice < 0.3: teacher_empty & student_nonempty = 12
+
+Threshold sweep best row (max dice_mean_all):
+- threshold=0.3, n_total=174.0, dice_mean_all=0.6039386208751555, iou_mean_all=0.4629534643498451, dice_median_all=0.6874927215390025, iou_median_all=0.5238011321854674, n_teacher_nonempty=162.0, dice_mean_teacher_nonempty=0.6486748150140559, iou_mean_teacher_nonempty=0.4972463135609447, hallucinations_teacher_empty_student_nonempty=12.0, misses_teacher_nonempty_student_empty=0.0

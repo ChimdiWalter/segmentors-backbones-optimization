@@ -1,0 +1,48 @@
+INTEGRATED STUDY — KEY RESULTS SUMMARY
+=======================================
+
+DATA
+  174 soybean leaves, 1059 patches (224x224, stride 112)
+  63 external images (18.7 collection)
+  7 physics parameters (PDE + active contour)
+
+MAIN COMPARISON (44 matched test leaves, nMAE = normalized MAE)
+  Full-leaf (downsampled):    0.266 nMAE
+  Patch (selective mixture):  0.781 nMAE
+  Patch (naive mean):         1.915 nMAE
+  Full-leaf currently wins by 2.9x on selective mixture, ~7x on naive
+
+ORACLE GAP
+  Aggregated-patch oracle vs full-leaf oracle: 0.309 nMAE
+  This is an irreducible floor for patchwise inference evaluated against
+  the full-leaf target — local patch optima ≠ global leaf optimum.
+
+SELECTIVE ROUTING
+  Full-leaf best speedup: 6.5x (vs medium budget)
+  Patch best speedup: 35.8x (vs full per-patch refinement)
+
+FAILURE TAXONOMY (44 leaves)
+  Full-leaf only: 21 leaves
+  Both bad: 20 leaves
+  Patch only: 2 leaves
+  Both good: 1 leaf
+
+PER-PARAMETER ANALYSIS
+  Full-leaf better on: mu, lambda, diffusion_rate, alpha, gamma, energy_threshold
+  Patch better on: beta (balloon force) — but not significantly
+
+CALIBRATION
+  Full-leaf: rho = -0.01 (no correlation, poorly calibrated)
+  Patch: rho = 0.12 (weak positive, slightly better)
+
+STATISTICAL SIGNIFICANCE
+  All comparisons except selective mixture: p < 10^-13 (highly significant FL advantage)
+  Selective mixture: p = 2.7e-8 (significant FL advantage)
+
+KEY INSIGHT
+  The patchification rationale is scientific (resolution preservation),
+  not computational.  The current accuracy gap is due to:
+  1. Oracle gap (0.309 nMAE floor)
+  2. Naive aggregation noise
+  3. Energy_threshold scale dominance
+  These are fixable with learned aggregation and reparameterization.

@@ -1,0 +1,20 @@
+MATH SUMMARY (PAPER B)
+======================
+Core mathematical objects:
+- Direct branch: theta_hat_direct(x) = f_phi(x)
+- Patch branch: theta_hat_patch(x) = A({(theta_hat_k, u_k)}_k)
+- Oracle gap: || theta*_leaf - theta*_patch_agg ||
+- Routing policy:
+  - direct if u <= tau_lo
+  - refine if tau_lo < u <= tau_hi
+  - fallback if u > tau_hi
+
+How the math is used:
+- The equations define the black-box deployment problem.
+- They are not presented as new theory; they make the branch structure and selective policy explicit enough for review.
+- The paper's real weight still comes from audited runtime-quality, calibration, and branch-comparison tables and figures.
+
+Important interpretive guardrails:
+- The oracle gap is a real target mismatch, not a nuisance term.
+- Uncertainty is used as a routing statistic, not as a formal guarantee.
+- The 35-leaf integrated split and 174-leaf selective full study serve complementary roles and should not be numerically collapsed.

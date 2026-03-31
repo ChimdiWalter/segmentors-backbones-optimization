@@ -1,0 +1,33 @@
+What Changed — Paper 2: Selective Semi-Amortized Runtime and Patch
+===================================================================
+
+Seed manuscript: Paper_5/manuscript_blackbox_runtime/tex/main_blackbox_runtime.tex
+  (821 lines, 20-page fully elaborated deployment-focused paper)
+
+Changes made:
+1. Updated author from "Submission-Ready Repository Synthesis" to
+   "Chimdi Walter Ndubuisi and Toni Kazic"
+2. Updated figure paths from ../figs_from_outputs/ to ../figures/
+3. Updated bibliography path from refs_blackbox_runtime to ../bibliography/refs
+4. All manuscript content preserved — Paper_5 was already a complete,
+   journal-ready deployment paper
+
+Evidence sources merged in the seed:
+- Paper_5 (selective semi-amortized routing, calibration, risk-coverage)
+- Paper_7_integrated_full_vs_patch_leaves_18p7_v1 (matched 35-leaf comparison,
+  oracle gap, patch ablation, per-parameter difficulty)
+- Paper_6_patch_selective_semiamortized_fullstudy_v2 (patchwise selective study)
+- Paper_9_codex_slurm_shadow_v1 (independent Codex replication)
+
+No new experiments or analyses were needed. All evidence was already present
+in the repository experimental outputs.
+
+Key numerical results (unchanged):
+- Full-leaf nMAE: 1.154 (35-leaf matched split)
+- Best patchwise (mean aggregation): 0.906 (21.5% improvement, p=0.003)
+- Oracle gap: 0.327 nMAE
+- Quality-favoring routing: 0.556 nMAE at 74.34s (3.50x speedup)
+- Balanced routing: 0.577 nMAE at 60.48s (4.31x speedup)
+- Max-speedup routing: 0.819 nMAE at 55.77s (4.67x speedup)
+- Full optimizer baseline: 0.026 nMAE at 260.49s
+- Selective full study: MAE 0.1033 -> 0.0715 with best threshold pair

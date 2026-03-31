@@ -1,0 +1,100 @@
+REPRESENTATIVE TRACE RUNS — COMPARISON
+========================================
+Date: 2026-03-13
+
+OVERVIEW
+---------
+Four separate representative trace study folders exist in experiments/exp_v1/outputs/.
+Each represents a different iteration of the objective-surface trace-logging approach.
+Only ONE (the 9-leaf study) is used in the current manuscript as the primary evidence.
+
+==========================================================================
+RUN 1: objective_surface_traces_fullstudy/
+==========================================================================
+Run type:        Full-population study (all 174 leaves)
+N cases:         174
+Trace provenance: True current-run traces (instrumented optimizer)
+Purpose:         Comprehensive landscape characterization across entire dataset
+Main findings:   Full landscape geometry documented; provides population-level evidence
+Paper role:      Appendix / diagnostic only — too many plots for main text
+Differs from others: Covers ALL leaves, not a selected subset
+Status:          FINAL
+Notes:           Superseded by 9-leaf study for main paper use due to volume;
+                 remains valuable as supporting/population-level evidence
+
+==========================================================================
+RUN 2: objective_surface_traces_representative_fullbudget/
+==========================================================================
+Run type:        Earlier pilot representative study (selected subset)
+N cases:         Varies (earlier selection)
+Trace provenance: True current-run traces
+Purpose:         Pilot for the representative analysis approach
+Main findings:   Demonstrated feasibility of representative trace analysis
+Paper role:      SUPERSEDED — replaced by 9-leaf study
+Differs from others: Earlier iteration; superseded by improved case selection
+Status:          SUPERSEDED
+Notes:           Not used in current manuscript; kept for reference only
+
+==========================================================================
+RUN 3: objective_surface_traces_representative_fullbudget_9leaf/ ★ CURRENT
+==========================================================================
+Run type:        Full representative run — dedicated homogeneous rerun
+N cases:         9 (3 high, 3 median, 3 low score)
+Trace provenance: ALL traces from SINGLE dedicated SLURM rerun (job 12783426)
+                  NO fallback traces, NO reused traces, NO copied traces
+Purpose:         Definitive score-landscape geometry characterization
+Main findings:
+  - High-score leaves: sharp landscapes, mean refine gain +5.77
+  - Median-score leaves: intermediate landscapes, variable refine utility
+  - Low-score leaves: flat landscapes, mean refine gain +0.56
+  - Dominant parameter pair: T × β (energy threshold × balloon force)
+  - 833 total candidate evaluations across 9 leaves
+Paper role:      MAIN PAPER — Figs 9-12, Section 8.4
+Appropriate for: Main paper ✓, Appendix ✓
+Differs from others:
+  - Most carefully selected cases (score-distribution-spanning)
+  - Identical optimizer settings as production run
+  - Clean single-job provenance (SLURM 12783426)
+  - DSC_0205 substituted for DSC_0256__1 due to filename matching (both valid median)
+Status:          FINAL — COMPLETE
+Notes:           This is the definitive representative study. All 9 traces verified
+                 as homogeneous. Audit file: representative_trace_audit.txt
+
+==========================================================================
+RUN 4: objective_surface_traces_representative_fullbudget_plus/
+==========================================================================
+Run type:        Extended representative study (beyond core 9 leaves)
+N cases:         Extended set (more than 9, exact count varies)
+Trace provenance: True current-run traces for the traced cases
+Purpose:         Broader population evidence for landscape geometry
+Main findings:   Traces and surface plots generated; manifold_plots/ and solid_3d_plots/
+                 directories were created but NEVER POPULATED
+Paper role:      Supporting/appendix if needed — NOT in current manuscript
+Appropriate for: Appendix only (with caveat about incomplete analysis)
+Differs from others: Extended beyond 9-leaf core; partially incomplete
+Status:          PARTIAL — surface/trajectory complete, manifold/solid3d NOT completed
+Notes:           ⚠ manifold_plots/ and solid_3d_plots/ subdirectories are EMPTY
+                 This analysis was started but not finished. Use with caution.
+
+==========================================================================
+PROVENANCE SUMMARY
+==========================================================================
+                                    Fallback?  Reused?  Mixed?   Safe for paper?
+fullstudy                           No         No       No       Yes (appendix)
+representative_fullbudget            No         No       No       Yes (superseded)
+representative_fullbudget_9leaf ★    No         No       No       Yes (main paper)
+representative_fullbudget_plus       No         No       No       Partial (appendix only)
+
+KEY: None of these studies use fallback, reused, or copied traces.
+All traces in all four studies are genuine dedicated-run traces.
+The only provenance concern is the INCOMPLETENESS of the _plus study's
+manifold/solid3d analysis (subdirs created but empty).
+
+==========================================================================
+RECOMMENDATION
+==========================================================================
+For the main paper:     Use ONLY objective_surface_traces_representative_fullbudget_9leaf/
+For the appendix:       Add supplementary plots from 9leaf and optionally fullstudy
+For diagnostics:        fullstudy provides comprehensive population-level evidence
+Do NOT use:             representative_fullbudget (superseded)
+Use with caveat:        representative_fullbudget_plus (partial)

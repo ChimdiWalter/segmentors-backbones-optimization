@@ -1,0 +1,65 @@
+LIMITATIONS AND NEXT STEPS
+===========================
+
+LIMITATIONS
+-----------
+
+1. SMALL DATASET (N=174, 104 train)
+   - Handcrafted features outperform deep models → small-data bottleneck
+   - Ensemble calibration is imperfect with only 5 members on 104 leaves
+   - Next step: collect 500+ annotated leaves to test whether deep features
+     overtake handcrafted at scale
+
+2. SIMULATED REFINEMENT
+   - Refinement results use parametric interpolation, not real physics scorer
+   - True convergence patterns may differ, especially for difficult leaves
+   - Next step: run real physics scorer for all 6 budgets on the 35 test leaves
+     (estimated: ~12 hours of compute)
+
+3. APPROXIMATE PATCH ORACLES FOR ABLATIONS
+   - p224_s224 and p336_s168 oracles approximated from p224_s112
+   - Next step: run full optimization for each patch config (~48 hours each)
+
+4. NO LEARNED AGGREGATION
+   - Fixed operators only (mean, weighted, median, top-K, selective)
+   - Attention MIL and Deep Sets could close the oracle gap
+   - Bottleneck: only 5 oracle-evaluated patches per leaf → too few for training
+   - Next step: increase oracle patches per leaf to 20+, then train aggregator
+
+5. SINGLE SPECIES
+   - All soybean leaves; generalization to corn/wheat/rice unknown
+   - Different leaf morphologies may shift the full-leaf vs patchwise balance
+   - Next step: collect multi-species dataset and repeat comparison
+
+6. NO MULTI-SCALE FUSION
+   - Full-leaf and patchwise treated as separate branches
+   - A fused architecture could avoid aggregation entirely
+   - Next step: design multi-scale feature extraction that combines global
+     and local information before prediction
+
+7. EXTERNAL SET HAS NO ORACLE
+   - 18.7 evaluation limited to distributional analysis
+   - Next step: run full optimizer on 78 external images (~5.6 hours)
+
+NEXT STEPS (PRIORITIZED)
+-------------------------
+
+Priority 1 (Immediate):
+  - Run real refinement with physics scorer on test set
+  - Run full optimizer on external 18.7 images
+  - Recompile manuscript with real (not simulated) numbers
+
+Priority 2 (Short-term):
+  - Run full patch oracles for all 3 ablation configs
+  - Increase oracle patches per leaf from 5 to 20+
+  - Implement attention MIL aggregator
+
+Priority 3 (Medium-term):
+  - Scale dataset to 500+ leaves
+  - Design multi-scale fusion architecture
+  - Test on additional crop species
+
+Priority 4 (Long-term):
+  - Improve the underlying physics model (address "both bad" failure category)
+  - Real-time patchwise inference with GPU batching
+  - Integration into breeding pipeline for high-throughput screening

@@ -1,0 +1,62 @@
+WHAT CHANGED — Strengthened Manuscript
+=======================================
+Base: Latest_Paper_1_updated_fullbudget9.tex (from manuscript_update_fullbudget_9leaf/)
+Output: Latest_Paper_1_strengthened.tex
+
+ADDITIONS TO THE PAPER
+-----------------------
+
+1. NEW SUBSECTION: "Parameter-Cloud Geometry and Manifold Structure" (Section V-G)
+   - PCA 2D projection of global vs local parameter vectors (fig:pca2d_global_local)
+   - Mean parameter shift profile (fig:mean_delta)
+   - Covariance ellipsoids with centroid shift (fig:cov_ellipsoids)
+   - k-NN neighbor consistency analysis results
+   - Discussion of amortized parameter prediction feasibility
+
+2. NEW MATH: "Parameter-Cloud Geometry" (Section III-C)
+   - Parameter shift definition: delta_j = theta_j^ell - theta_j^g
+   - Centroid shift vector and magnitude
+   - Covariance ellipsoid formulation
+   - k-NN classification agreement test
+
+3. NEW APPENDIX SECTION: "Parameter-Cloud Geometry Supplementary Plots" (Appendix C)
+   - Convex hull comparison (global vs local)
+   - Positive/negative dD surface separation
+   - t-SNE embedding of delta parameters
+   - Centroid shift by dD group
+
+4. NEW DISCUSSION PARAGRAPH: "Parameter-manifold structure and amortized prediction"
+   - Physical interpretation of dominant energy_threshold shift
+   - Feasibility of amortized parameter prediction
+   - Connection to optimization landscape characterization literature
+
+5. UPDATED ABSTRACT
+   - Added sentence about trace-based objective surfaces and manifold analysis
+
+6. UPDATED CONCLUSION
+   - Added summary of landscape geometry and manifold findings
+
+7. NEW BIBLIOGRAPHY ENTRIES (7 added):
+   - hansen2001cma (CMA-ES, optimization landscape)
+   - jones1998ego (Bayesian optimization)
+   - jolliffe2016pca (PCA review)
+   - mcinnes2018umap (UMAP)
+   - vandermaaten2008tsne (t-SNE)
+   - singh2016machine (ML for plant phenotyping)
+   - mahlein2016plant (plant disease detection by imaging)
+
+8. MINOR UPDATES:
+   - Updated Related Work section with mahlein2016plant and singh2016machine citations
+   - Removed multirow package (not installed on compile system)
+   - Fixed graphicspath to point to consolidated figure directories
+
+WHAT WAS PRESERVED
+-------------------
+- All existing sections, figures, tables, and text from the base manuscript
+- All existing literature references
+- All existing mathematical notation and equations
+- All trace-based analysis content (9-leaf study)
+- All patch morphology transfer content
+- All teacher-student distillation results
+- All ablation tables and discussion
+- All qualitative results and failure taxonomy

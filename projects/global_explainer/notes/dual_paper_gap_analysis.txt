@@ -1,0 +1,174 @@
+DUAL-PAPER GAP ANALYSIS
+========================
+Date: 2026-03-30
+Scope: Paper 1 (Gradient-Free Stochastic Optimization) + Paper 2 (Selective Semi-Amortized Inference)
+
+================================================================================
+PAPER 1 GAPS
+================================================================================
+
+GAP-P1-1: TODO placeholders in manuscript (3 instances)
+  Location: Paper_3/manuscript_final_strengthened/tex/Latest_Paper_1_strengthened.tex
+  Severity: MINOR
+  Description: Three TODO placeholders remain in the manuscript for biological
+    context, upstream preprocessing details, and dataset details. These are
+    straightforward fill-ins that do not require new experiments.
+  Action: Search the .tex file for TODO markers and fill in:
+    (a) Biological context paragraph in introduction or related work
+    (b) Upstream preprocessing pipeline description (image acquisition, resizing,
+        color normalization steps applied before optimization)
+    (c) Dataset details (species, cultivar, imaging conditions, leaf count
+        distribution, image resolution statistics)
+  Effort: 1-2 hours of writing
+  Risk: None. Information is known; just needs to be written.
+
+GAP-P1-2: No baseline comparisons to classical segmentation methods
+  Location: N/A (missing from experiments)
+  Severity: MODERATE
+  Description: The manuscript does not compare the Navier-Stokes active contour
+    optimizer against classical baselines such as:
+    - Otsu thresholding
+    - Watershed segmentation
+    - GrabCut
+    - Chan-Vese level sets
+    - Standard (non-Navier-Stokes) active contours / snakes
+  Action: Two options ranked by effort:
+    (a) PREFERRED: Add a discussion paragraph acknowledging the absence and
+        arguing that the contribution is the optimizer + heuristic objective
+        design, not beating classical methods on standard benchmarks.
+        Effort: 30 minutes.
+    (b) OPTIONAL: Run Otsu + watershed + GrabCut on the 174-image dataset using
+        the same heuristic objective for scoring, and report the comparison.
+        Effort: 1-2 days including scripting and table generation.
+  Risk: Reviewers may request (b). Having (a) ready is the minimum; preparing
+    (b) proactively would strengthen the submission.
+
+GAP-P1-3: No cross-dataset or cross-species evaluation
+  Location: N/A
+  Severity: LOW (acknowledged limitation)
+  Description: All 174 images come from a single collection. No external
+    validation set is used in Paper 1 (Paper 2 uses collection 18.7 for cross-
+    collection analysis, but Paper 1 does not reference this).
+  Action: Add a limitations paragraph noting single-collection scope. Optionally
+    reference Paper 2's cross-collection results as future/companion work.
+  Effort: 15 minutes
+  Risk: Minimal. Single-dataset is common for method papers with ablations.
+
+PAPER 1 OVERALL ASSESSMENT:
+  The manuscript is journal-ready except for 3 TODO fill-ins and an optional
+  classical-baseline comparison. No new experiments are strictly required.
+
+================================================================================
+PAPER 2 GAPS
+================================================================================
+
+GAP-P2-1: Oracle gap is substantial (0.327 nMAE)
+  Location: experiments/exp_v1/outputs/integrated_full_vs_patch_leaves_18p7_v1/
+  Severity: MODERATE (honest limitation, already acknowledged)
+  Description: The oracle gap of 0.327 nMAE represents the irreducible error
+    floor from granularity mismatch between patch-level predictions and leaf-
+    level ground truth. This is ~36% of the patchwise nMAE (0.906), meaning
+    roughly a third of the remaining error cannot be removed by better models
+    within the current patchwise framework.
+  Action: No new experiment needed. The manuscript already frames this honestly.
+    Ensure the discussion explicitly states:
+    (a) The oracle gap is a property of the aggregation scheme, not the model
+    (b) Reducing it requires finer-grained ground truth or hierarchical
+        aggregation methods
+    (c) Despite the gap, patchwise still beats full-leaf by 21.5%
+  Effort: Already addressed in manuscript
+  Risk: Reviewers may ask for hierarchical aggregation experiments. Prepare a
+    rebuttal paragraph explaining this is future work.
+
+GAP-P2-2: Uncertainty calibration is directional, not perfect
+  Location: experiments/exp_v1/outputs/selective_semiamortized_fullstudy174_v3/
+  Severity: LOW-MODERATE
+  Description: The calibration relationship between predicted uncertainty and
+    actual error is monotonic (directionally correct) but not perfectly
+    calibrated in the statistical sense (expected calibration error not reported).
+  Action: Two options:
+    (a) PREFERRED: Compute and report ECE (expected calibration error) and
+        reliability diagrams. This quantifies how far from perfect calibration.
+        Effort: 2-4 hours.
+    (b) MINIMUM: Add a sentence noting that formal calibration metrics (ECE,
+        reliability diagrams) are left to future work, and the current monotonic
+        relationship suffices for the routing policy.
+  Effort: See above
+  Risk: Reviewers may request ECE. Having the number ready is prudent.
+
+GAP-P2-3: Cross-collection sample size is limited (28 leaves)
+  Location: experiments/exp_v1/outputs/selective_semiamortized_patchstudy_leaves_18p7_v1/
+  Severity: MODERATE
+  Description: The cross-collection evaluation uses only 28 leaves from
+    collection 18.7. This is sufficient for a positive signal but insufficient
+    for strong generalization claims.
+  Action: Two options:
+    (a) PREFERRED: Temper generalization claims. Use language like "preliminary
+        cross-collection evidence" rather than "robust generalization."
+    (b) OPTIONAL: If additional leaf collections are available, run the pipeline
+        on 1-2 more collections to strengthen the claim.
+  Effort: (a) 15 minutes; (b) 1-3 days depending on data availability
+  Risk: Reviewers will likely note the small sample. Honest framing preempts
+    this concern.
+
+GAP-P2-4: 31% both-bad failure rate
+  Location: experiments/exp_v1/outputs/integrated_full_vs_patch_leaves_18p7_v1/
+  Severity: LOW (acknowledged, taxonomized)
+  Description: 31% of images fail under both full-leaf and patchwise approaches.
+    The failure taxonomy already characterizes these cases, but root-cause
+    analysis of why both methods fail on these specific images is limited.
+  Action: Add 2-3 sentences in the discussion analyzing common properties of
+    both-bad images (e.g., severe occlusion, extreme color variation, very small
+    lesion count). If image metadata is available, a simple correlation analysis
+    would strengthen this.
+  Effort: 1-2 hours
+  Risk: Low. Reviewers appreciate honest failure analysis.
+
+PAPER 2 OVERALL ASSESSMENT:
+  The manuscript is mature. All gaps are honest limitations that the text
+  already acknowledges. The main improvement opportunities are: (1) computing
+  ECE for calibration, (2) tempering cross-collection language, and (3) deeper
+  failure root-cause analysis. No fundamental new experiments are required.
+
+================================================================================
+CROSS-PAPER GAPS
+================================================================================
+
+GAP-CROSS-1: Shared content overlap must be managed
+  Severity: HIGH (logistical, not scientific)
+  Description: The refinement budget table and per-parameter difficulty analysis
+    appear in both papers with different framing. If submitted to the same venue
+    or close in time, self-plagiarism concerns may arise.
+  Action:
+    (a) Ensure each paper cites the other (as companion/forthcoming)
+    (b) Rewrite overlapping paragraphs so text is distinct even if underlying
+        data is shared
+    (c) Consider different table formats and figure styles for shared data
+  Effort: 2-3 hours
+  Risk: Moderate if both go to IEEE venues. Low if different venues.
+
+GAP-CROSS-2: No shared experimental protocol document
+  Severity: LOW
+  Description: Both papers draw from the same 174-image dataset and the same
+    optimizer codebase. A shared experimental protocol (image preprocessing,
+    optimizer hyperparameters, hardware specs) should be consistent across both
+    manuscripts.
+  Action: Create a single-source-of-truth document for shared experimental
+    details. Each paper references the same numbers.
+  Effort: 1-2 hours
+  Risk: Inconsistency between papers would be embarrassing in review.
+
+================================================================================
+PRIORITY RANKING (by effort-to-impact ratio)
+================================================================================
+
+Priority  Gap_ID       Effort        Impact    Action
+-------  ----------   -----------   --------  ----------------------------------------
+1        GAP-P1-1     1-2 hours     HIGH      Fill 3 TODO placeholders in P1 manuscript
+2        GAP-CROSS-1  2-3 hours     HIGH      De-duplicate shared content across papers
+3        GAP-CROSS-2  1-2 hours     MEDIUM    Harmonize experimental protocol details
+4        GAP-P2-2     2-4 hours     MEDIUM    Compute ECE for calibration claim
+5        GAP-P1-2     30 min (a)    MEDIUM    Add baseline discussion paragraph
+6        GAP-P2-3     15 min        MEDIUM    Temper cross-collection language
+7        GAP-P2-4     1-2 hours     LOW       Deepen both-bad failure root-cause analysis
+8        GAP-P1-3     15 min        LOW       Add single-collection limitation note

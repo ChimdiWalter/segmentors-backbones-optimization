@@ -1,0 +1,71 @@
+MAIN TEXT vs APPENDIX RECOMMENDATION
+=======================================
+Date: 2026-03-13
+
+MAIN TEXT (Strongest Evidence — Keep)
+---------------------------------------
+Figures:
+  Fig 1  — Optimizer status bar              — Proves pipeline reliability (100% OK)
+  Fig 2  — Runtime histogram                 — Establishes feasibility
+  Fig 3  — Score histogram                   — Shows consistent optimization
+  Fig 4  — Threshold sweep                   — Demonstrates threshold insensitivity
+  Fig 5  — Teacher-student montage           — Key qualitative distillation evidence
+  Fig 6  — Disagreement montage              — Explains dominant failure mode
+  Fig 7  — E_thr vs lesion count             — Physics interpretation
+  Fig 8  — Beta vs area fraction             — Physics interpretation
+  Fig 9  — High-score surface (DSC_0198)     — Core landscape evidence
+  Fig 10 — Median-score surface (DSC_0379)   — Intermediate landscape
+  Fig 11 — Low-score surface (DSC_0261)      — Flat landscape evidence
+  Fig 12 — Convergence trajectory            — Phase transition evidence
+  Fig 13 — PCA 2D global-local               — Core manifold evidence
+  Fig 14 — Mean delta parameters             — Key shift profile
+  Fig 15 — Covariance ellipsoids             — Volumetric geometry evidence
+  Fig 16 — Qualitative grid                  — Comprehensive visual overview
+  Fig 17 — Area fraction error histogram     — Underestimation evidence
+  Fig 18 — Count error histogram             — Local re-opt benefit
+  Fig 19 — Teacher vs pred area scatter      — Systematic underestimation
+
+Tables:
+  Table I   — Objective ablations            — Each term justified
+  Table II  — Search ablations               — Search strategy justified
+  Table III — Morphology transfer            — Dice vs morphology divergence
+
+APPENDIX (Supporting — Keep in Appendix)
+------------------------------------------
+  Fig A1 — n_c and area histograms           — Output morphology context
+  Fig A2 — Parameter histograms (7 params)   — Reproducibility documentation
+  Fig B1-B3 — Additional trajectories (6)    — Extends convergence evidence
+  Fig C1 — Convex hulls + dD surfaces        — Supplements volumetric geometry
+  Fig C2 — t-SNE + centroid shift groups     — Validates manifold analysis
+
+CANDIDATE FOR ADDITION (Currently in outputs but NOT in paper)
+----------------------------------------------------------------
+1. optimization_surface_analysis/ heatmaps
+   → Could add 1-2 representative heatmaps to appendix showing landscape cross-sections
+   → Path: optimization_surface_analysis/local_score_heatmap_leaf_high_energy_threshold_beta.png
+
+2. optimization_manifold_and_solid3d_final/figures/
+   → Contains refined merged geometry figures (19 files)
+   → Some may be better renderings than current solid3d figures
+
+3. patch_transfer_morphology_montages/
+   → Visual montages of patch transfer — good appendix material
+
+4. objective_surface_traces_fullstudy/ surface_report.pdf
+   → Population-level evidence could strengthen appendix
+
+SHOULD NOT BE IN PAPER (Diagnostic / Superseded)
+---------------------------------------------------
+- optimization_surface_analysis_codex/ (style variant)
+- parameter_shift_3d_analysis_solid_codex/ (style variant)
+- objective_surface_traces_representative_fullbudget/ (superseded)
+- montage_patch_opt_*.png files (per-leaf diagnostics)
+- postprocess_sweep.csv (parameter sweep — diagnostic)
+
+FIGURE COUNT ASSESSMENT
+-------------------------
+Current main text:  ~19 figures + 3 tables + 2 algorithms = substantial
+Current appendix:   ~10 figures
+Total:              ~29 figures
+For IEEE journal:   This is on the heavy side; consider moving Figs 7-8 or 17-19 to appendix
+                    if space is tight, but all are well-justified

@@ -1,0 +1,34 @@
+WHAT MAKES THIS PAPER DISTINCT FROM THE PRIOR PAPERS
+=====================================================
+
+1. VS THE FULL-LEAF PAPER (Paper_3 / Paper_6)
+   - The full-leaf paper only considered downsampled whole-leaf inference
+   - This paper adds the patchwise branch and directly compares the two
+   - This paper introduces the oracle gap concept (not present in full-leaf paper)
+   - The per-parameter local/global decomposition is new
+   - External 18.7 evaluation is integrated rather than ad-hoc
+
+2. VS THE PATCH PAPER
+   - The patch paper ran patchwise experiments in isolation
+   - This paper provides the first matched-split comparison with full-leaf
+   - This paper does not oversell patchwise: it honestly reports the oracle gap
+     and identifies parameters where full-leaf is superior
+   - Aggregation methods are systematically compared (5 methods vs ad-hoc)
+   - Heterogeneity analysis is connected to biological interpretation
+
+3. VS THE PRIOR INTEGRATED ATTEMPT
+   - The prior attempt combined results from separate runs on different splits
+   - This paper builds both branches from scratch on a single authoritative split
+   - The error decomposition (prediction + aggregation + oracle gap) is new
+   - Real patch ablations with 3 configurations (not interpolated)
+   - Statistical testing is more rigorous (paired tests on matched leaves)
+   - The paper is substantially longer and more detailed (31 pages vs ~15)
+
+4. UNIQUE CONTRIBUTIONS OF THIS PAPER
+   a) Dual oracle formulation with quantified oracle gap
+   b) Three-way error decomposition
+   c) Per-parameter local vs global classification with physical interpretation
+   d) Hybrid approach recommendation based on parameter type
+   e) Explicit speedup denominator framework
+   f) Complete provenance infrastructure
+   g) Failure taxonomy identifying complementary failure modes

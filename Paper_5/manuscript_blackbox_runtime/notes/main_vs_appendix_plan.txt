@@ -1,0 +1,31 @@
+MAIN VS APPENDIX PLAN (PAPER B)
+================================
+Paper identity:
+- Main claim: selective semi-amortized routing provides explicit runtime-quality operating points for approximating an expensive physics oracle.
+- Explicit non-claim: this paper is not the parameter-manifold / physics-learning paper.
+
+Source-line accounting:
+- integrated_full_vs_patch_manuscript.pdf: primary source for matched full-vs-patch comparison, oracle gap, patch ablation, heterogeneity, and parameter difficulty.
+- main_integrated_full_vs_patch_codex_v1.pdf: shadow corroboration only; used to check denominator and overlap language.
+- main_speciesref_fixed-1-1.pdf: primary source for selective routing, calibration, threshold ablations, phenotype consistency, and runtime-quality policy analysis.
+- optimizer/manifold line: used only where geometry explains oracle mismatch or branch behavior.
+
+Main text curation:
+- Setup and lineage table: explicit separation of the three prior manuscript lines.
+- Shared substrates table: 35-leaf matched integrated split versus 174-leaf selective full study.
+- Core full-vs-patch evidence: schematic, dataset split, main comparison, oracle gap, paired statistics.
+- Runtime-quality evidence: Pareto/frontier figures, routing table, runtime table.
+- Uncertainty quality: calibration and risk-coverage figures and calibration-bin table.
+- Branch anatomy: aggregation, patch ablation, heterogeneity, parameter difficulty.
+- Selective-study depth: threshold grid, method comparison, score recovery, learning curves.
+- Biological interpretation: morphology fidelity, phenotype consistency, score tiers, parameter extremes.
+- Actual leaf imagery: branch comparison, routing cases, failure montages, 18.7 panel.
+
+Appendix curation:
+- Denominator and overlay plots.
+- Ensemble-size, residual, feature PCA, and routing-space PCA diagnostics.
+- Additional backbone, geometry-context, domain-robustness, and score-tier evidence.
+
+Why this split works:
+- Main text contains all of the evidence needed to defend the deployment claim.
+- Appendix adds further audited study outputs without turning the paper into a geometry manuscript.

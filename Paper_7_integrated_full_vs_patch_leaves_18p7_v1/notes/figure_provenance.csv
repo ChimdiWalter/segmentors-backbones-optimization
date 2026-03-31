@@ -1,0 +1,19 @@
+figure_id,filename,source_data,source_script,description
+fig01,fig01_pipeline_schematic.pdf,N/A (schematic),run_integrated_full_vs_patch.py phase10,Pipeline overview schematic
+fig02,fig02_dataset_split.pdf,data_manifests/ + splits/,run_integrated_full_vs_patch.py phase10,Dataset and split design
+fig03,fig03_main_comparison.pdf,evaluation/E1_summary.csv,run_integrated_full_vs_patch.py phase10,Main matched FL vs PA comparison
+fig04,fig04_runtime_quality_pareto.pdf,evaluation/E6_refinement_curves.csv,run_integrated_full_vs_patch.py phase10,Runtime-quality Pareto frontier
+fig05,fig05_oracle_gap.pdf,evaluation/E3_oracle_gap_decomposition.csv,run_integrated_full_vs_patch.py phase10,Oracle gap decomposition
+fig06,fig06_patch_ablation.pdf,evaluation/E4_patch_ablation.csv,run_integrated_full_vs_patch.py phase10,Patch size/stride ablation
+fig07,fig07_backbone_comparison.pdf,evaluation/E5_backbone_comparison.csv,run_integrated_full_vs_patch.py phase10,Backbone comparison
+fig08,fig08_refinement_curves.pdf,evaluation/E6_refinement_curves.csv,run_integrated_full_vs_patch.py phase10,Refinement budget curves
+fig09,fig09_risk_coverage.pdf,evaluation/E7_risk_coverage.csv,run_integrated_full_vs_patch.py phase10,Risk-coverage curve
+fig10,fig10_calibration.pdf,evaluation/fl_comprehensive_eval.csv,run_integrated_full_vs_patch.py phase10,Calibration analysis
+fig11,fig11_aggregation_comparison.pdf,evaluation/E1_summary.csv,run_integrated_full_vs_patch.py phase10,Aggregation method comparison
+fig12,fig12_heterogeneity.pdf,evaluation/E9_heterogeneity.csv,run_integrated_full_vs_patch.py phase10,Within-leaf heterogeneity
+fig13,fig13_domain_robustness.pdf,evaluation/E8_external_robustness.json,run_integrated_full_vs_patch.py phase10,External domain robustness (18.7)
+fig14,fig14_parameter_difficulty.pdf,evaluation/E10_parameter_difficulty.csv,run_integrated_full_vs_patch.py phase10,Per-parameter difficulty analysis
+fig15,fig15_geometry_pca.pdf,geometry/,run_integrated_full_vs_patch.py phase10,PCA geometry of parameter space
+fig16,fig16_speedup_denominators.pdf,evaluation/E6_refinement_curves.csv,run_integrated_full_vs_patch.py phase10,Speedup denominator explanation
+fig17,fig17_leaf_comparison.pdf,evaluation/E1_matched_comparison.csv,run_integrated_full_vs_patch.py phase10,Leaf-by-leaf FL vs PA comparison
+fig18,fig18_failure_taxonomy.pdf,evaluation/E11_failure_taxonomy.csv,run_integrated_full_vs_patch.py phase10,Failure taxonomy

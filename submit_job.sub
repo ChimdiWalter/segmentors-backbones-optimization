@@ -1,0 +1,42 @@
+#!/bin/bash
+#SBATCH --job-name=training_job
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=2
+#SBATCH --mem=32G
+#SBATCH --time=1-00:00:00
+#SBATCH --partition=gpu
+#SBATCH --gres=gpu:A100:2
+#SBATCH --output=output_%j.log
+#SBATCH --error=error_%j.log
+
+
+
+
+# Activate venv and cd as you already do
+source /cluster/VAST/kazict-lab/e/lesion_phes/lesenv/bin/activate
+cd /cluster/VAST/kazict-lab/e/lesion_phes/code/segmentors_backbones || { echo "Directory not found"; exit 1; }
+
+
+#python3.11 nv_optimize_robust_v3_gpu.py   --input  /cluster/VAST/kazict-lab/e/lesion_phes/code/segmentors_backbones/leaves  --output /cluster/VAST/kazict-lab/e/lesion_phes/code/segmentors_backbones/gpu_output_2   --mode fused   --device cuda --gpu-batch 8 --budget-random 96 --topk-refine 6 
+
+python3.11 nv_optimize_robust_v3_gpu.py \
+  --input  /cluster/VAST/kazict-lab/e/lesion_phes/code/segmentors_backbones/leaves \
+  --output /cluster/VAST/kazict-lab/e/lesion_phes/code/segmentors_backbones/gpu_output_2 \
+  --mode fused \
+  --device cuda \
+  --gpu-batch 8 \
+  --budget-random 96 \
+  --topk-refine 6 \
+  --refine-steps 12 \
+  --iters-coarse 16 \
+  --snake-iters-coarse 80 \
+  --iters-final 30 \
+  --snake-iters-final 120 \
+  --downscale 0.6 \
+  --sieve-topk 4 \
+  --per-image-seconds 240
+
+
+
+
+echo "Training job completed!"

@@ -1,0 +1,17 @@
+\begin{table*}[t]
+\centering
+\caption{Objective ablations on the 30-image stratified subset. Each row removes one term from the composite objective (Eq.~\ref{eq:objective}).}
+\label{tab:abl_obj}
+\begin{tabular}{lcccccc}
+\toprule
+Variant & OK\% $\uparrow$ & Non-empty\% $\uparrow$ & Med.\ score $\uparrow$ & Med.\ area & Med.\ $n_c$ & Med.\ time (s) $\downarrow$ \\
+\midrule
+Full objective (ours) & 100\% & 100\% & 14.80 & 560355 & 134 & 4647.6 \\
+w/o color distance ($W_{\mathrm{color}}{=}0$) & 100\% & 97\% & 14.74 & 626216 & 126 & 4580.2 \\
+w/o gradient align ($W_{\mathrm{grad}}{=}0$) & 100\% & 100\% & 9.71 & 577427 & 139 & 4894.4 \\
+w/o contour count ($W_{\mathrm{topo}}{=}0$) & 100\% & 100\% & 3.68 & 615107 & 130 & 3892.8 \\
+w/o area penalty ($W_{\mathrm{area}}{=}0$) & 100\% & 100\% & 14.55 & 645565 & 131 & 4994.0 \\
+w/o noise penalty ($W_{\mathrm{small}}{=}0$) & 100\% & 100\% & 14.55 & 613357 & 188 & 4421.5 \\
+\bottomrule
+\end{tabular}
+\end{table*}

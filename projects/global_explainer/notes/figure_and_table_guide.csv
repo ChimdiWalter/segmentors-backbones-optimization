@@ -1,0 +1,26 @@
+paper,figure_or_table,label,description,source_path,interpretation
+P1,figure,fig:paramdist_status,Optimizer status bar,figures/exp_v1/optimizer_status_bar.png,100% OK convergence across all 174 images
+P1,figure,fig:objterms_runtime,Runtime histogram,figures/exp_v1/optimizer_elapsed_seconds_hist.png,Mean ~258s median ~242s per leaf
+P1,figure,fig:optimizer_score_hist,Score histogram,figures/exp_v1/optimizer_score_hist.png,Mean 21.10 with right-skewed distribution
+P1,figure,fig:thresh_sweep,Threshold sweep,figures/exp_v1/threshold_sweep_plot.png,Optimal at 0.30; teacher-empty disagreements persist
+P1,figure,fig:teacher_student_montage,Teacher-student montage,figures/exp_v1/montage_teacher_student.png,Worst/median/best Dice examples
+P1,figure,fig:disagreement,Disagreement montage,figures/exp_v1/montage_disagreement_roi.png,Teacher-empty/student-nonempty cases
+P1,figure,fig:scatter_et_lc,Energy threshold vs lesion count,figures/exp_v1/scatter_energy_threshold_vs_lesion_count.png,Higher thresholds -> fewer larger components
+P1,figure,fig:scatter_beta_af,Beta vs area fraction,figures/exp_v1/scatter_beta_vs_area_frac.png,Larger balloon force -> more mask expansion
+P1,figure,fig:surface_high,High-score trace surface,figures/9leaf/DSC_0198_*_surface_energy_threshold_vs_beta.png,Sharp landscape with exploitable optima
+P1,figure,fig:surface_low,Low-score trace surface,figures/9leaf/DSC_0261_*_surface_energy_threshold_vs_beta.png,Flat landscape where random suffices
+P1,figure,fig:pca2d_global_local,PCA 2D global vs local,figures/manifold/pca2d_global_local_dD.png,46.5% variance in 2 PCs; centroid shift 1.616
+P1,figure,fig:mean_delta,Mean parameter shift,figures/manifold/mean_delta_parameters.png,Energy threshold dominates the shift direction
+P1,figure,fig:cov_ellipsoids,Covariance ellipsoids,figures/solid3d/pca3d_covariance_ellipsoids.png,Overlapping displaced ellipsoids; structured geometry
+P1,table,tab:abl_obj,Objective ablations,experiments/exp_v1/outputs/ablations_objective/,Topology +11.12 pts; gradient alignment +5.09 pts
+P1,table,tab:abl_search,Search ablations,experiments/exp_v1/outputs/ablations_search/,Random reaches ~90% of final; refinement adds ~10%
+P1,table,tab:patch_morph_transfer,Morphology transfer,experiments/exp_v1/outputs/patch_transfer_morphology_filled/,Local re-opt reduces count error by 35%
+P2,figure,fig:setup_main,Pipeline + main comparison,figures/B_fig01-05*.pdf,Branch structure and oracle-gap decomposition
+P2,figure,fig:frontierB,Runtime-quality Pareto,figures/B_fig04+08+19+38*.pdf,Multiple operating points from 55s to 260s
+P2,figure,fig:calibrationB,Calibration + risk-coverage,figures/B_fig09+10+27+28*.pdf,Directionally correct; useful for routing
+P2,figure,fig:branchB,Branch anatomy,figures/B_fig06+11+12+14*.pdf,Aggregation and patch ablation comparison
+P2,figure,fig:failureB,Failure taxonomy,figures/B_fig18+35+36*.pdf,29% both good / 20% FL only / 20% Patch only / 31% both bad
+P2,table,tab:mainB,Matched comparison,experiments/.../E1_matched_comparison.csv,nMAE 0.906 vs 1.154 (p=0.003)
+P2,table,tab:routingB,Routing policies,experiments/.../runtime_comparison.csv,3 policies with 3.5-4.7x speedup
+P2,table,tab:calibB,Calibration bins,experiments/.../calibration.csv,Monotonic uncertainty-error relationship
+P2,table,tab:oodB,Cross-collection,experiments/.../ood_robustness.csv,Comparable performance on 18.7

@@ -1,0 +1,133 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+\hypersetup{colorlinks=true, linkcolor=blue!60!black, urlcolor=blue!50!black}
+
+\newcommand{\filepath}[1]{\texttt{\small #1}}
+
+\title{\textbf{Executive Summary}\\[0.5em]
+\large Gradient-Free Stochastic Optimization of Navier-Stokes Active Contours\\
+for Unsupervised High-Throughput Phenotyping\\[0.5em]
+\normalsize Ndubuisi \& Kazic --- Paper Companion}
+\author{Auto-generated --- 2026-03-13}
+\date{}
+
+\begin{document}
+\maketitle
+
+%=============================================================================
+\section{Paper in One Paragraph}
+%=============================================================================
+
+This paper proposes an unsupervised segmentation pipeline for plant disease lesions that combines Navier-Stokes-inspired PDE diffusion with active contour snakes, where 7 physics parameters are optimized per image via gradient-free stochastic hill climbing using a no-ground-truth heuristic objective.  Applied to 174 high-resolution 16-bit leaf images, the pipeline achieves 100\% convergence and generates pseudo-labels that are distilled into a fast UNet student.  Comprehensive experiments include objective/search ablations, trace-based landscape analysis on 9 representative leaves revealing score-tier-dependent geometry, PCA/solid-3D manifold analysis showing structured low-dimensional parameter organization, and morphology transfer analysis demonstrating that overlap metrics alone are insufficient for phenotyping quality assessment.
+
+%=============================================================================
+\section{Core Method}
+%=============================================================================
+
+\begin{enumerate}[nosep]
+  \item PDE-based diffusion smooths image gradients into clean energy maps
+  \item Active contours (snakes) evolve on energy maps to segment lesions
+  \item Heuristic objective scores segmentation quality without ground truth:\\
+        $S = w_g \cdot \text{GradAlign} + w_c \cdot \text{ColorSep} + w_n \cdot \log(1{+}N) - \text{Penalties}$
+  \item Per-image optimization: 64 random + 48 refinement evaluations in 7D parameter space
+  \item UNet student trained on optimizer pseudo-labels for fast inference
+\end{enumerate}
+
+%=============================================================================
+\section{Key Experiments and Results}
+%=============================================================================
+
+\begin{tabular}{p{4cm}p{4cm}p{5.5cm}}
+\toprule
+\textbf{Experiment} & \textbf{Key Metric} & \textbf{Output Path} \\
+\midrule
+Production run (174 leaves) & 100\% OK, score 21.10 & \filepath{opt\_summary\_local.csv} \\
+Objective ablation & Topo term: 14.80$\to$3.68 & \filepath{ablations\_objective/} \\
+Search ablation & Full vs random-only: 14.95 vs 14.88 & \filepath{ablations\_search/} \\
+Teacher-student & Dice 0.642 (nonempty) & \filepath{teacher\_student\_metrics.csv} \\
+9-leaf traces & High refine +5.77; low +0.56 & \filepath{obj\_surf\_traces\_repr\_fb\_9leaf/} \\
+Manifold geometry & 2 PCs = 46.5\%; kNN 0.534 & \filepath{param\_shift\_manifold\_geometry/} \\
+Solid-3D geometry & Centroid shift 1.616 std & \filepath{param\_shift\_3d\_analysis\_solid/} \\
+Morphology transfer & Count err $-$35\% with local & \filepath{patch\_transfer\_morph\_eval.csv} \\
+\bottomrule
+\end{tabular}
+
+%=============================================================================
+\section{Strongest Evidence}
+%=============================================================================
+
+\begin{enumerate}[nosep]
+  \item \textbf{100\% convergence} across 174 morphologically diverse leaves
+  \item \textbf{Ablation tables} (I \& II): each objective/search component justified
+  \item \textbf{9-leaf trace surfaces}: score-tier-dependent landscape geometry (homogeneous rerun, no fallback)
+  \item \textbf{Manifold geometry}: structured parameter space ($k$-NN above random, PCA separation)
+  \item \textbf{Morphology transfer}: Dice-morphology divergence (important for phenotyping)
+\end{enumerate}
+
+%=============================================================================
+\section{Key Figures and Paths}
+%=============================================================================
+
+\begin{tabular}{p{3.5cm}p{10cm}}
+\toprule
+\textbf{Figure} & \textbf{Path} \\
+\midrule
+Figs 1--3 (optimizer) & \filepath{optimizer\_summary/\{status\_bar,elapsed\_seconds\_hist,score\_hist\}.png} \\
+Fig 4 (threshold sweep) & \filepath{threshold\_sweep\_plot.png} \\
+Figs 5--6 (montages) & \filepath{teacher\_student\_figures/montage\_teacher\_student.png}; \filepath{paper\_disagreement\_montage\_roi\_thr0p30.png} \\
+Figs 9--11 (surfaces) & \filepath{obj\_surf\_traces\_repr\_fb\_9leaf/surface\_plots/surface\_DSC\_0\{198,379,261\}*} \\
+Fig 12 (trajectory) & \filepath{obj\_surf\_traces\_repr\_fb\_9leaf/trajectory\_plots/traj\_DSC\_0198*} \\
+Figs 13--14 (manifold) & \filepath{param\_shift\_manifold\_geometry/plots/\{pca2d*,mean\_delta*\}.png} \\
+Fig 15 (ellipsoids) & \filepath{param\_shift\_3d\_analysis\_solid/pca3d\_covariance\_ellipsoids.png} \\
+Figs 17--19 (morphology) & \filepath{patch\_transfer\_morphology\_plots/\{hist\_area*,hist\_count*,scatter*\}.png} \\
+\bottomrule
+\end{tabular}
+
+All paths relative to \filepath{experiments/exp\_v1/outputs/}.
+
+%=============================================================================
+\section{Provenance and Status}
+%=============================================================================
+
+\begin{itemize}[nosep]
+  \item All main-paper experiments are FINAL with clean provenance
+  \item 9-leaf trace study: single SLURM job, no fallback/reused traces
+  \item No partial or mixed-provenance results in main paper
+  \item \filepath{objective\_surface\_traces\_representative\_fullbudget\_plus/}: PARTIAL (manifold subdirs empty)
+  \item \filepath{param\_predictor/}: EMPTY (future work)
+\end{itemize}
+
+%=============================================================================
+\section{Main Conclusions}
+%=============================================================================
+
+\begin{enumerate}[nosep]
+  \item Per-image physics parameter optimization enables robust unsupervised segmentation of diverse lesion phenotypes
+  \item The heuristic no-GT objective successfully guides optimization; topology reward is the most critical term
+  \item Score-tier-dependent landscape geometry suggests adaptive budget allocation could improve efficiency
+  \item Optimizer solutions live on a structured manifold supporting future amortized prediction
+  \item Teacher-student distillation works but has known semantic limitations (teacher-empty cases)
+  \item Overlap metrics (Dice) are insufficient for phenotyping --- morphological fidelity must be reported jointly
+\end{enumerate}
+
+%=============================================================================
+\section{Known Gaps}
+%=============================================================================
+
+\begin{enumerate}[nosep]
+  \item No quantitative baseline comparisons (Otsu, labeled U-Net, SAM recommended but not run)
+  \item Sparse GT annotation (60-image subset) not yet completed
+  \item Biological experiment context TODO unfilled in manuscript
+  \item Amortized parameter predictor not yet built
+  \item Teacher-empty disagreements (12/174 = 6.9\%) not fully resolved
+\end{enumerate}
+
+\end{document}

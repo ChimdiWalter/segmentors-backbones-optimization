@@ -1,0 +1,9 @@
+Manuscript Detection
+====================
+Main TeX file: Paper_3/Latest_Paper_1_updated.tex (46282 bytes, 2026-03-03)
+Figure folder: Paper_3/figs/exp_v1/
+Bibliography: Paper_3/refs.bib (173 lines, 19 entries)
+Compiled PDF: Paper_3/Latest_Paper_1_updated.pdf (16.6 MB)
+Document class: IEEEtran (journal mode)
+
+The updated copy is: tex/Latest_Paper_1_updated_fullbudget9.tex

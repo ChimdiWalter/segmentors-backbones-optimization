@@ -1,0 +1,33 @@
+Limitations and Next Steps: 400+ Leaf Plan
+=============================================
+
+CURRENT LIMITATIONS (N=174):
+1. Mean baseline outperforms all learned regressors
+2. Insufficient data for fine-tuning DINOv2/ResNet
+3. Pseudo-OOD is a weak proxy for true distribution shift
+4. 63 external test images lack ground-truth parameters
+5. Single disease type (soybean bacterial blight)
+6. Single imaging protocol
+
+SCALING TO 400+ LEAVES:
+1. Acquire: Run optimizer on 18.7 images (63 leaves) → N=237
+2. Acquire: Process additional field collections → target N=400+
+3. With N=400+, fine-tuning DINOv2 becomes viable
+4. MLPs should outperform the mean baseline at this scale
+5. True train/test separation becomes meaningful
+
+IMPROVED EXPERIMENTS WITH 400+ LEAVES:
+- True OOD: different field sites or seasons as test set
+- Multi-disease: include multiple pathogen types
+- Fine-tuned backbones: LoRA or full fine-tuning of DINOv2
+- Larger ensemble (k=10) for better calibration
+- Conformal prediction for coverage guarantees
+- Gradient-based refinement instead of perturbation
+- Learned refinement operator (meta-learning)
+- Multiple cultivar evaluation
+
+EXPECTED OUTCOMES:
+- Learned regressors should beat mean baseline at N>300
+- Selective policy speedup should increase (more direct acceptance)
+- Better calibration with more data
+- Stronger OOD claims with true distributional shift

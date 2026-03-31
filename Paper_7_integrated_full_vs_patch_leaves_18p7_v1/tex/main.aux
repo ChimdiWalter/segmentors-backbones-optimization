@@ -1,0 +1,241 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
+\HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
+\global\let\oldcontentsline\contentsline
+\gdef\contentsline#1#2#3#4{\oldcontentsline{#1}{#2}{#3}}
+\global\let\oldnewlabel\newlabel
+\gdef\newlabel#1#2{\newlabelxx{#1}#2}
+\gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
+\AtEndDocument{\ifx\hyper@anchor\@undefined
+\let\contentsline\oldcontentsline
+\let\newlabel\oldnewlabel
+\fi}
+\fi}
+\global\let\hyper@last\relax 
+\gdef\HyperFirstAtBeginDocument#1{#1}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\bibstyle{plainnat}
+\citation{singh2018plantdisease,ghosal2018explainable}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}}
+\newlabel{sec:intro}{{1}{1}{Introduction}{section.1}{}}
+\citation{cranmer2020amortized,radev2020bayesflow}
+\citation{oquab2024dinov2}
+\citation{he2016resnet}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Integrated pipeline overview. A single authoritative split feeds both the full-leaf downsampled branch (top) and the patchwise native-resolution branch (bottom). Both branches are evaluated against the same 35 test leaves and compared through matched-split statistics. The patchwise branch adds an aggregation step to combine per-patch predictions into leaf-level estimates. Selective semi-amortized routing applies to both branches.\relax }}{2}{figure.caption.1}}
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:pipeline}{{1}{2}{Integrated pipeline overview. A single authoritative split feeds both the full-leaf downsampled branch (top) and the patchwise native-resolution branch (bottom). Both branches are evaluated against the same 35 test leaves and compared through matched-split statistics. The patchwise branch adds an aggregation step to combine per-patch predictions into leaf-level estimates. Selective semi-amortized routing applies to both branches.\relax }{figure.caption.1}{}}
+\citation{cranmer2020amortized}
+\citation{radev2020bayesflow}
+\citation{geifman2019selectivenet}
+\citation{ilse2018attention,lu2021mil,patel2024mil_survey}
+\citation{zaheer2017deepsets}
+\citation{hinton2015distilling}
+\citation{lakshminarayanan2017simple}
+\citation{gal2016dropout}
+\citation{maronas2021calibration}
+\citation{mcallester2003pac}
+\citation{raissi2019pinn}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{3}{section.2}}
+\newlabel{sec:related}{{2}{3}{Related Work}{section.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Amortized and Semi-Amortized Inference.}{3}{section*.2}}
+\@writefile{toc}{\contentsline {paragraph}{Patch-Based Learning and Aggregation.}{3}{section*.3}}
+\@writefile{toc}{\contentsline {paragraph}{Uncertainty Quantification in Deep Learning.}{3}{section*.4}}
+\@writefile{toc}{\contentsline {paragraph}{Physics-Informed Models.}{3}{section*.5}}
+\citation{oquab2024dinov2}
+\citation{he2016resnet}
+\citation{navier1823memoire}
+\citation{kass1988snakes}
+\@writefile{toc}{\contentsline {paragraph}{Foundation Models for Plant Phenotyping.}{4}{section*.6}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Problem Formulation}{4}{section.3}}
+\newlabel{sec:formulation}{{3}{4}{Problem Formulation}{section.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Physics-Based Lesion Model}{4}{subsection.3.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Whole-Leaf Branch}{4}{subsection.3.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Patchwise Branch}{4}{subsection.3.3}}
+\citation{oquab2024dinov2}
+\citation{he2016resnet}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Dual Oracle Targets}{5}{subsection.3.4}}
+\newlabel{sec:dual_oracle}{{3.4}{5}{Dual Oracle Targets}{subsection.3.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Error Decomposition}{5}{subsection.3.5}}
+\newlabel{eq:decomposition}{{4}{5}{Error Decomposition}{equation.3.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6}Selective Semi-Amortized Inference}{5}{subsection.3.6}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Integrated Method}{5}{section.4}}
+\newlabel{sec:method}{{4}{5}{Integrated Method}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Feature Extraction}{5}{subsection.4.1}}
+\citation{efron1979bootstrap}
+\citation{wilcoxon1945individual}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Regression Heads}{6}{subsection.4.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Aggregation Operators}{6}{subsection.4.3}}
+\newlabel{sec:aggregation}{{4.3}{6}{Aggregation Operators}{subsection.4.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Refinement Budgets}{6}{subsection.4.4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Evaluation Metrics}{6}{subsection.4.5}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Dataset structure and authoritative split design. Left: image resolution distribution for the 174 primary leaves and 78 external images. Center: stratified split allocation (train/val/test). Right: split design showing that both branches share identical leaf-level partitions, with patches inheriting their parent leaf's split assignment.\relax }}{7}{figure.caption.7}}
+\newlabel{fig:dataset}{{2}{7}{Dataset structure and authoritative split design. Left: image resolution distribution for the 174 primary leaves and 78 external images. Center: stratified split allocation (train/val/test). Right: split design showing that both branches share identical leaf-level partitions, with patches inheriting their parent leaf's split assignment.\relax }{figure.caption.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Experimental Setup}{7}{section.5}}
+\newlabel{sec:setup}{{5}{7}{Experimental Setup}{section.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Data}{7}{subsection.5.1}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Physics parameters: bounds, ranges, and physical interpretation. These seven quantities fully parameterize the coupled Navier--Stokes energy diffusion and active contour lesion model. The range $r_j$ is used to normalize errors for the $\mathrm  {nMAE}$ metric.\relax }}{7}{table.caption.8}}
+\newlabel{tab:params}{{1}{7}{Physics parameters: bounds, ranges, and physical interpretation. These seven quantities fully parameterize the coupled Navier--Stokes energy diffusion and active contour lesion model. The range $r_j$ is used to normalize errors for the $\nMAE $ metric.\relax }{table.caption.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Authoritative Matched Split}{7}{subsection.5.2}}
+\citation{scikit-learn}
+\citation{kingma2014adam}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Patch Extraction Configurations}{8}{subsection.5.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Training Details}{8}{subsection.5.4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5}Optimization and Refinement}{8}{subsection.5.5}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Results}{8}{section.6}}
+\newlabel{sec:results}{{6}{8}{Results}{section.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Main Matched Comparison}{8}{subsection.6.1}}
+\newlabel{sec:main_comparison}{{6.1}{8}{Main Matched Comparison}{subsection.6.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Main comparison on 35 matched test leaves. FL = full-leaf ensemble (DINOv2), PA = patchwise aggregated (DINOv2, p224\_s112 configuration). $\mathrm  {nMAE}$ is normalized by parameter range. Best PA method in bold.\relax }}{8}{table.caption.9}}
+\newlabel{tab:main}{{2}{8}{Main comparison on 35 matched test leaves. FL = full-leaf ensemble (DINOv2), PA = patchwise aggregated (DINOv2, p224\_s112 configuration). $\nMAE $ is normalized by parameter range. Best PA method in bold.\relax }{table.caption.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Main matched comparison of full-leaf versus patchwise inference on 35 test leaves. Left: $\mathrm  {nMAE}$ by aggregation method with 95\% bootstrap confidence intervals. Right: per-leaf paired comparison showing the distribution of per-leaf error differences ($\Delta = \mathrm  {nMAE}_\mathrm  {FL} - \mathrm  {nMAE}_\mathrm  {PA}$). Positive values indicate patchwise advantage.\relax }}{9}{figure.caption.10}}
+\newlabel{fig:main_comparison}{{3}{9}{Main matched comparison of full-leaf versus patchwise inference on 35 test leaves. Left: $\nMAE $ by aggregation method with 95\% bootstrap confidence intervals. Right: per-leaf paired comparison showing the distribution of per-leaf error differences ($\Delta = \nMAE _\mathrm {FL} - \nMAE _\mathrm {PA}$). Positive values indicate patchwise advantage.\relax }{figure.caption.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Oracle Gap Decomposition}{9}{subsection.6.2}}
+\newlabel{sec:oracle_gap}{{6.2}{9}{Oracle Gap Decomposition}{subsection.6.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Oracle gap decomposition ($\mathrm  {nMAE}$). Error vs FL oracle = Error vs APO + Oracle gap (approximate). The APO column measures prediction + aggregation error against the aggregated patch oracle.\relax }}{9}{table.caption.11}}
+\newlabel{tab:oracle_gap}{{3}{9}{Oracle gap decomposition ($\nMAE $). Error vs FL oracle = Error vs APO + Oracle gap (approximate). The APO column measures prediction + aggregation error against the aggregated patch oracle.\relax }{table.caption.11}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Oracle gap decomposition. The total patchwise error (vs.\ full-leaf oracle) decomposes into prediction error against the aggregated patch oracle, aggregation error, and the irreducible oracle gap. The oracle gap (0.327 $\mathrm  {nMAE}$) is constant across aggregation methods.\relax }}{10}{figure.caption.12}}
+\newlabel{fig:oracle_gap}{{4}{10}{Oracle gap decomposition. The total patchwise error (vs.\ full-leaf oracle) decomposes into prediction error against the aggregated patch oracle, aggregation error, and the irreducible oracle gap. The oracle gap (0.327 $\nMAE $) is constant across aggregation methods.\relax }{figure.caption.12}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Direct Whole-Leaf vs.\ Patchwise Native-Resolution}{10}{subsection.6.3}}
+\newlabel{sec:direct}{{6.3}{10}{Direct Whole-Leaf vs.\ Patchwise Native-Resolution}{subsection.6.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Selective Routing and Speedup}{10}{subsection.6.4}}
+\newlabel{sec:routing}{{6.4}{10}{Selective Routing and Speedup}{subsection.6.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Runtime and quality by refinement budget. Full-leaf runtimes are per-leaf. Patchwise runtimes are per-patch; per-leaf cost is (per-patch runtime) $\times K$ where $K$ is the number of patches.\relax }}{11}{table.caption.13}}
+\newlabel{tab:refinement}{{4}{11}{Runtime and quality by refinement budget. Full-leaf runtimes are per-leaf. Patchwise runtimes are per-patch; per-leaf cost is (per-patch runtime) $\times K$ where $K$ is the number of patches.\relax }{table.caption.13}{}}
+\@writefile{toc}{\contentsline {paragraph}{Speedup definitions.}{11}{section*.16}}
+\@writefile{toc}{\contentsline {paragraph}{Per-leaf runtime accounting for patches.}{11}{section*.17}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.5}Risk-Coverage and Calibration}{11}{subsection.6.5}}
+\newlabel{sec:risk_coverage}{{6.5}{11}{Risk-Coverage and Calibration}{subsection.6.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.6}External-Domain Robustness}{11}{subsection.6.6}}
+\newlabel{sec:external}{{6.6}{11}{External-Domain Robustness}{subsection.6.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Runtime-quality Pareto frontier for both branches. Full-leaf (blue) shows a steep quality improvement from direct to tiny budget, then diminishing returns. Patchwise per-patch (orange) shows a more gradual improvement curve. The dashed vertical line indicates the full optimization baseline (260.49s per leaf).\relax }}{12}{figure.caption.14}}
+\newlabel{fig:pareto}{{5}{12}{Runtime-quality Pareto frontier for both branches. Full-leaf (blue) shows a steep quality improvement from direct to tiny budget, then diminishing returns. Patchwise per-patch (orange) shows a more gradual improvement curve. The dashed vertical line indicates the full optimization baseline (260.49s per leaf).\relax }{figure.caption.14}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.7}Within-Leaf Heterogeneity}{12}{subsection.6.7}}
+\newlabel{sec:heterogeneity}{{6.7}{12}{Within-Leaf Heterogeneity}{subsection.6.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Ablations}{12}{section.7}}
+\newlabel{sec:ablations}{{7}{12}{Ablations}{section.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Patch Size and Stride}{12}{subsection.7.1}}
+\newlabel{sec:patch_ablation}{{7.1}{12}{Patch Size and Stride}{subsection.7.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Refinement budget curves showing quality ($\mathrm  {nMAE}$) versus computational cost for both branches. The full-leaf branch benefits enormously from even a tiny refinement budget (nMAE drops from 1.154 to 0.434 with just 3 steps), while the patchwise branch starts at a much lower direct-prediction error.\relax }}{13}{figure.caption.15}}
+\newlabel{fig:refinement}{{6}{13}{Refinement budget curves showing quality ($\nMAE $) versus computational cost for both branches. The full-leaf branch benefits enormously from even a tiny refinement budget (nMAE drops from 1.154 to 0.434 with just 3 steps), while the patchwise branch starts at a much lower direct-prediction error.\relax }{figure.caption.15}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Patch extraction ablation. All three configurations are extracted from scratch. Heterogeneity is mean within-leaf standard deviation of predicted parameters (averaged over 7 parameters and all leaves).\relax }}{13}{table.caption.23}}
+\newlabel{tab:patch_ablation}{{5}{13}{Patch extraction ablation. All three configurations are extracted from scratch. Heterogeneity is mean within-leaf standard deviation of predicted parameters (averaged over 7 parameters and all leaves).\relax }{table.caption.23}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Backbone Comparison}{13}{subsection.7.2}}
+\newlabel{sec:backbone}{{7.2}{13}{Backbone Comparison}{subsection.7.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Explicit speedup denominator explanation. Left: full-leaf speedup is computed vs.\ the 260.49s full optimization baseline. Center: patchwise per-patch speedup vs.\ 25.0s per-patch full optimization. Right: effective per-leaf patchwise runtime scales with $K$, the number of patches, and can exceed full-leaf runtime for overlapping configurations.\relax }}{14}{figure.caption.18}}
+\newlabel{fig:speedup}{{7}{14}{Explicit speedup denominator explanation. Left: full-leaf speedup is computed vs.\ the 260.49s full optimization baseline. Center: patchwise per-patch speedup vs.\ 25.0s per-patch full optimization. Right: effective per-leaf patchwise runtime scales with $K$, the number of patches, and can exceed full-leaf runtime for overlapping configurations.\relax }{figure.caption.18}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Backbone comparison on full-leaf branch (35 test leaves). Methods are ordered by $\mathrm  {nMAE}$. The strong performance of handcrafted features reflects the small dataset size ($N = 104$ training leaves).\relax }}{14}{table.caption.25}}
+\newlabel{tab:backbone}{{6}{14}{Backbone comparison on full-leaf branch (35 test leaves). Methods are ordered by $\nMAE $. The strong performance of handcrafted features reflects the small dataset size ($N = 104$ training leaves).\relax }{table.caption.25}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}Per-Parameter Difficulty}{14}{subsection.7.3}}
+\newlabel{sec:param_analysis}{{7.3}{14}{Per-Parameter Difficulty}{subsection.7.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Risk-coverage curve for the full-leaf branch. Coverage (fraction of test leaves accepted) versus cumulative MAE on accepted leaves. A well-calibrated uncertainty estimate would produce a monotonically decreasing curve.\relax }}{15}{figure.caption.19}}
+\newlabel{fig:risk_coverage}{{8}{15}{Risk-coverage curve for the full-leaf branch. Coverage (fraction of test leaves accepted) versus cumulative MAE on accepted leaves. A well-calibrated uncertainty estimate would produce a monotonically decreasing curve.\relax }{figure.caption.19}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}Aggregation Method Comparison}{15}{subsection.7.4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.5}Refinement Budget Curves}{15}{subsection.7.5}}
+\@writefile{toc}{\contentsline {section}{\numberline {8}Geometry and Representation Analysis}{15}{section.8}}
+\newlabel{sec:geometry}{{8}{15}{Geometry and Representation Analysis}{section.8}{}}
+\citation{mcinnes2018umap}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Calibration analysis. Left: predicted uncertainty (ensemble std) vs.\ actual absolute error for full-leaf predictions. A perfectly calibrated model would lie on the diagonal. Right: calibration residuals by parameter, showing which parameters have over- or under-confident uncertainty estimates.\relax }}{16}{figure.caption.20}}
+\newlabel{fig:calibration}{{9}{16}{Calibration analysis. Left: predicted uncertainty (ensemble std) vs.\ actual absolute error for full-leaf predictions. A perfectly calibrated model would lie on the diagonal. Right: calibration residuals by parameter, showing which parameters have over- or under-confident uncertainty estimates.\relax }{figure.caption.20}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {9}Discussion}{16}{section.9}}
+\newlabel{sec:discussion}{{9}{16}{Discussion}{section.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.1}When Does Full-Leaf Suffice?}{16}{subsection.9.1}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces External-domain (18.7) robustness. Left: prediction distributions for primary (training domain) vs.\ external images across 7 parameters. Center: ensemble uncertainty distributions for primary vs.\ external images. Right: domain shift visualization in feature space (PCA projection of DINOv2 features).\relax }}{17}{figure.caption.21}}
+\newlabel{fig:domain}{{10}{17}{External-domain (18.7) robustness. Left: prediction distributions for primary (training domain) vs.\ external images across 7 parameters. Center: ensemble uncertainty distributions for primary vs.\ external images. Right: domain shift visualization in feature space (PCA projection of DINOv2 features).\relax }{figure.caption.21}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Per-parameter difficulty. FL = full-leaf ensemble, PA = patchwise selective mixture. $\text  {$\mathsurround \z@ \mathchar "458$}$ indicates which branch achieves lower $\mathrm  {nMAE}$.\relax }}{17}{table.caption.27}}
+\newlabel{tab:params_difficulty}{{7}{17}{Per-parameter difficulty. FL = full-leaf ensemble, PA = patchwise selective mixture. $\checkmark $ indicates which branch achieves lower $\nMAE $.\relax }{table.caption.27}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.2}When Does Patchwise Help?}{17}{subsection.9.2}}
+\citation{ilse2018attention,lu2021mil}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Within-leaf parameter heterogeneity. Left: distribution of within-leaf standard deviation across all 174 leaves. Center: per-parameter heterogeneity showing that $E_\mathrm  {thr}$ (energy threshold) is most spatially variable. Right: correlation between within-leaf heterogeneity and leaf-level prediction difficulty (nMAE).\relax }}{18}{figure.caption.22}}
+\newlabel{fig:heterogeneity}{{11}{18}{Within-leaf parameter heterogeneity. Left: distribution of within-leaf standard deviation across all 174 leaves. Center: per-parameter heterogeneity showing that $E_\mathrm {thr}$ (energy threshold) is most spatially variable. Right: correlation between within-leaf heterogeneity and leaf-level prediction difficulty (nMAE).\relax }{figure.caption.22}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Patch size and stride ablation. Left: patch count distribution per leaf for each configuration. Center: heterogeneity heatmap showing captured within-leaf variation. Right: runtime-quality trade-off across configurations.\relax }}{18}{figure.caption.24}}
+\newlabel{fig:patch_ablation}{{12}{18}{Patch size and stride ablation. Left: patch count distribution per leaf for each configuration. Center: heterogeneity heatmap showing captured within-leaf variation. Right: runtime-quality trade-off across configurations.\relax }{figure.caption.24}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.3}Why Aggregation Matters Less Than Expected}{18}{subsection.9.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.4}The Oracle Gap as a Fundamental Limit}{18}{subsection.9.4}}
+\citation{ilse2018attention}
+\citation{zaheer2017deepsets}
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces Backbone comparison for the full-leaf branch. Handcrafted features with ridge regression achieve the best $\mathrm  {nMAE}$ (0.253), outperforming both DINOv2 and ResNet-18 representations. This is consistent with the small-data regime where domain-specific features encode stronger inductive biases than general-purpose learned representations.\relax }}{19}{figure.caption.26}}
+\newlabel{fig:backbone}{{13}{19}{Backbone comparison for the full-leaf branch. Handcrafted features with ridge regression achieve the best $\nMAE $ (0.253), outperforming both DINOv2 and ResNet-18 representations. This is consistent with the small-data regime where domain-specific features encode stronger inductive biases than general-purpose learned representations.\relax }{figure.caption.26}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.5}What Heterogeneity Means Scientifically}{19}{subsection.9.5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.6}The Role of Dataset Scale}{19}{subsection.9.6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Per-parameter difficulty analysis. Left: $\mathrm  {nMAE}$ by parameter for full-leaf (blue) and patchwise (orange) branches. Center: improvement ratio ($\Delta \mathrm  {nMAE}/ \mathrm  {nMAE}_\mathrm  {FL}$) by parameter. Right: parameter categorization into ``local'' (benefiting from patchwise) and ``global'' (benefiting from full-leaf) based on physical interpretation.\relax }}{20}{figure.caption.28}}
+\newlabel{fig:param_difficulty}{{14}{20}{Per-parameter difficulty analysis. Left: $\nMAE $ by parameter for full-leaf (blue) and patchwise (orange) branches. Center: improvement ratio ($\Delta \nMAE / \nMAE _\mathrm {FL}$) by parameter. Right: parameter categorization into ``local'' (benefiting from patchwise) and ``global'' (benefiting from full-leaf) based on physical interpretation.\relax }{figure.caption.28}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {10}Statistical Testing}{20}{section.10}}
+\newlabel{sec:stats}{{10}{20}{Statistical Testing}{section.10}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces Bootstrap 95\% confidence intervals and Wilcoxon signed-rank tests for the full-leaf versus patchwise comparison on 35 matched test leaves. CI = confidence interval; Stat = Wilcoxon test statistic.\relax }}{20}{table.caption.31}}
+\newlabel{tab:stats}{{8}{20}{Bootstrap 95\% confidence intervals and Wilcoxon signed-rank tests for the full-leaf versus patchwise comparison on 35 matched test leaves. CI = confidence interval; Stat = Wilcoxon test statistic.\relax }{table.caption.31}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces Aggregation method comparison. Left: leaf-level $\mathrm  {nMAE}$ (vs.\ full-leaf oracle) by aggregation method. Center: $\mathrm  {nMAE}$ (vs.\ aggregated patch oracle), isolating prediction quality from oracle mismatch. Right: aggregation error (difference between the two), showing that robust median and top-$K$ introduce the least aggregation error.\relax }}{21}{figure.caption.29}}
+\newlabel{fig:aggregation}{{15}{21}{Aggregation method comparison. Left: leaf-level $\nMAE $ (vs.\ full-leaf oracle) by aggregation method. Center: $\nMAE $ (vs.\ aggregated patch oracle), isolating prediction quality from oracle mismatch. Right: aggregation error (difference between the two), showing that robust median and top-$K$ introduce the least aggregation error.\relax }{figure.caption.29}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {11}Qualitative Analysis}{21}{section.11}}
+\newlabel{sec:qualitative}{{11}{21}{Qualitative Analysis}{section.11}{}}
+\citation{ilse2018attention}
+\citation{zaheer2017deepsets}
+\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces Geometry of predicted vs.\ oracle parameters in PCA space. Left: oracle parameters (blue) occupy a broader region than direct predictions (orange), with a centroid shift of 23.5 PCA units. Center: refinement (green) partially recovers the oracle distribution. Right: convex hull volume comparison showing the regression-to-mean contraction of predictions.\relax }}{22}{figure.caption.30}}
+\newlabel{fig:geometry}{{16}{22}{Geometry of predicted vs.\ oracle parameters in PCA space. Left: oracle parameters (blue) occupy a broader region than direct predictions (orange), with a centroid shift of 23.5 PCA units. Center: refinement (green) partially recovers the oracle distribution. Right: convex hull volume comparison showing the regression-to-mean contraction of predictions.\relax }{figure.caption.30}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {12}Limitations}{22}{section.12}}
+\newlabel{sec:limitations}{{12}{22}{Limitations}{section.12}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces Leaf-by-leaf comparison of full-leaf versus patchwise $\mathrm  {nMAE}$ for the 35 test leaves. Points above the diagonal (dashed) indicate patchwise advantage. The majority of leaves (24/35) fall above the diagonal, consistent with the aggregate statistical result.\relax }}{23}{figure.caption.32}}
+\newlabel{fig:leaf_comparison}{{17}{23}{Leaf-by-leaf comparison of full-leaf versus patchwise $\nMAE $ for the 35 test leaves. Points above the diagonal (dashed) indicate patchwise advantage. The majority of leaves (24/35) fall above the diagonal, consistent with the aggregate statistical result.\relax }{figure.caption.32}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {13}Conclusion}{23}{section.13}}
+\newlabel{sec:conclusion}{{13}{23}{Conclusion}{section.13}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces Failure taxonomy among 35 test leaves. Categories: both good (10), full-leaf only (7), patchwise only (7), both bad (11). The ``both bad'' category represents genuinely difficult leaves where neither paradigm achieves acceptable accuracy, often corresponding to low oracle scores.\relax }}{24}{figure.caption.33}}
+\newlabel{fig:failures}{{18}{24}{Failure taxonomy among 35 test leaves. Categories: both good (10), full-leaf only (7), patchwise only (7), both bad (11). The ``both bad'' category represents genuinely difficult leaves where neither paradigm achieves acceptable accuracy, often corresponding to low oracle scores.\relax }{figure.caption.33}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Detailed Split Statistics}{26}{appendix.A}}
+\newlabel{app:splits}{{A}{26}{Detailed Split Statistics}{appendix.A}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {B}Full Evaluation Tables}{26}{appendix.B}}
+\newlabel{app:eval}{{B}{26}{Full Evaluation Tables}{appendix.B}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces Full-leaf branch: comprehensive evaluation by method on the test split (35 leaves).\relax }}{26}{table.caption.34}}
+\newlabel{tab:fl_full}{{9}{26}{Full-leaf branch: comprehensive evaluation by method on the test split (35 leaves).\relax }{table.caption.34}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {10}{\ignorespaces Patchwise branch: per-patch evaluation on the test split (p224\_s112 configuration).\relax }}{26}{table.caption.35}}
+\newlabel{tab:pa_full}{{10}{26}{Patchwise branch: per-patch evaluation on the test split (p224\_s112 configuration).\relax }{table.caption.35}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {C}Aggregation Method Details}{26}{appendix.C}}
+\newlabel{app:aggregation}{{C}{26}{Aggregation Method Details}{appendix.C}{}}
+\@writefile{toc}{\contentsline {paragraph}{Mean.}{26}{section*.36}}
+\@writefile{toc}{\contentsline {paragraph}{Uncertainty-weighted.}{26}{section*.37}}
+\@writefile{toc}{\contentsline {paragraph}{Robust median.}{27}{section*.38}}
+\@writefile{toc}{\contentsline {paragraph}{Top-$K$ confident.}{27}{section*.39}}
+\@writefile{toc}{\contentsline {paragraph}{Selective mixture.}{27}{section*.40}}
+\@writefile{toc}{\contentsline {section}{\numberline {D}Routing Policy Details}{27}{appendix.D}}
+\newlabel{app:routing}{{D}{27}{Routing Policy Details}{appendix.D}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {11}{\ignorespaces Routing policy details for the full-leaf branch. Thresholds from training-set quantiles.\relax }}{27}{table.caption.41}}
+\newlabel{tab:routing_detail}{{11}{27}{Routing policy details for the full-leaf branch. Thresholds from training-set quantiles.\relax }{table.caption.41}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {E}Provenance and Reproducibility}{27}{appendix.E}}
+\newlabel{app:provenance}{{E}{27}{Provenance and Reproducibility}{appendix.E}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {F}Failure Taxonomy Details}{28}{appendix.F}}
+\newlabel{app:failures}{{F}{28}{Failure Taxonomy Details}{appendix.F}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {G}Heterogeneity Details}{28}{appendix.G}}
+\newlabel{app:heterogeneity}{{G}{28}{Heterogeneity Details}{appendix.G}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {12}{\ignorespaces Within-leaf parameter heterogeneity (mean standard deviation across patches, averaged over all 174 leaves). Parameters ordered by decreasing heterogeneity.\relax }}{28}{table.caption.42}}
+\newlabel{tab:heterogeneity}{{12}{28}{Within-leaf parameter heterogeneity (mean standard deviation across patches, averaged over all 174 leaves). Parameters ordered by decreasing heterogeneity.\relax }{table.caption.42}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {H}Runtime Breakdown}{28}{appendix.H}}
+\newlabel{app:runtime}{{H}{28}{Runtime Breakdown}{appendix.H}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {I}Assumptions Log}{28}{appendix.I}}
+\newlabel{app:assumptions}{{I}{28}{Assumptions Log}{appendix.I}{}}
+\bibdata{../bib/references}
+\bibcite{cranmer2020amortized}{{1}{2020}{{Cranmer et~al.}}{{Cranmer, Brehmer, and Louppe}}}
+\bibcite{efron1979bootstrap}{{2}{1979}{{Efron}}{{}}}
+\bibcite{gal2016dropout}{{3}{2016}{{Gal and Ghahramani}}{{}}}
+\bibcite{geifman2019selectivenet}{{4}{2019}{{Geifman and El-Yaniv}}{{}}}
+\bibcite{ghosal2018explainable}{{5}{2018}{{Ghosal et~al.}}{{Ghosal, Blystone, Singh, Ganapathysubramanian, Singh, and Sarkar}}}
+\bibcite{he2016resnet}{{6}{2016}{{He et~al.}}{{He, Zhang, Ren, and Sun}}}
+\bibcite{hinton2015distilling}{{7}{2015}{{Hinton et~al.}}{{Hinton, Vinyals, and Dean}}}
+\@writefile{lot}{\contentsline {table}{\numberline {13}{\ignorespaces Complete runtime breakdown with explicit speedup denominators and per-leaf accounting.\relax }}{29}{table.caption.43}}
+\newlabel{tab:runtime_full}{{13}{29}{Complete runtime breakdown with explicit speedup denominators and per-leaf accounting.\relax }{table.caption.43}{}}
+\bibcite{ilse2018attention}{{8}{2018}{{Ilse et~al.}}{{Ilse, Tomczak, and Welling}}}
+\bibcite{kass1988snakes}{{9}{1988}{{Kass et~al.}}{{Kass, Witkin, and Terzopoulos}}}
+\bibcite{kingma2014adam}{{10}{2015}{{Kingma and Ba}}{{}}}
+\bibcite{lakshminarayanan2017simple}{{11}{2017}{{Lakshminarayanan et~al.}}{{Lakshminarayanan, Pritzel, and Blundell}}}
+\bibcite{lu2021mil}{{12}{2021}{{Lu et~al.}}{{Lu, Williamson, Chen, Chen, Barbieri, and Mahmood}}}
+\bibcite{maronas2021calibration}{{13}{2021}{{Maro{\~n}as et~al.}}{{Maro{\~n}as, Hamelijnck, Knoblauch, and Turner}}}
+\bibcite{mcallester2003pac}{{14}{2003}{{McAllester}}{{}}}
+\bibcite{mcinnes2018umap}{{15}{2018}{{McInnes et~al.}}{{McInnes, Healy, and Melville}}}
+\bibcite{navier1823memoire}{{16}{1823}{{Navier}}{{}}}
+\bibcite{oquab2024dinov2}{{17}{2024}{{Oquab et~al.}}{{Oquab, Darcet, Moutakanni, Vo, Szafraniec, Khalidov, Fernandez, Haziza, Massa, El-Nouby, et~al.}}}
+\bibcite{patel2024mil_survey}{{18}{2023}{{Patel and Bhoite}}{{}}}
+\bibcite{scikit-learn}{{19}{2011}{{Pedregosa et~al.}}{{Pedregosa, Varoquaux, Gramfort, Michel, Thirion, Grisel, Blondel, Prettenhofer, Weiss, Dubourg, et~al.}}}
+\bibcite{radev2020bayesflow}{{20}{2020}{{Radev et~al.}}{{Radev, Mertens, Voss, Ardizzone, and K{\"o}the}}}
+\bibcite{raissi2019pinn}{{21}{2019}{{Raissi et~al.}}{{Raissi, Perdikaris, and Karniadakis}}}
+\bibcite{singh2018plantdisease}{{22}{2016}{{Singh et~al.}}{{Singh, Ganapathysubramanian, Singh, and Sarkar}}}
+\bibcite{wilcoxon1945individual}{{23}{1945}{{Wilcoxon}}{{}}}
+\bibcite{zaheer2017deepsets}{{24}{2017}{{Zaheer et~al.}}{{Zaheer, Kottur, Ravanbakhsh, Poczos, Salakhutdinov, and Smola}}}

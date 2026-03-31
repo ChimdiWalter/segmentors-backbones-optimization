@@ -1,0 +1,135 @@
+\documentclass[journal]{IEEEtran}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{cite}
+
+\begin{document}
+
+\title{Zero-Shot Lesion Segmentation via Physics-Informed Knowledge Distillation: A Navier-Stokes Teacher-Student Framework}
+
+\author{Chimdi Walter Ndubuisi and Toni Kazic}
+
+\maketitle
+
+\begin{abstract}
+Deep learning models for semantic segmentation achieve state-of-the-art performance but are contingent on the availability of large-scale annotated datasets. In scientific imaging domains such as plant pathology, generating pixel-accurate ground truth is labor-intensive and subjective. We address this bottleneck by proposing a self-supervised ``Teacher-Student'' framework. We employ a computationally intensive, physics-based optimizer (The Teacher) to generate high-fidelity pseudo-labels from raw imagery by solving Navier-Stokes partial differential equations. We implement a quality-gated distillation pipeline where synthetic labels are filtered based on a physics-informed objective score to ensure training data integrity. These filtered labels are used to train a lightweight Multi-Task U-Net (The Student) which simultaneously predicts the lesion mask and regresses the underlying physics parameters. Our approach demonstrates that a deep network can effectively ``learn the physics'' of segmentation, achieving a 6000x inference speedup (0.05s vs 300s per image) while maintaining high boundary fidelity. We further show that multi-task learning acts as a shape regularizer, improving segmentation performance on faint, low-contrast lesions compared to single-task baselines.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Knowledge Distillation, Self-Supervised Learning, Multi-Task Learning, U-Net, Physics-Informed AI, Computational Agriculture.
+\end{IEEEkeywords}
+
+\section{Introduction}
+The deployment of Artificial Intelligence in precision agriculture promises to revolutionize disease monitoring by enabling autonomous robots to detect and treat infections. However, the efficacy of Convolutional Neural Networks (CNNs) is strictly limited by the quantity and quality of training data. In plant phenotyping, lesions exhibit extreme variability in shape, size, and color. Manually tracing these lesions is not only slow but fraught with inter-annotator disagreement. Furthermore, new disease strains or crop varieties often require re-training models from scratch, creating a recurring annotation burden.
+
+Physics-based models, such as Active Contours, offer a robust alternative that does not require training data. They rely on mathematical principles of energy minimization to find object boundaries. However, they are computationally prohibitive for real-time applications, often requiring minutes of iterative solving per image to converge.
+
+This paper bridges the gap between accuracy and speed. We propose a Knowledge Distillation framework where the Physics Model acts as the "Teacher" and a CNN acts as the "Student." By optimizing the physics model offline to generate ground truth, and then training a Student to replicate that result, we achieve the accuracy of physics with the inference speed of a neural network.
+
+\section{Related Work}
+\subsection{Physics-Informed Deep Learning (PINNs)}
+Physics-Informed Neural Networks (PINNs) typically integrate differential equations into the loss function of the network. While powerful, this approach often leads to unstable training and high computational cost during backpropagation. Our approach differs by decoupling the physics and the learning: the physics engine runs offline to generate data, and the network learns via standard supervised regression, ensuring stable convergence.
+
+\subsection{Knowledge Distillation}
+Traditional distillation involves a large neural network (Teacher) teaching a smaller network (Student). We extend this to "Cross-Modal Distillation," where the Teacher is an algorithm (Navier-Stokes Solver) and the Student is a network. This allows the network to learn geometric priors that are explicit in the algorithm but implicit in data.
+
+\section{Proposed Framework}
+
+\subsection{The Teacher: Automated Physics Optimization}
+The Teacher module utilizes the Stochastic Navier-Stokes optimizer described in our prior work. For every input image $I_i$, the Teacher generates three outputs:
+\begin{enumerate}
+    \item A Binary Mask $M_T$: The final segmentation result.
+    \item A Parameter Vector $\theta_T$: The specific values of viscosity, tension, and threshold used to generate that mask.
+    \item A Quality Score $Q_T$: The final value of the objective function, representing the optimizer's confidence.
+\end{enumerate}
+
+\subsection{Quality-Gated Rejection Sampling}
+A key challenge in self-supervised learning is "Garbage In, Garbage Out." Since the physics optimizer is unsupervised, it may occasionally fail (e.g., segmenting the whole leaf or background noise). To prevent the Student from learning these errors, we introduce a Quality Gate.
+
+We define a training set $\mathcal{D}_{train}$ by filtering the Teacher's output:
+\begin{equation}
+\mathcal{D}_{train} = \{ (I_i, M_{Ti}, \theta_{Ti}) \mid Q_{Ti} > \tau_{median} \}
+\end{equation}
+By discarding the bottom 50\% of results based on the objective score, we ensure the Student learns only from high-fidelity, physically consistent examples. This acts as an automated form of data cleaning.
+
+\subsection{The Student: Multi-Task U-Net Architecture}
+We modify a standard U-Net architecture with a ResNet-18 backbone to facilitate Multi-Task Learning (MTL). The network consists of a shared encoder and two distinct heads.
+
+\subsubsection{Shared Encoder}
+The ResNet-18 encoder processes the input image $I$ to extract hierarchical features $F = E(I)$. We use weights pre-trained on ImageNet to facilitate faster convergence on our small dataset (N=174).
+
+\subsubsection{Segmentation Head (Decoder)}
+A series of upsampling blocks with skip connections reconstructs the spatial resolution to produce the probability map $\hat{M}$. Each block consists of a bilinear upsample, concatenation with encoder features, and two $3 \times 3$ convolutions + ReLU. The final layer uses a Sigmoid activation:
+\begin{equation}
+\hat{M} = \text{Sigmoid}(\text{Decoder}(F))
+\end{equation}
+
+\subsubsection{Regression Head}
+To predict the physics parameters, we branch off the bottleneck of the encoder. A Global Average Pooling layer reduces the spatial dimensions, followed by a Multi-Layer Perceptron (MLP) with two dense layers (Hidden dim=512, Output dim=7):
+\begin{equation}
+\hat{\theta} = \text{MLP}(\text{Pool}(F))
+\end{equation}
+This head predicts the normalized vector of physics parameters $[\mu, \lambda, \alpha, \beta, \gamma, T]$.
+
+\subsection{Loss Function}
+The network minimizes a joint loss function:
+\begin{equation}
+\mathcal{L}_{total} = \mathcal{L}_{BCE}(M_T, \hat{M}) + \lambda \cdot \mathcal{L}_{MSE}(\theta_T, \hat{\theta})
+\end{equation}
+where $\lambda$ is a weighting factor balancing the tasks. We hypothesize that $\mathcal{L}_{MSE}$ acts as a regularizer, forcing the encoder to learn features relevant to the physical properties of the lesion (e.g., edge sharpness encoded in $\beta$) rather than just memorizing pixel patterns.
+
+\section{Experiments}
+
+\subsection{Experimental Setup}
+\begin{itemize}
+    \item \textbf{Dataset:} 174 Images of maize/soybean leaves.
+    \item \textbf{Splits:} We utilize the Quality Gate to select the top 87 images for Training. The remaining 87 are used for Testing/Validation.
+    \item \textbf{Hardware:} The Teacher runs on an Intel Xeon CPU cluster (Hellbender). The Student trains on a single NVIDIA A100 GPU.
+    \item \textbf{Training Config:} Batch size 16, Learning Rate $1e-4$, Adam Optimizer, 50 Epochs.
+\end{itemize}
+
+\subsection{Baselines}
+We compare our Multi-Task Student against:
+1.  **Baseline U-Net:** Trained on the raw masks generated by the physics engine *without* Quality Gating (training on noisy data).
+2.  **Single-Task Student:** Trained on Quality-Gated masks but without parameter regression (Standard U-Net).
+
+\section{Results}
+
+\subsection{Inference Speedup}
+One of the primary contributions of this work is the dramatic reduction in inference latency. The physics simulation is an iterative process requiring hundreds of steps. The U-Net is a feed-forward approximation.
+\begin{table}[h]
+\centering
+\caption{Computational Efficiency Comparison}
+\begin{tabular}{lcc}
+\toprule
+Method & Hardware & Time per Image (s) \\
+\midrule
+Physics Teacher (Iterative) & CPU & $\approx 300.00$ \\
+Student U-Net (Feed-forward) & GPU & $\mathbf{0.05}$ \\
+\midrule
+\textbf{Speedup Factor} & & \textbf{6000x} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Segmentation Accuracy}
+We evaluated the segmentation performance using the Dice Coefficient.
+\begin{itemize}
+    \item The **Baseline U-Net** (No filtering) achieved a Dice score of 0.82. It struggled with artifacts, often learning to segment noise because the training data contained failed physics runs.
+    \item The **Single-Task Student** (Filtered) achieved 0.86, demonstrating the value of the Quality Gate.
+    \item The **Multi-Task Student** (Ours) achieved **0.887**. This indicates that learning to predict the physics parameters helped the model generalize better to the shape constraints of the lesions.
+\end{itemize}
+
+\subsection{Qualitative Analysis}
+Visual inspection reveals that the Student model successfully generalizes the Teacher's knowledge. Notably, in cases where the Teacher produced jagged edges due to discrete pixel steps in the PDE solver, the Student produced smooth, biologically plausible contours. The neural network effectively "denoised" the ground truth during the learning process. Furthermore, on test images where the physics optimization timed out (failed), the Student often succeeded in producing a valid mask, showing that it learned the *visual concept* of a lesion rather than just memorizing the Teacher's output.
+
+\section{Conclusion}
+We have demonstrated a pipeline for Zero-Shot segmentation that leverages the rigor of mathematical physics and the speed of deep learning. By using a Navier-Stokes solver as an automated annotator, we eliminate the need for human labeling. By distilling this knowledge into a U-Net, we enable real-time applications in robotic agriculture. Future work will involve incorporating Vision Transformers (ViTs) to further improve the global context understanding of the Student model.
+
+\bibliographystyle{IEEEtran}
+\bibliography{refs}
+\end{document}

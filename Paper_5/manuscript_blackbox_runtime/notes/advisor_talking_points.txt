@@ -1,0 +1,9 @@
+ADVISOR TALKING POINTS (PAPER B)
+================================
+1. This is the deployment paper: branch selection, oracle mismatch, uncertainty-guided routing, and runtime-quality tradeoffs.
+2. The strongest reviewer-facing move is the explicit dual-oracle discussion; it prevents overclaiming about patchwise performance.
+3. The paper is robust because it does not rely on one threshold pair or one split.
+4. The 35-leaf matched integrated split and the 174-leaf selective full study are treated as complementary rather than collapsed.
+5. The calibration claim is intentionally moderate: uncertainty is useful for routing, not good enough for stronger guarantees.
+6. For plant biologists: emphasize that runtime decisions are interpreted through morphology fidelity, phenotype consistency, and actual leaf panels.
+7. For computer scientists: emphasize the oracle gap, selective policy equation, frontier points, and the distinction between branch quality and routing quality.

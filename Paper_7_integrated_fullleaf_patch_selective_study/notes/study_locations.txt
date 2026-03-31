@@ -1,0 +1,23 @@
+STUDY LOCATIONS
+===============
+
+Integrated Study Root:
+  /cluster/VAST/kazict-lab/e/lesion_phes/code/segmentors_backbones/experiments/exp_v1/outputs/selective_semiamortized_integrated_fullleaf_patch_study/
+
+Paper 7 Root:
+  /cluster/VAST/kazict-lab/e/lesion_phes/code/segmentors_backbones/Paper_7_integrated_fullleaf_patch_selective_study/
+
+Manuscript PDF:
+  Paper_7_integrated_fullleaf_patch_selective_study/pdf/main_integrated.pdf
+
+Experiment Summary PDF:
+  Paper_7_integrated_fullleaf_patch_selective_study/pdf/experiment_summary_integrated.pdf
+
+Pipeline Script:
+  experiments/.../selective_semiamortized_integrated_fullleaf_patch_study/run_integrated_study.py
+
+Source Studies (DO NOT MODIFY):
+  Full-leaf: experiments/.../selective_semiamortized_fullstudy174_v3/
+  Patch: experiments/.../selective_semiamortized_patch_fullstudy_leaves_18p7_v2/
+  Paper_3: Paper_3/selective_semiamortized_fullstudy174_v3/
+  Paper_6: Paper_6_patch_selective_semiamortized_fullstudy_v2/

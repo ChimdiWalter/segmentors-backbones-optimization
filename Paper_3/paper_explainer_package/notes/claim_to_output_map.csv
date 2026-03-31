@@ -1,0 +1,30 @@
+paper_section,paper_claim,supporting_output_path,supporting_figure_or_table,support_strength,notes
+Introduction,Automated physics optimization achieves robust segmentation without human intervention,opt_summary_local.csv,Figs 1-3,Strong,100% OK across 174 diverse leaves
+Results 8.1,Teacher-student distillation achieves mean Dice 0.598 (median 0.682),teacher_student_metrics.csv,Figs 5-6,Strong,174-image evaluation
+Results 8.1,ROI gating has negligible effect,teacher_student_metrics_roi_thr0p30.csv,—,Strong,Dice 0.599 vs 0.598
+Results 8.1,Threshold sweep best at 0.3 and teacher-empty persists,threshold_sweep.csv,Fig 4,Strong,12 persistent teacher-empty cases
+Results 8.1,18 failures with 12 teacher-empty disagreements,failures_dice_lt_0p3.csv + teacher_empty_cases.csv,Fig 6,Strong,Dominant failure mode documented
+Results 8.2,Higher E_thr yields fewer connected components,opt_summary_local.csv,Fig 7,Strong,Clear inverse relationship
+Results 8.2,Larger balloon force yields greater area fraction,opt_summary_local.csv,Fig 8,Strong,Positive correlation
+Results 8.3,Contour-count term is most impactful objective component,ablations_objective/,Table I,Strong,Score drops 14.80 to 3.68 when removed
+Results 8.3,Full pipeline is competitive with ablation variants,ablations_search/,Table II,Strong,Balanced quality and runtime
+Results 8.4,Score-tier-dependent landscape geometry,objective_surface_traces_representative_fullbudget_9leaf/,Figs 9-11,Strong,Homogeneous 9-leaf rerun
+Results 8.4,High-score leaves benefit from refinement (+5.77 gain),objective_surface_traces_representative_fullbudget_9leaf/,Fig 12,Strong,Clear refine-phase improvement
+Results 8.4,Low-score leaves show flat landscapes with minimal refine gain,objective_surface_traces_representative_fullbudget_9leaf/,Fig 11 + App B3,Strong,Plateau confirmed across 3 low-score leaves
+Results 8.4,T x beta is the dominant parameter pair,objective_surface_traces_representative_fullbudget_9leaf/reports/,—,Strong,7/9 cases show T x beta as highest R2
+Results 8.5,PCA separates global and local clouds (shift 1.616 std),parameter_shift_manifold_geometry/,Fig 13,Strong,Clear PC1 separation
+Results 8.5,Energy threshold dominates the shift profile,parameter_shift_manifold_geometry/,Fig 14,Strong,Mean delta bar chart
+Results 8.5,Covariance ellipsoids displaced but overlapping,parameter_shift_3d_analysis_solid/,Fig 15,Strong,2-sigma ellipsoids with centroid arrow
+Results 8.5,k-NN agreement 0.534 for dD groups (vs 0.33 random),parameter_shift_manifold_geometry/reports/,—,Strong,Above-chance predictive structure
+Discussion,Per-leaf parameters transfer to patches (median Dice 0.78),patch_local_opt_v2.csv,—,Strong,150 patches from 15 leaves
+Discussion,Local re-optimization reduces count error 35%,patch_transfer_morphology_eval.csv,Table III,Strong,19.1 to 12.4 mean count error
+Discussion,Both params underestimate area fraction,patch_transfer_morphology_eval.csv,Table III + Figs 17-19,Strong,0.026 vs teacher 0.169
+Discussion,Dice alone insufficient for phenotyping,patch_transfer_morphology_eval.csv,Table III,Moderate,Demonstrated by Dice vs morphology divergence
+Discussion,Parameter manifold supports amortized prediction,parameter_shift_manifold_geometry/,Figs 13-14,Moderate,Structure exists but predictor not built
+Discussion,Teacher-empty disagreements are semantic,teacher_empty_cases.csv + threshold_sweep.csv,Fig 6,Strong,Persist across thresholds and ROI gating
+Conclusion,Automated pipeline works on heterogeneous imagery,opt_summary_local.csv + ablations,Figs 1-3 + Tables I-II,Strong,Comprehensive evidence
+Conclusion,Trace analysis reveals score-tier landscapes,objective_surface_traces_representative_fullbudget_9leaf/,Figs 9-12,Strong,Dedicated rerun evidence
+Conclusion,Parameter manifold is structured and low-dimensional,parameter_shift_manifold_geometry/ + solid/,Figs 13-15,Strong,46.5% variance in 2 PCs
+MISSING,Comparison against explicit baselines (Otsu/U-Net/SAM),N/A,N/A,Missing,Paper recommends but does not report
+MISSING,Sparse GT evaluation on 60-image annotated subset,N/A,N/A,Missing,Protocol described but GT not completed
+MISSING,Biological experiment context (genotype/pathogen/DPI),N/A,N/A,Missing,TODO in manuscript

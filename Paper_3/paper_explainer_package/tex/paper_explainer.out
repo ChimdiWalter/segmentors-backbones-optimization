@@ -1,0 +1,66 @@
+\BOOKMARK [1][-]{section.1}{Overview and Purpose}{}% 1
+\BOOKMARK [1][-]{section.2}{What the Paper Studies}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Why This Matters}{section.2}% 3
+\BOOKMARK [1][-]{section.3}{Core Scientific Objective}{}% 4
+\BOOKMARK [1][-]{section.4}{High-Level Method Summary}{}% 5
+\BOOKMARK [1][-]{section.5}{Section-by-Section Explanation of the Manuscript}{}% 6
+\BOOKMARK [2][-]{subsection.5.1}{Section 1: Introduction}{section.5}% 7
+\BOOKMARK [2][-]{subsection.5.2}{Section 2: Related Work}{section.5}% 8
+\BOOKMARK [2][-]{subsection.5.3}{Section 3: Problem Setup and Notation}{section.5}% 9
+\BOOKMARK [2][-]{subsection.5.4}{Section 4: Mathematical Framework}{section.5}% 10
+\BOOKMARK [3][-]{subsubsection.5.4.1}{Navier-Stokes Diffusion \(Eq. 4\2055\)}{subsection.5.4}% 11
+\BOOKMARK [3][-]{subsubsection.5.4.2}{Active Contour Dynamics \(Eq. 6\2057\)}{subsection.5.4}% 12
+\BOOKMARK [2][-]{subsection.5.5}{Section 5: Methodology \204 Stochastic Parameter Search}{section.5}% 13
+\BOOKMARK [3][-]{subsubsection.5.5.1}{Heuristic Objective \(Eq. 9\)}{subsection.5.5}% 14
+\BOOKMARK [3][-]{subsubsection.5.5.2}{Search Algorithm \(Algorithm 1\)}{subsection.5.5}% 15
+\BOOKMARK [2][-]{subsection.5.6}{Section 6: Implementation Details}{section.5}% 16
+\BOOKMARK [2][-]{subsection.5.7}{Section 7: Experiments}{section.5}% 17
+\BOOKMARK [2][-]{subsection.5.8}{Section 8: Results}{section.5}% 18
+\BOOKMARK [2][-]{subsection.5.9}{Section 9: Multi-Stage Inference}{section.5}% 19
+\BOOKMARK [2][-]{subsection.5.10}{Section 10: Discussion}{section.5}% 20
+\BOOKMARK [2][-]{subsection.5.11}{Section 11: Conclusion}{section.5}% 21
+\BOOKMARK [2][-]{subsection.5.12}{Appendices A\205C}{section.5}% 22
+\BOOKMARK [1][-]{section.6}{Experiment-by-Experiment Explanation}{}% 23
+\BOOKMARK [2][-]{subsection.6.1}{Experiment 1: Production Optimizer Run \(174 Leaves\)}{section.6}% 24
+\BOOKMARK [2][-]{subsection.6.2}{Experiment 2: Objective Function Ablations}{section.6}% 25
+\BOOKMARK [2][-]{subsection.6.3}{Experiment 3: Search Strategy Ablations}{section.6}% 26
+\BOOKMARK [2][-]{subsection.6.4}{Experiment 4: Teacher\205Student Distillation}{section.6}% 27
+\BOOKMARK [2][-]{subsection.6.5}{Experiment 5: 9-Leaf Representative Trace Study}{section.6}% 28
+\BOOKMARK [2][-]{subsection.6.6}{Experiment 6: Parameter-Cloud Manifold Geometry}{section.6}% 29
+\BOOKMARK [2][-]{subsection.6.7}{Experiment 7: Solid-3D Parameter Geometry}{section.6}% 30
+\BOOKMARK [2][-]{subsection.6.8}{Experiment 8: Patch Morphology Transfer}{section.6}% 31
+\BOOKMARK [1][-]{section.7}{Figure-by-Figure Explanation with File Paths}{}% 32
+\BOOKMARK [2][-]{subsection.7.1}{Main Text Figures}{section.7}% 33
+\BOOKMARK [3][-]{subsubsection.7.1.1}{Fig 1 \204 Optimizer Status Bar}{subsection.7.1}% 34
+\BOOKMARK [3][-]{subsubsection.7.1.2}{Fig 2 \204 Runtime Histogram}{subsection.7.1}% 35
+\BOOKMARK [3][-]{subsubsection.7.1.3}{Fig 3 \204 Score Histogram}{subsection.7.1}% 36
+\BOOKMARK [3][-]{subsubsection.7.1.4}{Fig 4 \204 Threshold Sweep}{subsection.7.1}% 37
+\BOOKMARK [3][-]{subsubsection.7.1.5}{Figs 5\2056 \204 Teacher-Student Montages}{subsection.7.1}% 38
+\BOOKMARK [3][-]{subsubsection.7.1.6}{Figs 7\2058 \204 Parameter-Morphology Correlations}{subsection.7.1}% 39
+\BOOKMARK [3][-]{subsubsection.7.1.7}{Figs 9\20511 \204 Trace-Based Objective Surfaces}{subsection.7.1}% 40
+\BOOKMARK [3][-]{subsubsection.7.1.8}{Fig 12 \204 Convergence Trajectory}{subsection.7.1}% 41
+\BOOKMARK [3][-]{subsubsection.7.1.9}{Fig 13 \204 PCA 2D Global-Local Projection}{subsection.7.1}% 42
+\BOOKMARK [3][-]{subsubsection.7.1.10}{Fig 14 \204 Mean Parameter Shift Profile}{subsection.7.1}% 43
+\BOOKMARK [3][-]{subsubsection.7.1.11}{Fig 15 \204 Covariance Ellipsoids}{subsection.7.1}% 44
+\BOOKMARK [3][-]{subsubsection.7.1.12}{Fig 16 \204 Qualitative Grid}{subsection.7.1}% 45
+\BOOKMARK [3][-]{subsubsection.7.1.13}{Figs 17\20519 \204 Morphology Transfer Plots}{subsection.7.1}% 46
+\BOOKMARK [2][-]{subsection.7.2}{Appendix Figures}{section.7}% 47
+\BOOKMARK [3][-]{subsubsection.7.2.1}{Appendix A \204 Optimizer Output Diagnostics}{subsection.7.2}% 48
+\BOOKMARK [3][-]{subsubsection.7.2.2}{Appendix B \204 Additional Trace Trajectories}{subsection.7.2}% 49
+\BOOKMARK [3][-]{subsubsection.7.2.3}{Appendix C \204 Supplementary Geometry}{subsection.7.2}% 50
+\BOOKMARK [1][-]{section.8}{Table-by-Table Explanation with File Paths}{}% 51
+\BOOKMARK [2][-]{subsection.8.1}{Table I \204 Objective Ablations}{section.8}% 52
+\BOOKMARK [2][-]{subsection.8.2}{Table II \204 Search Strategy Ablations}{section.8}% 53
+\BOOKMARK [2][-]{subsection.8.3}{Table III \204 Patch Morphology Transfer}{section.8}% 54
+\BOOKMARK [1][-]{section.9}{Literature and Mathematics Explained}{}% 55
+\BOOKMARK [2][-]{subsection.9.1}{Literature Landscape}{section.9}% 56
+\BOOKMARK [2][-]{subsection.9.2}{Mathematical Components}{section.9}% 57
+\BOOKMARK [1][-]{section.10}{Main Findings and What They Mean}{}% 58
+\BOOKMARK [1][-]{section.11}{Strongest Evidence}{}% 59
+\BOOKMARK [1][-]{section.12}{What is Provisional, Appendix-Only, or Diagnostic}{}% 60
+\BOOKMARK [2][-]{subsection.12.1}{Provisional / Incomplete}{section.12}% 61
+\BOOKMARK [2][-]{subsection.12.2}{Appendix-Only}{section.12}% 62
+\BOOKMARK [2][-]{subsection.12.3}{Diagnostic Only \204 Not for Paper}{section.12}% 63
+\BOOKMARK [1][-]{section.13}{Manifold / Solid-3D / Optimization Geometry Assessment}{}% 64
+\BOOKMARK [1][-]{section.14}{Directory Structure Summary}{}% 65
+\BOOKMARK [1][-]{section.15}{Final Summary}{}% 66

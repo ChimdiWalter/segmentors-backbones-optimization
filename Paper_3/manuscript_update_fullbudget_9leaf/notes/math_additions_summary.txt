@@ -1,0 +1,18 @@
+Math Additions Summary
+======================
+
+1. Candidate Trace Set Definition
+   T_i = {(theta_k, s_k, t_k) : k = 1, ..., K_i}
+   where theta_k is the parameter vector, s_k = f(theta_k; I_i) is the objective score,
+   and t_k is the evaluation timestamp for image I_i.
+
+2. Projected Pairwise Surface
+   For parameters (p, q) in {mu, lambda, ..., energy_threshold}:
+   S_{p,q}(I_i) = {(theta_k[p], theta_k[q], s_k) : (theta_k, s_k, t_k) in T_i}
+   This is a scatter-surface in R^3 representing the objective landscape
+   projected onto two chosen parameter axes.
+
+3. Distinction from geometric embeddings
+   The trace-based surfaces use actual objective evaluations (score from the
+   physics pipeline), while PCA/UMAP manifold plots use Euclidean distances
+   between parameter vectors without score information.

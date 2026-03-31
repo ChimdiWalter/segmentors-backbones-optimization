@@ -1,0 +1,201 @@
+PAPER OUTLINE — Section-by-Section
+=====================================
+Source: Paper_3/manuscript_final_strengthened/tex/Latest_Paper_1_strengthened.tex
+
+TITLE
+------
+"Gradient-Free Stochastic Optimization of Navier-Stokes Active Contours
+ for Unsupervised High-Throughput Phenotyping"
+
+AUTHORS
+--------
+Chimdi Walter Ndubuisi (Student Member, IEEE) and Toni Kazic
+
+ABSTRACT
+---------
+The paper proposes a fully automated, unsupervised segmentation framework for
+plant disease lesions. It treats tuning of Navier-Stokes active contours as a
+high-dimensional black-box optimization problem. Key innovations:
+- Novel heuristic objective (gradient alignment + chromatic separability + topology)
+- Random-restart stochastic hill climbing over 7D parameter space
+- Per-image optimization on 174 16-bit leaf images
+- Teacher-student distillation into a patch-based UNet
+- Trace-based objective-surface analysis showing score-tier-dependent landscapes
+- PCA/solid-3D manifold analysis revealing structured parameter organization
+
+KEYWORDS
+---------
+Active Contours, Navier-Stokes Equations, Stochastic Optimization,
+Unsupervised Segmentation, Plant Phenotyping, Computer Vision in Agriculture
+
+========================================================================
+SECTION 1: INTRODUCTION
+========================================================================
+- Precision agriculture needs accurate plant trait quantification
+- Lesion morphology is key for crop resistance assessment
+- Classical methods (Otsu, K-Means) fail on complex biological imagery
+- Deep learning (U-Net, Mask R-CNN, SegFormer, SAM) requires extensive labels
+- Physics-based active contours offer unsupervised alternative but are
+  sensitive to initialization and hyperparameters
+- This paper: self-configuring framework that searches per-image physics
+  parameters and yields pseudo-labels for downstream learning
+
+Contributions (4 items):
+1. Navier-Stokes diffusion engine for smoothed energy landscapes
+2. No-ground-truth objective combining gradient/color/topology terms
+3. Gradient-free stochastic optimizer (random-restart + hill climbing)
+4. Phenotyping-ready pipeline producing 16-bit overlays/masks
+
+[TODO: biological experiment context details]
+
+========================================================================
+SECTION 2: RELATED WORK
+========================================================================
+2.1 Active Contours, Level Sets, and External Forces
+    - Kass et al. (1988) snakes, geodesic active contours, Chan-Vese
+    - GVF and extensions for capture range
+2.2 PDEs and Fluid Dynamics in Vision
+    - Navier-Stokes inpainting, PDE-based smoothing
+    - PlantCV and color standardization
+2.3 Segmentation Models (2015-2025)
+    - U-Net, Mask R-CNN, DeepLabv3+, SegFormer, SAM, DINOv2
+2.4 Black-Box and Hyperparameter Optimization
+    - HPO surveys, per-image optimization feasibility
+2.5 Plant Phenotyping Context and Tooling
+    - High-throughput phenotyping reviews, PlantCV
+
+========================================================================
+SECTION 3: PROBLEM SETUP AND NOTATION
+========================================================================
+- Image I: preprocessed grayscale from 16-bit leaf
+- Parameter vector θ = (μ, λ, α, β, γ, T)
+- Per-image optimization: θ* = argmax S(I; θ)
+3.1 Candidate Trace Sets and Projected Surfaces (Eq. 2-3)
+    - Trace set T_i records all evaluated candidates
+    - Projected pairwise surfaces S_{p,q} for visualization
+3.2 Parameter-Cloud Geometry
+    - Global vs local parameter vectors and parameter shift δ
+    - PCA analysis, centroid shift, k-NN classification
+
+========================================================================
+SECTION 4: MATHEMATICAL FRAMEWORK
+========================================================================
+4.1 Navier-Stokes Diffusion for Edge Enhancement (Eq. 4)
+    - Scalar diffusion-reaction PDE update
+    - μ as viscosity, (λ+μ)div(∇E) elastic coupling
+    - Forcing F from seed vs. image gradient discrepancy (Eq. 5)
+    - Edge-gating q = 1[G > T]
+    - CFL stability condition: Δt ≤ h²/(4μ)
+    - 80 diffusion iterations, normalization to [0,255]
+4.2 Active Contour Dynamics (Snakes) (Eq. 6-7)
+    - Snake energy: internal (stretching α + curvature β) + external
+    - Balloon force γ for outward expansion
+    - Multi-lesion handling via thresholded energy map
+    - Scale constraints: f_min = 5×10⁻⁴, f_max = 0.45
+
+========================================================================
+SECTION 5: METHODOLOGY — STOCHASTIC PARAMETER SEARCH
+========================================================================
+5.1 Overview of the Optimization Loop (Eq. 8)
+    - Two-phase: random exploration + local refinement
+    - Why per-leaf (not per-patch) optimization
+5.2 The Heuristic Objective Function (Eq. 9)
+    - S(θ) = w_g·G + w_c·C + w_n·log(1+N) - P_area - P_noise
+    5.2.1 Gradient Alignment G (Eq. 10)
+    5.2.2 Chromatic Separability C (Eq. 11)
+    5.2.3 Topological Reward (lesion multiplicity)
+    5.2.4 Penalty Terms (area + noise)
+5.3 Random-Restart Stochastic Hill Climbing (Algorithm 1)
+    - Phase 1: K random samples from uniform(Θ)
+    - Phase 2: R refinement steps with cooling σ_j = σ_0·0.85^j
+
+========================================================================
+SECTION 6: IMPLEMENTATION DETAILS AND ENGINEERING CHOICES
+========================================================================
+6.1 16-bit Handling, Masking, and Channel Fusion
+6.2 Scale-Aware Candidate Filtering
+6.3 Runtime Controls: Downscaling, Timeouts, and Parallelism
+
+========================================================================
+SECTION 7: EXPERIMENTS
+========================================================================
+7.1 Dataset — 174 high-resolution 16-bit TIFF leaf images
+7.2 Evaluation Protocol — No-GT, Sparse GT (60 images), cross-condition
+7.3 Teacher-Student Distillation (UNet Student)
+    - Patch-based: 512×512, overlap 64, stride 448
+    - 4,025 training patches, 40 epochs, BCE+Dice loss
+7.4 Baselines — classical thresholding, U-Net, SegFormer/SAM
+7.5 Metrics — Dice/IoU, BFScore, CC metrics, morphological measures
+
+========================================================================
+SECTION 8: RESULTS
+========================================================================
+- Optimizer status (Fig 1), runtime (Fig 2), score distribution (Fig 3)
+8.1 Teacher-Student Distillation (UNet)
+    - Baseline: Dice 0.598±0.226 (all), 0.642±0.163 (teacher-nonempty)
+    - ROI-gated: Dice 0.599±0.225 (all)
+    - 18 failures (Dice<0.3), 12 teacher-empty
+    - Threshold sweep (Fig 4): best at 0.3
+    - Montages (Figs 5-6): qualitative results and disagreements
+8.2 Parameter Correlations with Morphology
+    - E_thr vs lesion count (Fig 7), β vs area fraction (Fig 8)
+8.3 Ablation Studies (Tables I-II)
+    - Objective ablations: contour count most important (Sec 8.3)
+    - Search ablations: full pipeline vs variants
+8.4 Trace-Based Objective-Surface Analysis (Sec 8.4)
+    - 9-leaf representative study
+    - Score surfaces (Figs 9-11): high/median/low score leaves
+    - Optimization trajectories (Fig 12): convergence behavior
+    - Landscape geometry across score tiers
+8.5 Parameter-Cloud Geometry and Manifold Structure (Sec 8.5)
+    - PCA separation (Fig 13): centroid shift 1.616 std units
+    - Mean parameter shift (Fig 14): energy threshold dominant
+    - Solid 3D: covariance ellipsoids (Fig 15)
+    - k-NN agreement: 0.534 (vs 0.33 random)
+8.6 Qualitative Results and Failure Taxonomy
+    - Qualitative grid across Dice spectrum (Fig 16)
+
+========================================================================
+SECTION 9: MULTI-STAGE INFERENCE FOR NESTED/INNER LESIONS
+========================================================================
+- Two-stage inference: outer (green) + inner (magenta)
+- Algorithm 2: Two-Stage Nested Lesion Inference
+- Necrosis ratio = |M_inner| / |M_outer|
+
+========================================================================
+SECTION 10: DISCUSSION AND LIMITATIONS
+========================================================================
+- Global parameter transfer under patchification (median Dice 0.78)
+- Patch-level morphology transfer (Table III, Figs 17-19)
+  - Area underestimation, count error reduction by local re-opt
+- Objective landscape geometry and search efficiency
+- Parameter-manifold structure and amortized prediction
+- Limitations: objective mismatch, runtime, domain shift, teacher noise
+- Reproducibility and data availability
+
+========================================================================
+SECTION 11: CONCLUSION
+========================================================================
+- Fully automated unsupervised lesion segmentation pipeline
+- Trace-based analysis reveals score-tier-dependent landscapes
+- Parameter manifold structure supports amortized prediction
+
+========================================================================
+APPENDICES
+========================================================================
+Appendix A: Additional Optimizer Diagnostics
+    - Fig A1: n_c and area_px histograms
+    - Fig A2: Parameter distribution histograms (7 parameters)
+
+Appendix B: Trace-Based Surface and Trajectory Supplementary Plots
+    - Fig B1: Additional high-score trajectories (DSC_0166, DSC_0163)
+    - Fig B2: Median-score trajectories (DSC_0274, DSC_0205)
+    - Fig B3: Low-score trajectories (DSC_0185, DSC_0199)
+
+Appendix C: Parameter-Cloud Geometry Supplementary Plots
+    - Fig C1: Convex hulls + positive/negative dD surfaces
+    - Fig C2: t-SNE delta + PCA centroid shift groups
+
+TOTAL FIGURES: ~22 in main text + ~10 in appendices
+TOTAL TABLES: 3 (objective ablations, search ablations, morphology transfer)
+TOTAL EQUATIONS: ~11 numbered equations + 2 algorithms

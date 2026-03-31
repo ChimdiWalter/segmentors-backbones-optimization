@@ -1,0 +1,27 @@
+Gapfill Report
+==============
+
+Paper 1 Gaps Resolved:
+- 3 TODO placeholders filled with factual text:
+  1. Biological experiment context (genotype, pathogen, imaging)
+  2. Upstream preprocessing steps (entropy masking, color correction)
+  3. Dataset metadata (resolution, leaf area masks)
+- No new experiments or analyses needed
+- All figures, tables, and numerical results were already present
+
+Paper 2 Gaps Resolved:
+- No gaps requiring new work
+- All evidence existed in repository experimental outputs
+- Manuscript was already fully elaborated (20 pages, 13 tables)
+
+Shared Gapfill:
+- Lightweight synthesis assets from dual_paper_build_codex/gapfill/:
+  - Runtime frontier plot (B_fig38_gapfill_runtime_frontier.png)
+  - Risk overlay plot (B_fig39_gapfill_risk_overlay.png)
+- These were already generated prior to this manuscript build
+
+Conclusion:
+Both papers were built entirely from existing repository outputs.
+No heavy optimization reruns or new model training was performed.
+The only "new" work was resolving placeholder text in Paper 1
+and organizing existing evidence into clean project packages.

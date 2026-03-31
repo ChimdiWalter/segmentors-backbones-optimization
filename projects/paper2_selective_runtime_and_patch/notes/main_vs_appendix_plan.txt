@@ -1,0 +1,38 @@
+Main vs Appendix Plan — Paper 2
+================================
+
+MAIN PAPER (9 multi-panel figures, 13 tables):
+
+Figures:
+- fig:setup_main (4 subfigs) — Pipeline schematic, dataset split, main comparison, oracle-gap
+- fig:frontierB (4 subfigs) — Runtime-quality Pareto (integrated + gapfill + refinement + selective)
+- fig:calibrationB (4 subfigs) — Risk-coverage and calibration (integrated + selective studies)
+- fig:branchB (4 subfigs) — Aggregation comparison, patch ablation, heterogeneity, param difficulty
+- fig:selectiveB (4 subfigs) — Method comparison, threshold grid, score recovery, learning curves
+- fig:phenoB (2 subfigs) — Phenotype PCA projection, per-parameter scatter
+- fig:leafB (2 subfigs) — Representative leaf comparison, routing behavior
+- fig:failureB (3 subfigs) — Failure taxonomy, case montage, 18.7 cross-collection panel
+- fig:robustB (2 subfigs) — Backbone comparison, cross-collection robustness
+
+Tables:
+- tab:lineageB — Comparison of three manuscript lines and their assignment
+- tab:substrates — Audited experimental substrates
+- tab:mainB — Matched 35-leaf full-leaf vs patchwise comparison (5 aggregation methods)
+- tab:statsB — Paired statistical tests (Wilcoxon p-values, bootstrap 95% CI)
+- tab:routingB — Selected routing policies (3 policies with nMAE, runtime, speedup)
+- tab:runtimesB — Reference runtimes (6 inference modes from direct to full optimizer)
+- tab:calibB — Calibration bins (5 bins with uncertainty, error, std)
+- tab:patchB — Patch extraction ablation (3 configurations)
+- tab:ablationB — Direct model ablations (selective study)
+- tab:morphB — Morphology fidelity across refinement budgets
+- tab:phenoB — Phenotype consistency by method
+- tab:strataB — Difficulty stratification
+- tab:oodB — Cross-collection robustness (ID vs 18.7)
+
+APPENDIX (5 figure families):
+- fig:appB1 — Speedup denominators, gapfill risk overlay
+- fig:appB2 — Ensemble size ablation, residual distributions
+- fig:appB3 — Feature-space PCA, selective routing geometry projection
+- fig:appB4 — Backbone comparison (selective study), contextual geometry
+- fig:appB5 — Domain robustness details, score-tier behavior
+- tab:backboneB — Integrated full-leaf backbone comparison

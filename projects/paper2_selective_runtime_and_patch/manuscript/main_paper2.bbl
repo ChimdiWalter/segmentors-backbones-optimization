@@ -1,0 +1,119 @@
+\begin{thebibliography}{17}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Efron(1979)]{B_efron1979}
+Bradley Efron.
+\newblock Bootstrap methods: Another look at the jackknife.
+\newblock \emph{The Annals of Statistics}, 7\penalty0 (1):\penalty0 1--26,
+  1979.
+
+\bibitem[El-Yaniv and Wiener(2010)]{B_elyaniv2010}
+Ran El-Yaniv and Yair Wiener.
+\newblock Trading accuracy for speed in selective prediction.
+\newblock \emph{Journal of Machine Learning Research}, 11:\penalty0 2855--2892,
+  2010.
+
+\bibitem[Gal and Ghahramani(2016)]{B_gal2016}
+Yarin Gal and Zoubin Ghahramani.
+\newblock Dropout as a bayesian approximation: Representing model uncertainty
+  in deep learning.
+\newblock In \emph{International Conference on Machine Learning}, 2016.
+
+\bibitem[Geifman and El-Yaniv(2017)]{B_geifman2017}
+Yonatan Geifman and Ran El-Yaniv.
+\newblock Selective classification for deep neural networks.
+\newblock \emph{Advances in Neural Information Processing Systems}, 30, 2017.
+
+\bibitem[Geifman and El-Yaniv(2019)]{B_geifman2019}
+Yonatan Geifman and Ran El-Yaniv.
+\newblock Selectivenet: A deep neural network with an integrated reject option.
+\newblock \emph{International Conference on Machine Learning}, pages
+  2151--2159, 2019.
+
+\bibitem[Guo et~al.(2017)Guo, Pleiss, Sun, and Weinberger]{B_guo2017}
+Chuan Guo, Geoff Pleiss, Yu~Sun, and Kilian~Q Weinberger.
+\newblock On calibration of modern neural networks.
+\newblock In \emph{International Conference on Machine Learning}, pages
+  1321--1330, 2017.
+
+\bibitem[He et~al.(2016)He, Zhang, Ren, and Sun]{B_he2016}
+Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun.
+\newblock Deep residual learning for image recognition.
+\newblock In \emph{IEEE Conference on Computer Vision and Pattern Recognition},
+  2016.
+
+\bibitem[Ilse et~al.(2018)Ilse, Tomczak, and Welling]{B_ilse2018}
+Maximilian Ilse, Jakub Tomczak, and Max Welling.
+\newblock Attention-based deep multiple instance learning.
+\newblock \emph{International Conference on Machine Learning}, pages
+  2127--2136, 2018.
+
+\bibitem[Kim et~al.(2018)Kim, Wiseman, Miller, Sontag, and Rush]{B_kim2018}
+Yoon Kim, Sam Wiseman, Andrew Miller, David Sontag, and Alexander Rush.
+\newblock Semi-amortized variational autoencoders.
+\newblock In \emph{International Conference on Machine Learning}, pages
+  2678--2687, 2018.
+
+\bibitem[Lakshminarayanan et~al.(2017)Lakshminarayanan, Pritzel, and
+  Blundell]{B_lakshminarayanan2017}
+Balaji Lakshminarayanan, Alexander Pritzel, and Charles Blundell.
+\newblock Simple and scalable predictive uncertainty estimation using deep
+  ensembles.
+\newblock \emph{Advances in Neural Information Processing Systems}, 30, 2017.
+
+\bibitem[Mahlein(2016)]{B_mahlein2016}
+Anne-Katrin Mahlein.
+\newblock Plant disease detection by imaging sensors---parallels and specific
+  demands for precision agriculture and plant phenotyping.
+\newblock \emph{Plant Disease}, 100\penalty0 (2):\penalty0 241--251, 2016.
+
+\bibitem[Marino et~al.(2018)Marino, Yue, and Mandt]{B_marino2018}
+Joseph Marino, Yisong Yue, and Stephan Mandt.
+\newblock Iterative amortized inference.
+\newblock In \emph{International Conference on Machine Learning}, pages
+  3403--3412, 2018.
+
+\bibitem[Oquab et~al.(2024)Oquab, Darcet, Moutakanni, Vo, Szafraniec, Khalidov,
+  Fernandez, Haziza, Massa, El-Nouby, Assran, Ballas, Galuba, Howes, Huang, Li,
+  Misra, Rabbat, Sharma, Synnaeve, Xu, Jegou, Mairal, Bojanowski, and
+  Labatut]{B_oquab2024}
+Maxime Oquab, Timothee Darcet, Theo Moutakanni, Huy Vo, Marc Szafraniec, Vasil
+  Khalidov, Pierre Fernandez, Daniel Haziza, Francisco Massa, Alaa El-Nouby,
+  Mahmoud Assran, Nicolas Ballas, Wojciech Galuba, Russell Howes, Po-Yao Huang,
+  Shang-Wen Li, Ishan Misra, Mike Rabbat, Vasu Sharma, Gabriel Synnaeve, Hu~Xu,
+  Herve Jegou, Julien Mairal, Piotr Bojanowski, and Patrick Labatut.
+\newblock Dinov2: Learning robust visual features without supervision.
+\newblock \emph{Transactions on Machine Learning Research}, 2024.
+
+\bibitem[Ovadia et~al.(2019)Ovadia, Fertig, Ren, Nado, Sculley, Nowozin,
+  Dillon, Lakshminarayanan, and Snoek]{B_ovadia2019}
+Yaniv Ovadia, Emily Fertig, Jie Ren, Zachary Nado, D.~Sculley, Sebastian
+  Nowozin, Joshua Dillon, Balaji Lakshminarayanan, and Jasper Snoek.
+\newblock Can you trust your model's uncertainty? evaluating predictive
+  uncertainty under dataset shift.
+\newblock \emph{Advances in Neural Information Processing Systems}, 32, 2019.
+
+\bibitem[Raissi et~al.(2019)Raissi, Perdikaris, and Karniadakis]{B_raissi2019}
+Maziar Raissi, Paris Perdikaris, and George~Em Karniadakis.
+\newblock Physics-informed neural networks: A deep learning framework for
+  solving forward and inverse problems involving nonlinear partial differential
+  equations.
+\newblock \emph{Journal of Computational Physics}, 2019.
+
+\bibitem[Wilcoxon(1945)]{B_wilcoxon1945}
+Frank Wilcoxon.
+\newblock Individual comparisons by ranking methods.
+\newblock \emph{Biometrics Bulletin}, 1\penalty0 (6):\penalty0 80--83, 1945.
+
+\bibitem[Zaheer et~al.(2017)Zaheer, Kottur, Ravanbakhsh, Poczos, Salakhutdinov,
+  and Smola]{B_zaheer2017}
+Manzil Zaheer, Satwik Kottur, Siamak Ravanbakhsh, Barnabas Poczos, Russ~R
+  Salakhutdinov, and Alexander~J Smola.
+\newblock Deep sets.
+\newblock \emph{Advances in Neural Information Processing Systems}, 30, 2017.
+
+\end{thebibliography}

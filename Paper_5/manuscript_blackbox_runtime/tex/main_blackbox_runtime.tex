@@ -1,0 +1,821 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{natbib}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{tabularx}
+\graphicspath{{../figs_from_outputs/}}
+\hypersetup{colorlinks=true,linkcolor=blue!60!black,citecolor=green!40!black,urlcolor=blue!60!black}
+
+\newcommand{\btheta}{\boldsymbol{\theta}}
+\newcommand{\nmae}{nMAE}
+
+\title{Black-Box Selective Semi-Amortized Inference for Runtime--Quality Tradeoffs in Physics-Based Lesion Phenotyping}
+\author{Submission-Ready Repository Synthesis}
+\date{March 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This paper is the repository's deployment-facing manuscript line.
+Its subject is not the geometry of the optimizer target itself, but the operational problem created by an expensive physics-based oracle.
+The repository contains three relevant ingredients: matched full-leaf versus patchwise comparisons, a Codex-only shadow line for the same comparison, and a selective semi-amortized study centered on uncertainty-guided routing.
+We treat those as distinct lines and combine only the non-duplicative evidence needed for a black-box inference paper.
+On the audited 35-leaf matched comparison, direct full-leaf prediction has \nmae{} 1.154, while patch aggregation improves on that baseline, reaching 0.906 with simple mean aggregation and 0.911 with uncertainty weighting.
+The patch branch is bounded by a non-trivial oracle mismatch: the gap between the full-leaf oracle and the aggregated patch oracle is 0.327 \nmae{}.
+Selective routing then exposes explicit runtime-quality operating points.
+A quality-favoring policy reaches 0.556 \nmae{} at 74.34~s, a balanced policy reaches 0.577 at 60.48~s, and the highest-speedup audited policy reaches 0.819 at 55.77~s, versus 260.49~s for the full optimizer.
+In the broader 174-leaf selective study, thresholded routing reduces mean MAE from 0.1033 for direct prediction to 0.0715 at the best audited threshold pair.
+Calibration, risk--coverage, patch ablation, heterogeneity, phenotype-consistency, and failure-case analyses support a practical conclusion: selective semi-amortized inference is a credible way to approximate a black-box physics oracle when compute is limited, provided the paper is explicit about oracle mismatch, dataset split differences, and uncertainty limitations.
+\end{abstract}
+
+\section{Introduction}
+The deployment problem in this repository is straightforward to state and difficult to solve.
+A full optimizer produces interpretable seven-parameter lesion summaries, but it takes roughly 260~s per leaf.
+A direct learned predictor is dramatically faster, but can be far less accurate.
+Patchwise processing preserves local resolution that full-leaf resizing discards, yet patch aggregation is not evaluated against exactly the same oracle target as whole-leaf inference.
+Selective semi-amortized routing offers a third option: spend more computation only where uncertainty suggests that direct prediction is unreliable.
+
+These ingredients appeared in the repository through multiple manuscript attempts, but they do not all support the same final paper.
+If the geometry story, the full-vs-patch story, and the selective-routing story are collapsed together, each claim becomes weaker.
+The purpose of Paper~B is therefore to isolate the black-box deployment question: given an expensive oracle, an imperfect uncertainty signal, and multiple inference branches with different runtime and target mismatch properties, what operating points are actually supported by the outputs in this repository?
+
+That question is operational rather than mechanistic.
+Paper~B does not need to prove that the parameter vector forms a scientifically meaningful manifold.
+It needs to determine which branch, which aggregation rule, and which routing policy are justified for a particular runtime budget.
+The resulting contribution is a runtime-quality paper for scientific imaging, not a paper about identifying physics from images.
+
+\subsection{Explicit Comparison of the Three Existing Manuscript Lines}
+The repository already contains three manuscript lines that must be treated separately.
+Table~\ref{tab:lineageB} makes the assignment explicit.
+The integrated full-vs-patch manuscript provides the primary matched-comparison evidence for whole-leaf versus patchwise prediction.
+The Codex-only full-vs-patch manuscript is treated as a corroborative shadow line, useful for consistency checks but not a separate narrative.
+The selective semi-amortized runtime-quality manuscript provides the routing, calibration, and coverage-risk story that makes Paper~B a deployment paper rather than a geometry paper.
+
+\begin{table}[H]
+\centering
+\caption{Explicit comparison of the three existing manuscript lines and their assignment relative to Paper~B.}
+\label{tab:lineageB}
+\small
+\begin{tabular}{p{0.22\linewidth}p{0.21\linewidth}p{0.22\linewidth}p{0.25\linewidth}}
+\toprule
+Existing line / PDF & Core question & Overlap with Paper~B & What is assigned to Paper~B here \\
+\midrule
+\texttt{integrated\_full\_vs\_patch\_manuscript.pdf} & Matched full-leaf versus patchwise comparison & Primary evidence for branch comparison & Main comparison, oracle gap, patch ablation, heterogeneity, parameter difficulty, runtime Pareto context \\
+\texttt{main\_integrated\_full\_vs\_patch\_codex\_v1.pdf} & Codex-only shadow replication of the integrated line & Corroborative overlap only & Used to cross-check denominator language and manuscript consistency; not a separate headline narrative \\
+\texttt{main\_speciesref\_fixed-1-1.pdf} & Selective semi-amortized routing and runtime-quality tradeoff & Primary evidence for deployment policy & Routing thresholds, calibration, risk--coverage, selective ablations, morphology summaries, phenotype consistency \\
+Paper~A optimizer/manifold line & Parameter-space geometry and learnability & Shared substrate but different claim & Used only where geometry is needed to explain oracle mismatch or heterogeneity; not the paper's center \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Contributions.}
+\begin{enumerate}[leftmargin=1.5em,itemsep=2pt]
+\item We cast the repository's deployment problem as black-box selective semi-amortized inference with three actions: accept direct prediction, run short refinement, or fall back to the full optimizer.
+\item We compare whole-leaf and patchwise branches on the same audited split and quantify the full-leaf-versus-aggregated-patch oracle gap that limits naive interpretation.
+\item We report explicit runtime-quality operating points rather than a single preferred threshold, making the cost of quality gains transparent.
+\item We add long-form calibration, risk--coverage, patch-ablation, phenotype-consistency, and failure-mode analyses needed for a submission-ready runtime paper.
+\item We keep the paper non-duplicative by assigning geometry and representational claims to Paper~A while reserving Paper~B for branch selection, routing, and deployment interpretation.
+\end{enumerate}
+
+\section{Related Work}
+\paragraph{Selective prediction and abstention.}
+Selective prediction studies when a model should abstain, defer, or spend extra computation instead of committing to a direct answer \citep{B_elyaniv2010,B_geifman2017,B_geifman2019}.
+The relevant object is the coverage-risk or coverage-quality tradeoff.
+Our setting extends that literature by giving the model a middle action: short real optimization around the amortized prediction.
+
+\paragraph{Uncertainty and calibration.}
+Deep ensembles and Bayesian approximations such as dropout remain widely used practical uncertainty estimators \citep{B_lakshminarayanan2017,B_gal2016}.
+What matters for deployment is not only uncertainty magnitude but calibration under distribution shift and thresholded decision-making \citep{B_ovadia2019,B_guo2017}.
+Paper~B uses exactly that lens: uncertainty is useful only if it aligns well enough with actual error to support routing thresholds.
+
+\paragraph{Semi-amortized inference and adaptive computation.}
+Semi-amortized inference refines a learned initialization with instance-specific optimization \citep{B_kim2018,B_marino2018}.
+Adaptive computation uses extra work selectively rather than uniformly.
+This paper combines those ideas with a runtime-aware scientific imaging pipeline whose expensive component is a physics-inspired black-box solver.
+
+\paragraph{Patch aggregation and set-level prediction.}
+Patch-based inference is natural when global resizing destroys local detail.
+Permutation-invariant set models and multiple-instance formulations provide general language for aggregating variable numbers of patch outputs \citep{B_zaheer2017,B_ilse2018}.
+In this repository, however, patch aggregation faces an additional complication: local patch optima do not average exactly to the global full-leaf optimum.
+That oracle mismatch is a central empirical result rather than an implementation nuisance.
+
+\paragraph{Scientific imaging context.}
+Physics-informed modeling, plant disease phenotyping, and modern visual backbones motivate the application domain \citep{B_raissi2019,B_mahlein2016,B_he2016,B_oquab2024}.
+The present paper is not a survey of those areas.
+It uses them to explain why a computationally expensive oracle exists and why a deployment-focused approximation paper is necessary.
+
+\section{Problem Formulation}
+Let $x$ denote a leaf image and let $\btheta^{\star}_{\mathrm{leaf}}(x)$ be the output of the full optimizer on the whole leaf.
+A direct branch returns
+\begin{equation}
+\hat{\btheta}_{\mathrm{direct}}(x)=f_\phi(x).
+\end{equation}
+For a patchified leaf with patches $\{p_k\}_{k=1}^{K}$, the patch branch returns per-patch predictions $\hat{\btheta}_k=f_\phi(p_k)$ and aggregates them with an operator $\mathcal{A}$,
+\begin{equation}
+\hat{\btheta}_{\mathrm{patch}}(x)=\mathcal{A}\left(\{(\hat{\btheta}_k,u_k)\}_{k=1}^{K}\right),
+\end{equation}
+where $u_k$ denotes a patch-level uncertainty summary.
+
+\subsection{Dual Oracle Targets}
+Patchwise inference is evaluated against two related but distinct targets.
+The first is the full-leaf oracle $\btheta^{\star}_{\mathrm{leaf}}$.
+The second is the aggregated patch oracle $\bar{\btheta}^{\star}_{\mathrm{patch}}$, obtained by aggregating locally optimized patch parameters.
+Their discrepancy,
+\begin{equation}
+\Delta_{\mathrm{oracle}}=\left\lVert \btheta^{\star}_{\mathrm{leaf}}-\bar{\btheta}^{\star}_{\mathrm{patch}}\right\rVert,
+\end{equation}
+is the oracle gap.
+This quantity matters because even a perfect patch predictor will appear worse when scored against the full-leaf oracle if the two targets are not identical.
+Paper~B therefore interprets every patchwise result together with this gap.
+
+\subsection{Selective Semi-Amortized Routing}
+Given a leaf-level uncertainty score $u(x)$, the policy is
+\begin{equation}
+\pi(u)=
+\begin{cases}
+\textsc{direct}, & u\le \tau_{\mathrm{lo}},\\
+\textsc{refine}, & \tau_{\mathrm{lo}}<u\le \tau_{\mathrm{hi}},\\
+\textsc{fallback}, & u>\tau_{\mathrm{hi}}.
+\end{cases}
+\label{eq:routing}
+\end{equation}
+The direct branch returns the amortized prediction immediately.
+The refine branch runs a short perturbation search around it.
+The fallback branch runs the full optimizer.
+The deployment problem is to choose $\tau_{\mathrm{lo}}$ and $\tau_{\mathrm{hi}}$ so that expected quality loss is acceptable for the available runtime budget.
+
+\section{Experimental Substrates and Provenance}
+The primary image collections in this repository are \texttt{leaves} and \texttt{18.7}, and both contain leaf images.
+Paper~B uses two audited experimental substrates that should not be conflated numerically.
+The first is a matched 35-leaf integrated comparison of full-leaf and patchwise branches, reported mainly in \nmae{} and paired statistical tests.
+The second is a broader selective full study over 174 leaves, including 146 ID examples and 28 examples from the second leaf collection, \texttt{18.7}; this study reports mean absolute error, calibration, threshold ablations, and related analyses.
+Numbers from those two substrates serve complementary purposes but are not meant to be compared as if they were on one identical scale.
+
+\begin{table}[H]
+\centering
+\caption{Audited experimental substrates used by Paper~B.}
+\label{tab:substrates}
+\small
+\begin{tabular}{p{0.23\linewidth}p{0.14\linewidth}p{0.19\linewidth}p{0.34\linewidth}}
+\toprule
+Substrate & Size & Primary metric & Primary use in this paper \\
+\midrule
+Integrated matched comparison & 35 leaves & \nmae{}, paired bootstrap, Wilcoxon & Full-leaf vs patch comparison, oracle gap, routing frontier, patch ablation \\
+Selective full study & 174 leaves & MAE, calibration, risk--coverage, R$^2$ & Threshold selection, uncertainty quality, learning curves, phenotype consistency, morphology fidelity \\
+Cross-collection robustness subset & 28 leaves from \texttt{18.7} & MAE, R$^2$ & Robustness interpretation on the second leaf collection \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+No heavy new training or optimization runs were launched for this manuscript build.
+All main figures are reused from the extensive integrated full-vs-patch outputs and the selective semi-amortized full-study outputs already present in the repository.
+Only the compact runtime frontier and risk overlay plots previously generated under \texttt{dual\_paper\_build\_codex/gapfill} are new synthesis assets.
+Statistical testing relies on the repository's existing bootstrap intervals and matched Wilcoxon signed-rank tests \citep{B_efron1979,B_wilcoxon1945}.
+
+\section{Results}
+\subsection{Matched Full-Leaf vs Patchwise Comparison: Better Local Detail, But a Real Oracle Gap}
+Figure~\ref{fig:setup_main} introduces the experimental setup and the main full-leaf versus patchwise comparison.
+On the audited 35-leaf split, direct full-leaf prediction has \nmae{} 1.154.
+Patch aggregation improves on that baseline for four of the five audited aggregation rules.
+The best result is simple mean aggregation at 0.906, closely followed by uncertainty-weighted aggregation at 0.911 and selective mixture at 0.921.
+Robust median reaches 0.962, while top-$k$ confident aggregation is weaker at 1.037.
+The key point is that patchwise inference can outperform direct full-leaf downsampling on this split.
+The equally important point is that it does so under a dual-oracle setting.
+
+The oracle gap is 0.327 \nmae{} across the audited aggregation rules.
+That value is large enough that it cannot be treated as rounding noise.
+Patch processing is solving a related but not identical problem.
+The correct conclusion is therefore operational rather than absolute: patchwise inference recovers useful high-resolution information, but its gains must always be interpreted together with the mismatch between the full-leaf oracle and the aggregated patch oracle.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig01_pipeline_schematic.pdf}
+    \caption{Branch structure: direct, patchwise, refinement, fallback.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig02_dataset_split.pdf}
+    \caption{Dataset and split accounting for the integrated study.}
+\end{subfigure}
+
+\vspace{0.5em}
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig03_main_comparison.pdf}
+    \caption{Main matched comparison.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig05_oracle_gap.pdf}
+    \caption{Oracle-gap decomposition.}
+\end{subfigure}
+\caption{Paper~B setup and primary full-leaf versus patchwise comparison. The branch comparison only makes sense when the oracle-gap decomposition is shown alongside it.}
+\label{fig:setup_main}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Matched full-leaf versus patchwise comparison on 35 leaves. Lower is better.}
+\label{tab:mainB}
+\small
+\begin{tabular}{lccc}
+\toprule
+Aggregation & FL \nmae{} & Patch \nmae{} vs FL & Oracle gap \\
+\midrule
+Mean & 1.154 & 0.906 & 0.327 \\
+Uncertainty-weighted & 1.154 & 0.911 & 0.327 \\
+Selective mixture & 1.154 & 0.921 & 0.327 \\
+Robust median & 1.154 & 0.962 & 0.327 \\
+Top-$k$ confident & 1.154 & 1.037 & 0.327 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Paired statistical comparison against direct full-leaf prediction.}
+\label{tab:statsB}
+\small
+\begin{tabular}{lccc}
+\toprule
+Aggregation & Mean improvement & 95\% CI & Wilcoxon $p$ \\
+\midrule
+Mean & 0.248 & [0.097, 0.405] & 0.0030 \\
+Uncertainty-weighted & 0.243 & [0.089, 0.399] & 0.0051 \\
+Selective mixture & 0.233 & [0.078, 0.392] & 0.0096 \\
+Robust median & 0.192 & [0.020, 0.366] & 0.0495 \\
+Top-$k$ confident & 0.117 & [-0.056, 0.288] & 0.2383 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Routing Exposes a Runtime--Quality Frontier Instead of a Single Point Estimate}
+Once the branch comparison is framed honestly, the next question is how much computation to spend per leaf.
+Figure~\ref{fig:frontierB} and Table~\ref{tab:routingB} show the answer as a family of operating points.
+The full optimizer remains the quality ceiling at \nmae{} 0.026 and 260.49~s.
+Direct full-leaf prediction is the cheapest audited option at 2.98~s, but its quality is much worse at 1.154.
+Selective routing occupies the middle of the frontier.
+
+On the 35-leaf matched study, the best quality among the audited routing policies uses $(q_{\mathrm{lo}},q_{\mathrm{hi}})=(0.3,0.7)$ and reaches \nmae{} 0.556 at 74.34~s.
+A more runtime-efficient policy, $(0.3,0.9)$, reaches 0.577 at 60.48~s.
+The highest-speedup audited policy, $(0.6,0.9)$, reaches 0.819 at 55.77~s, corresponding to a 4.67$\times$ speedup over the full optimizer.
+On the broader selective full study, thresholding also improves mean MAE from 0.1033 for direct prediction to 0.0715 at the best audited threshold pair, showing that the value of routing is not confined to a single small matched split.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig04_runtime_quality_pareto.pdf}
+    \caption{Runtime--quality Pareto evidence from the integrated study.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig38_gapfill_runtime_frontier.png}
+    \caption{Gapfill frontier with denominator-explicit points.}
+\end{subfigure}
+
+\vspace{0.5em}
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig08_refinement_curves.pdf}
+    \caption{Shared refinement-budget behavior.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig19_selective_pareto_real.pdf}
+    \caption{Selective full-study Pareto view.}
+\end{subfigure}
+\caption{Runtime--quality frontiers from the matched integrated split and the broader selective full study. Paper~B is about this control surface, not about one preferred threshold pair.}
+\label{fig:frontierB}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Selected routing policies on the matched 35-leaf full-leaf study.}
+\label{tab:routingB}
+\small
+\begin{tabular}{lcccc}
+\toprule
+Policy & Runtime (s) & \nmae{} & Fallback frac. & Speedup vs full \\
+\midrule
+Quality-favoring $(0.3,0.7)$ & 74.34 & 0.556 & 0.257 & 3.50$\times$ \\
+Balanced $(0.3,0.9)$ & 60.48 & 0.577 & 0.200 & 4.31$\times$ \\
+Max-speedup audited $(0.6,0.9)$ & 55.77 & 0.819 & 0.200 & 4.67$\times$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Reference runtimes for the main inference modes.}
+\label{tab:runtimesB}
+\small
+\begin{tabular}{lc}
+\toprule
+Method & Runtime (s) \\
+\midrule
+Direct full-leaf prediction & 2.98 \\
+Tiny refinement & 11.03 \\
+Small refinement & 17.97 \\
+Medium refinement & 28.88 \\
+Selective policy (audited full-study default) & 74.69 \\
+Full optimizer & 260.49 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Calibration and Risk--Coverage Are Good Enough for Thresholding, Not for Strong Guarantees}
+Selective routing depends on uncertainty quality.
+The integrated and selective studies both show useful monotonicity.
+In the calibration bins of the full study, mean uncertainty rises from 0.0177 in the lowest bin to 0.1877 in the highest, while mean observed error rises from 0.0082 to 0.1157.
+That is not perfect calibration, but it is directionally correct and operationally sufficient for thresholding.
+The risk--coverage curves tell the same story: the system can identify a lower-risk subset that is better suited to direct prediction and a higher-risk subset that justifies extra computation.
+
+The right interpretation is therefore limited but useful.
+The uncertainty signal is aligned with error well enough to support routing policies like Eq.~\eqref{eq:routing}.
+It is not aligned well enough to justify stronger claims such as exact coverage guarantees or formal selective-risk certificates.
+That distinction matters for top-tier review because it separates what the outputs show from what they do not show.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig09_risk_coverage.pdf}
+    \caption{Integrated-study risk--coverage behavior.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig10_calibration.pdf}
+    \caption{Integrated-study calibration.}
+\end{subfigure}
+
+\vspace{0.5em}
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig28_selective_risk_coverage.pdf}
+    \caption{Selective-study risk--coverage view.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig27_selective_calibration.pdf}
+    \caption{Selective-study calibration view.}
+\end{subfigure}
+\caption{Calibration and risk--coverage across the two main Paper~B substrates. The uncertainty signal is useful for routing, but not strong enough to support stronger guarantees than that.}
+\label{fig:calibrationB}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Calibration bins from the selective full study.}
+\label{tab:calibB}
+\small
+\begin{tabular}{ccccc}
+\toprule
+Bin & $n$ & Mean uncertainty & Mean error & Std. error \\
+\midrule
+0 & 35 & 0.0177 & 0.0082 & 0.0026 \\
+1 & 35 & 0.0548 & 0.0266 & 0.0107 \\
+2 & 34 & 0.1059 & 0.0624 & 0.0212 \\
+3 & 35 & 0.1438 & 0.0975 & 0.0306 \\
+4 & 35 & 0.1877 & 0.1157 & 0.0325 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Branch Anatomy: Aggregation, Patch Geometry, Heterogeneity, and Parameter Difficulty}
+Once patchwise inference is accepted as a candidate branch, the next question is how stable that branch is.
+Figure~\ref{fig:branchB} collects the main branch-anatomy figures.
+Aggregation comparison shows that not all patch combination rules are equally effective.
+Patch ablation shows that extraction geometry matters materially: the overlapping $224\times224$ with stride 112 setting yields 47{,}916 total patches and the highest mean heterogeneity (1.903), while the non-overlapping or larger-patch settings change both patch count and heterogeneity substantially.
+The heterogeneity figure explains why this matters: leaves are not homogeneous bags of local optima.
+Parameter-difficulty plots then show that some coordinates, particularly \texttt{energy\_threshold}, remain much harder than others for the patch branch.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig11_aggregation_comparison.pdf}
+    \caption{Aggregation comparison.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig06_patch_ablation.pdf}
+    \caption{Patch-size and stride ablation.}
+\end{subfigure}
+
+\vspace{0.5em}
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig12_heterogeneity.pdf}
+    \caption{Within-leaf heterogeneity.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig14_parameter_difficulty.pdf}
+    \caption{Parameter-specific branch difficulty.}
+\end{subfigure}
+\caption{Branch anatomy for the patchwise path. Patchwise inference is not one method; it is a family of extraction and aggregation decisions with distinct error and heterogeneity properties.}
+\label{fig:branchB}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Patch extraction ablation from the integrated study.}
+\label{tab:patchB}
+\small
+\begin{tabular}{lcccc}
+\toprule
+Config & Total patches & Mean patches/leaf & Median patches/leaf & Mean heterogeneity \\
+\midrule
+$224/224$ & 13{,}192 & 75.82 & 85 & 1.299 \\
+$224/112$ & 47{,}916 & 275.38 & 297 & 1.903 \\
+$336/168$ & 19{,}228 & 110.51 & 110 & 1.291 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Selected direct-model ablations from the selective full study.}
+\label{tab:ablationB}
+\small
+\begin{tabular}{p{0.42\linewidth}cc}
+\toprule
+Variant & Test MAE & Comment \\
+\midrule
+ResNet-18 ridge & 0.0965 & Strongest linear-backbone result in this table \\
+DINOv2 ridge & 0.1240 & Weaker than ResNet in this audited split \\
+$k$NN-10 & 0.0789 & Best simple head in the ablation summary \\
+MLP-small & 0.4129 & Severe degradation \\
+MLP-large & 0.1888 & Still much worse than simple heads \\
+Best threshold pair $(0.5,0.7)$ & 0.0715 & Best selective MAE in the full study \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Selective Full Study: Thresholds Help, but Learning Curves and Backbones Are Not Uniformly Well-Behaved}
+The broader selective full study provides evidence that goes beyond the 35-leaf matched split.
+Figure~\ref{fig:selectiveB} combines the main full-study figures.
+The method-comparison panel shows that some simple baselines remain competitive with more elaborate models.
+The selective-threshold panel shows that thresholding improves MAE relative to direct prediction, with the best audited value at $(0.5,0.7)$.
+The score-recovery view shows that selective routing can recover a sizeable fraction of the oracle score with less compute than full fallback.
+The learning-curve view is intentionally kept in the paper because it is not perfectly clean: the 25\%, 50\%, 75\%, and 100\% points are non-monotone.
+That irregularity is evidence, not noise to be hidden.
+It suggests that the problem remains sensitive to split composition, backbone mismatch, or target noise even after amortization.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig21_method_comparison.pdf}
+    \caption{Method comparison on the selective full study.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig24_selective_thresholds.pdf}
+    \caption{Selective-threshold grid.}
+\end{subfigure}
+
+\vspace{0.5em}
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig20_score_recovery.pdf}
+    \caption{Score recovery relative to more expensive inference.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig22_learning_curves.pdf}
+    \caption{Learning-curve behavior across training fractions.}
+\end{subfigure}
+\caption{Selective full-study evidence beyond the 35-leaf matched split. Thresholding helps, but the broader study also exposes model-class and data-regime instability that should remain visible in the final paper.}
+\label{fig:selectiveB}
+\end{figure}
+
+\subsection{Morphology Fidelity and Phenotype Consistency Show Why Deployment Quality Is Not Only About Parameter Error}
+For plant scientists, deployment quality is not just a scalar parameter error.
+It is also whether the resulting lesion summary preserves morphology and phenotype structure.
+Table~\ref{tab:morphB} shows that medium refinement improves contour-count error and area-fraction error relative to direct prediction.
+Table~\ref{tab:phenoB} shows that phenotype consistency is best for simple baselines and worse for higher-capacity variants.
+These tables matter because they connect the runtime-quality story to biologically legible outputs.
+A method that reduces MAE but destroys phenotype consistency would be hard to justify scientifically.
+
+The score-tier and parameter-extremes analyses also matter for deployment.
+The low-score and high-score strata are not equally easy, and extreme parameter regimes remain harder than typical regimes.
+That finding argues for routing policies that are conditioned on uncertainty or difficulty proxies rather than uniform budgets for all leaves.
+
+\begin{table}[H]
+\centering
+\caption{Morphology-oriented fidelity across refinement budgets.}
+\label{tab:morphB}
+\small
+\begin{tabular}{lcccc}
+\toprule
+Budget & Contour count error & Area-frac. error & Mean score & Stored oracle score \\
+\midrule
+Direct & 41.34 & 0.0233 & 17.111 & 18.053 \\
+Tiny & 40.60 & 0.0255 & 17.791 & 18.053 \\
+Small & 46.69 & 0.0282 & 17.854 & 18.053 \\
+Medium & 39.46 & 0.0229 & 18.243 & 18.053 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Phenotype consistency for selected methods in the full study. Lower PCA distance is better.}
+\label{tab:phenoB}
+\small
+\begin{tabular}{lccc}
+\toprule
+Method & Mean PCA dist. & Median PCA dist. & Max PCA dist. \\
+\midrule
+B0 mean & 0.245 & 0.239 & 0.474 \\
+B0b $k$NN & 0.264 & 0.224 & 0.484 \\
+B1 ridge ResNet & 0.260 & 0.215 & 0.489 \\
+B1 ridge DINO & 0.380 & 0.375 & 0.580 \\
+B2 MLP DINO & 0.444 & 0.410 & 0.930 \\
+B3 ensemble & 0.279 & 0.286 & 0.613 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Difficulty stratification in the selective full study. Lower MAE is better.}
+\label{tab:strataB}
+\small
+\begin{tabular}{p{0.26\linewidth}cc}
+\toprule
+Condition & MAE (best simple baseline) & MAE (ResNet ridge) \\
+\midrule
+Low score tier & 0.0925 & 0.1001 \\
+High score tier & 0.0712 & 0.1024 \\
+Extreme parameters & 0.0870 & 0.1016 \\
+Typical parameters & 0.0644 & 0.0889 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig25_phenotype_pca.pdf}
+    \caption{Phenotype-space projection.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig26_per_param_scatter.pdf}
+    \caption{Per-parameter scatter structure.}
+\end{subfigure}
+\caption{Phenotype and parameter consistency views from the selective full study. These plots support the claim that deployment quality should be interpreted through biologically legible structure, not only aggregate error.}
+\label{fig:phenoB}
+\end{figure}
+
+\subsection{Leaf Panels and Failure Cases Show What the Numbers Mean}
+The paper would be incomplete without actual leaf images.
+Figure~\ref{fig:leafB} uses existing repository panels to show how full-leaf and patchwise branches differ qualitatively and how routing decisions look on representative leaves.
+Figure~\ref{fig:failureB} then shows failure taxonomy and case montages.
+The cross-collection panel from \texttt{18.7} is included because the user explicitly requested that the final manuscripts stay grounded in the fact that both primary datasets are leaf-image collections.
+The important observation is that the second collection is not uniformly harder.
+Some simple baselines achieve lower MAE on the \texttt{18.7} subset than on the ID subset, implying that cross-collection behavior is mediated by sample composition rather than collection name alone.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig17_leaf_comparison.png}
+    \caption{Representative full-leaf versus patchwise leaf comparison.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig34_representative_leaf_routing.pdf}
+    \caption{Representative leaf-level routing behavior.}
+\end{subfigure}
+\caption{Leaf-level panels for the two central deployment questions: what differs between branches, and what kinds of leaves are routed toward extra computation.}
+\label{fig:leafB}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig18_failure_taxonomy.pdf}
+    \caption{Failure taxonomy summary.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig35_failure_case_montage.pdf}
+    \caption{Failure-case montage.}
+\end{subfigure}
+
+\vspace{0.5em}
+\begin{subfigure}[t]{0.60\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig36_external_18p7_panel.pdf}
+    \caption{Cross-collection panel from the second leaf collection, \texttt{18.7}.}
+\end{subfigure}
+\caption{Failure modes and cross-collection qualitative evidence. These views keep the deployment narrative tied to actual leaves rather than only summary statistics.}
+\label{fig:failureB}
+\end{figure}
+
+\subsection{Backbone and Robustness Evidence Are Mixed, Which Strengthens the Paper's Honesty}
+The final main-text evidence family is intentionally mixed rather than uniformly flattering.
+Figure~\ref{fig:robustB} shows backbone comparison and cross-collection robustness.
+The integrated branch comparison and the selective study do not agree on a simple universal winner.
+Likewise, the \texttt{18.7} subset does not behave like a uniformly harder benchmark.
+For example, in the selective robustness table, the mean baseline MAE is 0.0854 on the ID subset and 0.0765 on \texttt{18.7}, while the ResNet ridge model shifts from 0.0447 to 0.0183.
+These improvements should not be overinterpreted as true domain generalization gains; the safer reading is that the second collection is a different but not necessarily harder leaf subset.
+That is still useful for deployment because it shows the need to validate policies on the actual intended collection.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig07_backbone_comparison.pdf}
+    \caption{Integrated-study backbone comparison.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig23_ood_robustness.pdf}
+    \caption{Selective-study cross-collection robustness.}
+\end{subfigure}
+\caption{Backbone and robustness evidence. The results are useful, but they do not collapse into a simple claim that one representation or one collection is always easier.}
+\label{fig:robustB}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Cross-collection robustness on the second leaf collection, \texttt{18.7}.}
+\label{tab:oodB}
+\small
+\begin{tabular}{lcc}
+\toprule
+Method & ID MAE & \texttt{18.7} MAE \\
+\midrule
+B0 mean & 0.0854 & 0.0765 \\
+B0b $k$NN & 0.0387 & 0.0176 \\
+B1 ridge DINO & 0.0536 & 0.0258 \\
+B1 ridge ResNet & 0.0447 & 0.0183 \\
+B2 MLP DINO & 0.1501 & 0.1220 \\
+B3 ensemble & 0.0646 & 0.0488 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Discussion}
+\subsection{What the Paper Supports}
+The repository supports a credible deployment paper because it provides more than one kind of runtime-quality evidence.
+There is a matched comparison showing that patches can beat direct full-leaf prediction under explicit oracle mismatch.
+There is a routing grid showing concrete runtime-quality operating points.
+There are calibration and risk--coverage plots showing that uncertainty is informative enough for thresholding.
+And there are phenotype, morphology, failure, and cross-collection analyses showing how those decisions look on actual leaves.
+That is enough to support a robust black-box selective semi-amortized inference paper.
+
+\subsection{What the Paper Does Not Support}
+The paper does not support a stronger claim that patchwise inference has solved the full oracle problem or that uncertainty is perfectly calibrated.
+The oracle gap is too large for the first claim, and the calibration evidence is too modest for the second.
+Similarly, the cross-collection results do not prove broad domain generalization.
+They show only that the second leaf collection should be treated as a separate deployment substrate.
+Those limits should remain visible in the final version because they make the paper more defensible, not less.
+
+\subsection{Why This Paper Is Not the Geometry Paper}
+Paper~A asks whether the optimizer-derived parameterization is structured and learnable in its own right.
+Paper~B asks how to allocate compute when approximating that optimizer under deployment constraints.
+The overlap is the shared experimental substrate, not the final claim.
+The main figures in Paper~B are routing, risk--coverage, patch ablation, failure panels, and runtime denominators.
+Any geometry figure appears only to explain oracle mismatch or branch behavior, not to make a standalone representational claim.
+
+\subsection{Limitations}
+Three limitations remain.
+First, all quality metrics are measured against optimizer-defined targets rather than external biological ground truth.
+Second, the two main substrates use related but not identical metric scales, so cross-table interpretation requires care.
+Third, uncertainty quality is good enough for thresholding but not for stronger guarantees.
+The paper remains strong because it states those limitations directly and still shows useful, reproducible operating points.
+
+\section{Conclusion}
+Paper~B turns the repository's later deployment line into a standalone, submission-ready manuscript.
+The core result is not that one branch wins universally.
+It is that the repository supports a disciplined runtime-quality story: patchwise aggregation can improve over direct full-leaf prediction, but only under explicit oracle mismatch; selective routing fills the middle of the frontier between direct prediction and full optimization; and calibration, phenotype, morphology, and failure analyses explain how those operating points behave on real leaves.
+That combination is sufficient for a robust black-box selective semi-amortized inference paper that remains genuinely distinct from the physics-learning manuscript.
+
+\appendix
+\clearpage
+\section{Additional Deployment Views}
+The appendix collects the remaining figure families that strengthen interpretation without changing the core claim.
+These include denominator-explicit speedup plots, risk overlays, ensemble-size ablations, residual distributions, feature-space views, and selective-routing geometry views.
+They are all reused directly from existing repository outputs.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig16_speedup_denominators.pdf}
+    \caption{Speedup denominators and branch interpretation.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig39_gapfill_risk_overlay.png}
+    \caption{Gapfill risk overlay.}
+\end{subfigure}
+\caption{Denominator-explicit deployment views.}
+\label{fig:appB1}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig30_ensemble_size.pdf}
+    \caption{Ensemble-size ablation.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig31_residual_distributions.pdf}
+    \caption{Residual distribution diagnostics.}
+\end{subfigure}
+\caption{Additional uncertainty and residual diagnostics.}
+\label{fig:appB2}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig32_feature_pca.pdf}
+    \caption{Feature-space PCA.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig37_geometry_selective_routing_pca.pdf}
+    \caption{Selective-routing geometry projection.}
+\end{subfigure}
+\caption{Feature-space and routing-space diagnostics. Geometry appears here only as support for the deployment story, not as the paper's main claim.}
+\label{fig:appB3}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig33_backbone_comparison_selective.pdf}
+    \caption{Backbone comparison in the selective full study.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig15_geometry_pca.pdf}
+    \caption{Integrated-study geometry view used only to contextualize oracle mismatch.}
+\end{subfigure}
+\caption{Additional backbone and contextual geometry views.}
+\label{fig:appB4}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig13_domain_robustness.pdf}
+    \caption{Integrated-study cross-collection robustness panel.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{B_fig29_score_tier.pdf}
+    \caption{Selective-study score-tier behavior.}
+\end{subfigure}
+\caption{Additional robustness and score-tier views. The integrated and selective studies agree that deployment difficulty is stratified, but not always in the same way across collections or score tiers.}
+\label{fig:appB5}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Integrated full-leaf backbone comparison. Lower is better.}
+\label{tab:backboneB}
+\small
+\begin{tabular}{lcc}
+\toprule
+Method & Test MAE & Test nMAE \\
+\midrule
+Ridge handcrafted & 1.392 & 0.253 \\
+Ridge ResNet & 1.368 & 0.283 \\
+Ridge DINO & 1.537 & 0.319 \\
+Ensemble direct branch & 3.775 & 1.154 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\bibliographystyle{plainnat}
+\bibliography{refs_blackbox_runtime}
+\end{document}

@@ -1,0 +1,66 @@
+=== Compiling paper ===
+pdflatex: /usr/bin/pdflatex pdfTeX 3.14159265-2.6-1.40.19 (TeX Live 2018)
+Start: Thu Mar 12 14:44:28 CDT 2026
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./Latest_Paper_1_updated_fullbudget9.tex
+LaTeX2e <2017-04-15>
+Babel <3.17> and hyphenation patterns for 3 language(s) loaded.
+
+! LaTeX Error: File `IEEEtran.cls' not found.
+
+Type X to quit or <RETURN> to proceed,
+or enter new name. (Default extension: cls)
+
+Enter file name: 
+! Emergency stop.
+<read *> 
+         
+l.2 \usepackage
+               {amsmath,amssymb,amsfonts}^^M
+!  ==> Fatal error occurred, no output PDF file produced!
+Transcript written on Latest_Paper_1_updated_fullbudget9.log.
+I couldn't open file name `Latest_Paper_1_updated_fullbudget9.aux'
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./Latest_Paper_1_updated_fullbudget9.tex
+LaTeX2e <2017-04-15>
+Babel <3.17> and hyphenation patterns for 3 language(s) loaded.
+
+! LaTeX Error: File `IEEEtran.cls' not found.
+
+Type X to quit or <RETURN> to proceed,
+or enter new name. (Default extension: cls)
+
+Enter file name: 
+! Emergency stop.
+<read *> 
+         
+l.2 \usepackage
+               {amsmath,amssymb,amsfonts}^^M
+!  ==> Fatal error occurred, no output PDF file produced!
+Transcript written on Latest_Paper_1_updated_fullbudget9.log.
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./Latest_Paper_1_updated_fullbudget9.tex
+LaTeX2e <2017-04-15>
+Babel <3.17> and hyphenation patterns for 3 language(s) loaded.
+
+! LaTeX Error: File `IEEEtran.cls' not found.
+
+Type X to quit or <RETURN> to proceed,
+or enter new name. (Default extension: cls)
+
+Enter file name: 
+! Emergency stop.
+<read *> 
+         
+l.2 \usepackage
+               {amsmath,amssymb,amsfonts}^^M
+!  ==> Fatal error occurred, no output PDF file produced!
+Transcript written on Latest_Paper_1_updated_fullbudget9.log.
+ERROR: PDF not generated
+Finish: Thu Mar 12 14:44:28 CDT 2026

@@ -1,0 +1,14 @@
+table_id,label,source_data,description
+tab1,tab:params,Manual (physics model specification),Physics parameter bounds and ranges
+tab2,tab:main,evaluation/E1_summary.csv,Main matched comparison (FL vs PA nMAE)
+tab3,tab:oracle_gap,evaluation/E3_oracle_gap_decomposition.csv + E1_summary.csv,Oracle gap decomposition
+tab4,tab:refinement,evaluation/E6_refinement_curves.csv,Runtime and quality by refinement budget
+tab5,tab:patch_ablation,evaluation/E4_patch_ablation.csv,Patch size/stride ablation
+tab6,tab:backbone,evaluation/E5_backbone_comparison.csv,Backbone comparison
+tab7,tab:params_difficulty,evaluation/E10_parameter_difficulty.csv,Per-parameter difficulty (FL vs PA)
+tab8,tab:stats,evaluation/E12_statistical_tests.csv,Bootstrap CIs and Wilcoxon tests
+tab9,tab:fl_full,evaluation/E5_backbone_comparison.csv,Full-leaf comprehensive evaluation
+tab10,tab:pa_full,evaluation/pa_patch_level_eval.csv,Patchwise per-patch evaluation
+tab11,tab:heterogeneity,evaluation/E9_heterogeneity.csv,Within-leaf heterogeneity details
+tab12,tab:runtime_full,evaluation/E6_refinement_curves.csv,Complete runtime breakdown
+tab13,tab:routing_detail,routing/,Routing policy details

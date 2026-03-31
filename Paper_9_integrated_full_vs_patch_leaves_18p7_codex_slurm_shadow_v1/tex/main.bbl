@@ -1,0 +1,28 @@
+\begin{thebibliography}{1}
+
+\bibitem{efron1994}
+Bradley Efron and Robert Tibshirani.
+\newblock An introduction to the bootstrap.
+\newblock {\em CRC press}, 1994.
+
+\bibitem{he2016resnet}
+Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun.
+\newblock Deep residual learning for image recognition.
+\newblock {\em CVPR}, 2016.
+
+\bibitem{ilse2018attention}
+Maximilian Ilse, Jakub Tomczak, and Max Welling.
+\newblock Attention-based deep multiple instance learning.
+\newblock {\em ICML}, 2018.
+
+\bibitem{oquab2023dinov2}
+Maxime Oquab, Timoth{\'e}e Darcet, Theo Moutakanni, et~al.
+\newblock Dinov2: Learning robust visual features without supervision.
+\newblock {\em arXiv preprint arXiv:2304.07193}, 2023.
+
+\bibitem{wilcoxon1945}
+Frank Wilcoxon.
+\newblock Individual comparisons by ranking methods.
+\newblock {\em Biometrics Bulletin}, 1945.
+
+\end{thebibliography}

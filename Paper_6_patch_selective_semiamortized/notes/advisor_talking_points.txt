@@ -1,0 +1,5 @@
+Advisor talking points:
+- This is a separate manuscript question from full-leaf selective semi-amortized inference.
+- Core novelty is spatially heterogeneous local physics inference with aggregation.
+- Infrastructure is reproducible and SLURM-resume-safe for large oracle/training stages.
+- Current draft reports completed data/split baselines and explicit staged heavy runs.

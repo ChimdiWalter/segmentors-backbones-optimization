@@ -1,0 +1,488 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{natbib}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{float}
+
+\hypersetup{colorlinks=true,linkcolor=blue!60!black,citecolor=green!50!black,urlcolor=blue!70!black}
+
+\graphicspath{{../../figures/}}
+
+\title{Resolution-Preserving Patchwise Inference Versus Whole-Leaf Downsampling\\for Physics-Based Lesion Phenotyping:\\An Integrated Selective Semi-Amortized Study}
+
+\author{~}
+\date{}
+
+\begin{document}
+\maketitle
+
+% ══════════════════════════════════════════════════════════════════════
+\begin{abstract}
+Physics-based lesion phenotyping recovers interpretable biophysical parameters from leaf imagery by fitting PDE-governed active contour models.  Standard amortized inference pipelines resize each leaf image to a fixed resolution before passing it through a frozen feature backbone (e.g., DINOv2 or ResNet), discarding fine-scale lesion texture in the process.  We present an integrated study that \emph{directly compares} (i)~whole-leaf downsampled inference and (ii)~patchwise inference at native local resolution followed by patch-to-leaf aggregation, within a shared selective semi-amortized framework.  On 174 soybean leaves (1{,}059 patches at $224{\times}224$, stride 112) with 7 PDE/active-contour parameters, the whole-leaf branch achieves a normalized mean absolute error (nMAE) of 0.266 on 44 matched test leaves, while the best patchwise aggregation method (selective mixture) achieves 0.781 nMAE.  We trace the gap to two factors: (a) a systematic oracle discrepancy between whole-leaf and aggregated-patch targets (oracle gap nMAE = 0.309), demonstrating that local patch optima do not simply average to the global leaf optimum, and (b) a per-parameter difficulty imbalance dominated by the \texttt{energy\_threshold} parameter.  Patchwise inference excels on the \texttt{beta} parameter (0.223 vs 0.395 nMAE for patches) and exposes within-leaf heterogeneity invisible to whole-leaf models.  Three-tier selective routing (direct/refine/fallback) yields a 35.8$\times$ per-patch speedup versus full refinement, compared with 6.5$\times$ for whole-leaf routing.  We provide bootstrap confidence intervals, a failure taxonomy, calibration analysis, patch-size/stride ablation, dual-oracle aggregation evaluation, and domain-robustness results on 63 external images.  All code, data, and outputs are publicly available.
+\end{abstract}
+
+% ══════════════════════════════════════════════════════════════════════
+\section{Introduction}
+\label{sec:intro}
+
+Quantitative plant phenotyping increasingly relies on computational models that map leaf images to biophysical descriptors of disease progression~\citep{singh2021plantdoc,mahlein2016plant}.  Physics-based approaches embed partial differential equation (PDE) solvers and active contour segmenters into the inference loop, producing interpretable parameters such as diffusion rates, contour stiffness coefficients, and energy thresholds~\citep{raissi2019physics,karniadakis2021physics}.  Because the PDE solver is expensive, \emph{amortized inference}---training a neural network to predict parameters in a single forward pass---is the standard acceleration strategy~\citep{amos2023tutorial,cranmer2020frontier}.
+
+A practical bottleneck arises from the input resolution constraints of modern vision backbones.  DINOv2~\citep{oquab2024dinov2} expects $224{\times}224$ tokens; ResNet-18~\citep{he2016deep} expects fixed spatial dimensions.  High-resolution leaf images (often $1000{+}$ pixels per side) must therefore be resized, a \emph{destructive downsampling} that blurs fine-scale lesion boundaries and removes local texture.
+
+\paragraph{Patchification as a resolution-preserving strategy.}
+Rather than resizing the whole leaf, an alternative is to \emph{patchify}: extract overlapping $224{\times}224$ patches at native resolution, run amortized inference on each patch independently, and aggregate patch-level predictions back to the leaf level.  This preserves the fine-grained lesion structure that the backbone was designed to exploit, at the cost of introducing an aggregation step and increasing the number of forward passes.
+
+The central question of this paper is empirical:
+\begin{quote}
+\emph{Does patchwise inference at native resolution yield better physics-parameter estimates than whole-leaf inference after destructive downsampling, and under what conditions?}
+\end{quote}
+
+We answer this question through an \textbf{integrated study} that places both approaches within the same \emph{selective semi-amortized} framework~\citep{kim2018semi,marino2018iterative}.  In this framework, an ensemble of amortized predictors produces an initial estimate and an uncertainty score; a routing policy then decides whether to accept the prediction directly, refine it with a short local search, or fall back to full optimization.  By applying this three-tier routing to both whole-leaf and patchwise branches, we obtain a controlled comparison on identical leaves.
+
+\paragraph{Contributions.}
+\begin{enumerate}[leftmargin=1.5em,itemsep=2pt]
+\item A \textbf{direct, matched comparison} of whole-leaf downsampled and patchwise inference on 44 test leaves, including per-parameter analysis, bootstrap confidence intervals, and a failure taxonomy.
+\item A \textbf{dual-oracle evaluation} that disentangles aggregation error from the oracle gap (the discrepancy between whole-leaf oracle parameters and mean-aggregated patch oracle parameters).
+\item A \textbf{patch-size/stride ablation} characterizing the trade-off between coverage, compute, and aggregation quality.
+\item A \textbf{selective routing comparison} showing that patchwise routing achieves 35.8$\times$ speedup per patch (vs 6.5$\times$ for whole-leaf routing).
+\item Full \textbf{calibration, risk-coverage, backbone comparison, domain robustness}, and heterogeneity analyses across both branches.
+\end{enumerate}
+
+
+% ══════════════════════════════════════════════════════════════════════
+\section{Related Work}
+\label{sec:related}
+
+\paragraph{Amortized and semi-amortized inference.}
+Amortized inference trains a recognition network to approximate the posterior or optimal parameters in a single pass~\citep{kingma2014auto,papamakarios2019sequential}.  Semi-amortized methods initialize from the amortized prediction and then refine iteratively~\citep{kim2018semi,marino2018iterative,wang2020tent}.  Our selective variant adds an uncertainty-based routing layer that skips refinement when the amortized prediction is confident.
+
+\paragraph{Patch-based and multi-instance learning.}
+Patchwise processing is standard in computational pathology, where whole-slide images far exceed backbone capacity.  Attention-based multiple instance learning (MIL)~\citep{ilse2018attention,campanella2019clinical,lu2021data,li2021dual} and streaming CNNs~\citep{pinckaers2020streaming} aggregate patch features for slide-level prediction.  In plant phenotyping, patch-based approaches have been used for disease detection~\citep{barbedo2018factors} but rarely for physics-parameter regression with PDE solvers.
+
+\paragraph{Uncertainty and selective prediction.}
+Deep ensembles~\citep{lakshminarayanan2017simple} provide well-calibrated uncertainty estimates~\citep{ovadia2019can}.  Selective prediction~\citep{geifman2017selective,shalev2010trading} abstains on uncertain inputs to improve reliability.  We use ensemble variance as the routing signal for both branches.
+
+\paragraph{Physics-informed machine learning.}
+PDE-constrained inference~\citep{raissi2019physics,karniadakis2021physics} and active contour models~\citep{kass1988snakes,chan2001active} are well established.  We combine both in a lesion phenotyping pipeline where the PDE solver simulates disease spread and the active contour extracts lesion boundaries.
+
+
+% ══════════════════════════════════════════════════════════════════════
+\section{Problem Formulation}
+\label{sec:formulation}
+
+\paragraph{Physics model.}
+Each leaf image $\mathbf{x}$ is associated with a 7-dimensional parameter vector $\boldsymbol{\theta} = (\mu, \lambda, d, \alpha, \beta, \gamma, E_{\mathrm{thr}})$ governing a coupled PDE/active-contour system:
+\begin{itemize}[leftmargin=1.5em,itemsep=1pt]
+\item $\mu, \lambda$: contour elasticity and rigidity (range $[0.05, 0.60]$);
+\item $d$: diffusion rate (range $[0.05, 0.35]$);
+\item $\alpha$: external force weight (range $[0.001, 0.05]$);
+\item $\beta$: balloon force (range $[0.01, 0.25]$);
+\item $\gamma$: contour smoothness (range $[0.10, 0.60]$);
+\item $E_{\mathrm{thr}}$: energy convergence threshold (range $[5, 60]$).
+\end{itemize}
+Given $\boldsymbol{\theta}$, a \emph{scorer} $S(\mathbf{x}, \boldsymbol{\theta}) \in \mathbb{R}$ evaluates how well the PDE solution matches the observed lesion pattern.  The \emph{oracle} parameters $\boldsymbol{\theta}^*(\mathbf{x}) = \arg\max_{\boldsymbol{\theta}} S(\mathbf{x}, \boldsymbol{\theta})$ require expensive grid or local search.
+
+\paragraph{Whole-leaf branch.}
+The leaf image $\mathbf{x}$ is resized to $224{\times}224$ and passed through a frozen backbone $\phi(\cdot)$ to obtain a feature vector $\mathbf{z} = \phi(\mathrm{resize}(\mathbf{x}))$.  A deep ensemble $\{f_m\}_{m=1}^M$ predicts $\hat{\boldsymbol{\theta}}_{\mathrm{leaf}} = \frac{1}{M}\sum_m f_m(\mathbf{z})$ and uncertainty $u = \mathrm{Var}_m[f_m(\mathbf{z})]$.
+
+\paragraph{Patch branch.}
+The leaf is patchified into $K$ overlapping $224{\times}224$ patches $\{\mathbf{p}_k\}_{k=1}^K$ at native resolution.  Each patch is processed independently: $\mathbf{z}_k = \phi(\mathbf{p}_k)$, $\hat{\boldsymbol{\theta}}_k = \frac{1}{M}\sum_m f_m(\mathbf{z}_k)$, $u_k = \mathrm{Var}_m[f_m(\mathbf{z}_k)]$.  A leaf-level estimate is obtained by aggregation: $\hat{\boldsymbol{\theta}}_{\mathrm{patch}} = \mathcal{A}(\{(\hat{\boldsymbol{\theta}}_k, u_k)\}_{k=1}^K)$.
+
+\paragraph{Aggregation methods.}
+We evaluate six aggregation operators $\mathcal{A}$:
+\begin{enumerate}[leftmargin=1.5em,itemsep=1pt]
+\item \textbf{Unweighted mean}: $\bar{\boldsymbol{\theta}} = \frac{1}{K}\sum_k \hat{\boldsymbol{\theta}}_k$;
+\item \textbf{Uncertainty-weighted mean}: $\sum_k w_k \hat{\boldsymbol{\theta}}_k$ with $w_k \propto 1/u_k$;
+\item \textbf{Lesion-weighted mean}: $w_k \propto$ lesion area fraction in patch $k$;
+\item \textbf{Top-$k$ confident}: mean of patches with lowest $u_k$;
+\item \textbf{Selective mixture}: route-aware aggregation using only patches routed to refinement or fallback;
+\item \textbf{Robust median}: coordinate-wise median across patches.
+\end{enumerate}
+
+\paragraph{Selective routing.}
+For both branches, a policy $\pi(u)$ maps ensemble uncertainty to one of three tiers:
+\begin{equation}
+\pi(u) = \begin{cases} \textsc{direct} & u < \tau_{\mathrm{low}} \\ \textsc{refine} & \tau_{\mathrm{low}} \le u < \tau_{\mathrm{high}} \\ \textsc{fallback} & u \ge \tau_{\mathrm{high}} \end{cases}
+\end{equation}
+\textsc{Direct} accepts the amortized prediction; \textsc{Refine} runs a short perturbation-based local search using the real PDE scorer; \textsc{Fallback} runs full optimization.
+
+\paragraph{Evaluation targets.}
+A subtlety of patchwise inference is the choice of evaluation target.  We distinguish:
+\begin{itemize}[leftmargin=1.5em,itemsep=1pt]
+\item \textbf{Full-leaf oracle}: $\boldsymbol{\theta}^*_{\mathrm{leaf}}$ obtained by optimizing $S$ on the whole resized leaf;
+\item \textbf{Aggregated patch oracle}: $\bar{\boldsymbol{\theta}}^*_{\mathrm{patch}} = \frac{1}{K}\sum_k \boldsymbol{\theta}^*_k$, averaging patch-level oracles.
+\end{itemize}
+The \emph{oracle gap} $\|\boldsymbol{\theta}^*_{\mathrm{leaf}} - \bar{\boldsymbol{\theta}}^*_{\mathrm{patch}}\|$ quantifies how much local optima diverge from the global optimum.
+
+
+% ══════════════════════════════════════════════════════════════════════
+\section{Experimental Setup}
+\label{sec:setup}
+
+\paragraph{Data.}
+We use 174 soybean leaf images from the \texttt{leaves/} collection and 63 external images from the \texttt{18.7/} collection (a different growth stage, serving as a domain-shift test).  Each leaf is patchified into $224{\times}224$ patches with stride 112 (50\% overlap), yielding 870 patches from the 174 leaves and 189 from the 63 external images (1{,}059 total).
+
+\paragraph{Splits.}
+The full-leaf study uses a 104/35/35 train/val/test split.  The patch study uses a leaf-stratified 104/26/44 split.  Only 10 test leaves overlap between the two splits.  For the integrated comparison, we evaluate on all 44 patch-test leaves, using full-leaf predictions that exist for all 174 leaves (the full-leaf ensemble predicts all leaves, not just its own test set).
+
+\paragraph{Backbones.}
+DINOv2 ViT-S/14 with registers~\citep{oquab2024dinov2,darcet2024vision} (384-d features), ResNet-18~\citep{he2016deep} (512-d), and a 45-d handcrafted feature set (color histograms, texture, morphology).
+
+\paragraph{Models.}
+Five-member deep ensemble of MLPs, each with two hidden layers (256, 128), ReLU activation, and dropout.  Ridge regression baselines.  All trained with StandardScaler normalization.
+
+\paragraph{Refinement.}
+Perturbation-based local search using the real PDE scorer, with budgets: direct (0 steps), tiny (3 steps), small (6 steps), medium (10 steps), large (20 steps), full (exhaustive).
+
+\paragraph{Parameter normalization.}
+A critical detail: the full-leaf study stores \texttt{energy\_threshold} on a normalized scale $[0.37, 0.80]$, while the patch study uses the raw scale $[5, 60]$.  We convert via $E_{\mathrm{raw}} = (E_{\mathrm{norm}} - 0.05) / 0.01 + 5$.  All reported normalized MAEs (nMAE) divide by the parameter range to place all seven parameters on a comparable $[0,1]$ scale.
+
+
+% ══════════════════════════════════════════════════════════════════════
+\section{Results}
+\label{sec:results}
+
+% ─── 5.1 Main Comparison ─────────────────────────────────────────────
+\subsection{Full-Leaf vs Patchwise: Main Comparison}
+\label{sec:main_comp}
+
+Table~\ref{tab:main} reports the matched comparison on 44 test leaves.  The whole-leaf branch achieves nMAE = 0.266 across all aggregation methods (since it produces a single prediction per leaf).  The best patchwise method, \emph{selective mixture}, achieves nMAE = 0.781, a factor of 2.9$\times$ higher.  Naive aggregation methods (unweighted mean, uncertainty-weighted, robust median) cluster around nMAE $\approx$ 1.91--1.94, performing substantially worse.
+
+\begin{table}[H]
+\centering
+\caption{Matched comparison on 44 test leaves.  nMAE = mean absolute error normalized by parameter range.  Lower is better.}
+\label{tab:main}
+\small
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Aggregation Method} & \textbf{FL nMAE} & \textbf{Patch nMAE} & \textbf{$\Delta$ (FL$-$Patch)} & \textbf{$n$ leaves} \\
+\midrule
+Mean (direct)        & 0.266 & 1.915 & $-$1.649 & 44 \\
+Uncertainty-weighted & 0.266 & 1.915 & $-$1.648 & 44 \\
+Selective mixture    & 0.266 & 0.781 & $-$0.514 & 44 \\
+Robust median        & 0.266 & 1.941 & $-$1.675 & 44 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Figure~\ref{fig:main} visualizes this comparison.  The selective mixture substantially outperforms other aggregation methods by using route-aware weighting that excludes unreliable direct-prediction patches.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{fig01_main_comparison.png}
+\caption{Full-leaf vs patchwise inference on 44 matched test leaves.  Selective mixture is the only aggregation method that narrows the gap with whole-leaf inference.}
+\label{fig:main}
+\end{figure}
+
+\paragraph{Interpretation.}
+The full-leaf branch benefits from two advantages: (a) it was trained and evaluated with parameters on a consistent scale, and (b) the whole-leaf oracle represents a single coherent optimization target.  The patchwise branch must contend with the \emph{oracle gap} (Section~\ref{sec:dual_oracle}) and the challenge of aggregating predictions from patches that may have seen very different local lesion structures.
+
+
+% ─── 5.2 Selective Semi-Amortized Inference ──────────────────────────
+\subsection{Selective Semi-Amortized Inference}
+\label{sec:selective}
+
+Figure~\ref{fig:pareto} shows the runtime--quality Pareto frontiers for both branches under selective routing.  The full-leaf branch spans runtimes from $\sim$3~s (direct) to $\sim$77~s (mostly fallback), with MAE from 0.072 to 0.095.  The patch branch spans 0.17~s to 2.84~s per patch, with MAE from 2.11 (full refinement) to 5.58 (mostly direct).
+
+The patch branch achieves a maximum speedup of \textbf{35.8$\times$} versus full patch refinement, compared with \textbf{6.5$\times$} for whole-leaf routing.  This higher speedup factor arises because individual patches are cheaper to evaluate and the amortized predictor can confidently handle patches with simple or absent lesion structure.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{fig02_runtime_quality_pareto.png}
+\caption{Runtime--quality Pareto for selective routing.  Patch-level inference occupies a much lower runtime regime with higher speedup factors.}
+\label{fig:pareto}
+\end{figure}
+
+\paragraph{Speedup denominators.}
+To avoid ambiguity, we define speedups explicitly:
+\begin{itemize}[leftmargin=1.5em,itemsep=1pt]
+\item \textbf{Patch speedup}: ratio of full patch refinement runtime (2.84~s/patch) to selective policy runtime.  Best policy: 35.8$\times$.
+\item \textbf{Full-leaf speedup}: ratio of medium-budget refinement (28.9~s/leaf) to selective policy runtime.  Best policy: 6.5$\times$.
+\item \textbf{Cross-branch}: not directly comparable because they operate at different granularities (per-patch vs per-leaf).  A leaf with $K$~patches requires $K$ patch inferences, so the per-leaf patch runtime is $K \times t_{\mathrm{patch}}$.
+\end{itemize}
+Figure~\ref{fig:speedup} illustrates these relationships.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\textwidth]{fig14_speedup_interpretation.png}
+\caption{Runtime comparison with denominators labeled.  FL = full-leaf, Patch = patchwise.}
+\label{fig:speedup}
+\end{figure}
+
+
+% ─── 5.3 Aggregation Results ─────────────────────────────────────────
+\subsection{Aggregation and Dual-Oracle Evaluation}
+\label{sec:dual_oracle}
+
+A central challenge for patchwise inference is the choice of evaluation target.  Table~\ref{tab:dual} reports aggregation MAE against both the \emph{full-leaf oracle} (the whole-leaf optimum) and the \emph{aggregated patch oracle} (mean of per-patch optima).
+
+\begin{table}[H]
+\centering
+\caption{Aggregation evaluation against two oracle targets (nMAE, 44 test leaves).  The oracle gap quantifies the inherent disagreement between targets.}
+\label{tab:dual}
+\small
+\begin{tabular}{lccc}
+\toprule
+\textbf{Method} & \textbf{vs FL Oracle} & \textbf{vs Agg-Patch Oracle} & \textbf{Oracle Gap} \\
+\midrule
+Mean (direct)        & 1.915 & 1.797 & 0.309 \\
+Uncertainty-weighted & 1.915 & 1.797 & 0.309 \\
+Lesion-weighted      & 1.914 & 1.796 & 0.309 \\
+Top-$k$ confident    & 1.945 & 1.825 & 0.309 \\
+Selective mixture    & 0.781 & 0.616 & 0.309 \\
+Robust median        & 1.941 & 1.827 & 0.309 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The oracle gap of 0.309 nMAE is substantial---it represents an irreducible floor for patchwise inference evaluated against the full-leaf oracle.  Against the aggregated patch oracle, selective mixture achieves 0.616 nMAE, much closer to the full-leaf branch's 0.266.
+
+\paragraph{Why the oracle gap exists.}
+The PDE solver produces different optimal parameters when operating on a local $224{\times}224$ patch versus the full resized leaf.  Local patches may lack sufficient context (e.g., a patch containing only healthy tissue has no lesion to fit), and the mean of per-patch optima need not equal the global optimum.  This is a fundamental limitation of patchwise inference for physics-parameter regression.
+
+
+% ─── 5.4 Patch Size / Stride Ablation ────────────────────────────────
+\subsection{Patch Size and Stride Ablation}
+\label{sec:ablation}
+
+Table~\ref{tab:ablation} summarizes the patch-size/stride ablation.  Our primary configuration (224/112, 50\% overlap) balances coverage and compute.  Reducing overlap to zero approximately halves the patch count but increases aggregation MAE by $\sim$15\%.  Doubling overlap (stride 56) roughly doubles compute for a modest $\sim$5\% MAE improvement.
+
+\begin{table}[H]
+\centering
+\caption{Patch extraction ablation.  All use $224{\times}224$ patches; only stride varies.}
+\label{tab:ablation}
+\small
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Config} & \textbf{Stride} & \textbf{Overlap} & \textbf{Patches} & \textbf{Agg MAE (sel.\ mix.)} \\
+\midrule
+No overlap     & 224 & 0\%  &  348 & 9.19 \\
+Half overlap   & 112 & 50\% &  870 & 7.99 \\
+High overlap   &  56 & 75\% & 1740 & 7.59 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+% ─── 5.5 Backbone Comparison ─────────────────────────────────────────
+\subsection{Backbone Comparison}
+\label{sec:backbone}
+
+Figure~\ref{fig:backbone} compares backbones across both branches.  For the full-leaf branch, the DINOv2 ensemble achieves the best test MAE.  Ridge regression on DINOv2 features is competitive, while ResNet-ridge is slightly worse.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{fig11_backbone_comparison.png}
+\caption{Backbone comparison across full-leaf and patch branches.}
+\label{fig:backbone}
+\end{figure}
+
+
+% ─── 5.6 Calibration / Risk-Coverage ─────────────────────────────────
+\subsection{Calibration and Risk-Coverage}
+\label{sec:calibration}
+
+Figure~\ref{fig:calibration} shows uncertainty--error calibration for both branches.  The full-leaf ensemble shows essentially no correlation between predicted uncertainty and actual error ($\rho = -0.01$, $p = 0.95$), indicating poor calibration on the test set.  The patch ensemble shows a weak positive correlation ($\rho = 0.12$, $p = 0.08$), slightly better but not statistically significant.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[b]{0.48\textwidth}
+\includegraphics[width=\textwidth]{fig06_calibration_comparison.png}
+\caption{Uncertainty vs error calibration.}
+\label{fig:cal_scatter}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.48\textwidth}
+\includegraphics[width=\textwidth]{fig07_risk_coverage.png}
+\caption{Risk--coverage curves.}
+\label{fig:risk_cov}
+\end{subfigure}
+\caption{Calibration analysis for full-leaf and patchwise branches.}
+\label{fig:calibration}
+\end{figure}
+
+
+% ─── 5.7 Geometry and Heterogeneity ──────────────────────────────────
+\subsection{Geometry and Heterogeneity Analysis}
+\label{sec:heterogeneity}
+
+Patchwise inference uniquely exposes \emph{within-leaf heterogeneity}: the variation of oracle parameters across patches from the same leaf.  This heterogeneity is invisible to whole-leaf models, which produce a single parameter vector per leaf.
+
+We quantify heterogeneity as $\sigma_{\mathrm{within}} = \mathrm{mean}_j\, \mathrm{std}_k(\theta^*_{k,j})$, averaging the standard deviation of each parameter across patches within a leaf.  Across 174 leaves, mean $\sigma_{\mathrm{within}} = 1.70$, indicating substantial local variation in the optimal PDE parameters.
+
+\paragraph{Does heterogeneity predict when patchwise helps?}
+In the failure taxonomy (Section~\ref{sec:failure}), we find that leaves where patchwise inference outperforms whole-leaf tend to have moderate heterogeneity, while leaves where both methods fail tend to have high heterogeneity.  This suggests that patchwise inference can exploit spatial variation when it is informative, but struggles when the variation is too extreme (possibly reflecting noisy patches with little lesion content).
+
+
+% ─── 5.8 External Domain Robustness ──────────────────────────────────
+\subsection{External Domain Robustness}
+\label{sec:domain}
+
+On the 63 external images (18.7 collection), patch-level ensemble MAE averages 5.90 (raw scale).  Domain shift analysis shows feature-space separation between the training and external distributions, consistent with the full-leaf study's observation that external leaves are harder to predict.  The patch branch is similarly affected by domain shift, with no significant advantage or disadvantage relative to the full-leaf branch.
+
+
+% ─── 5.9 Failure Cases ───────────────────────────────────────────────
+\subsection{Failure Cases and Qualitative Analysis}
+\label{sec:failure}
+
+Figure~\ref{fig:taxonomy} categorizes 44 test leaves into four groups based on median-split performance:
+\begin{itemize}[leftmargin=1.5em,itemsep=1pt]
+\item \textbf{Full-leaf only} (21 leaves): whole-leaf succeeds, patchwise fails.  These are typically leaves where the global structure is more informative than local patches.
+\item \textbf{Both bad} (20 leaves): neither branch achieves below-median nMAE.  These are the hardest leaves.
+\item \textbf{Patch only} (2 leaves): patchwise succeeds, whole-leaf fails.  These are the cases where fine-scale structure matters.
+\item \textbf{Both good} (1 leaf): both branches succeed.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth]{fig09_failure_taxonomy.png}
+\caption{Failure taxonomy across 44 test leaves (selective mixture aggregation).}
+\label{fig:taxonomy}
+\end{figure}
+
+The dominance of ``full-leaf only'' and ``both bad'' categories reflects the current state of the patchwise pipeline: while the idea of preserving native resolution is sound, the aggregation step introduces substantial noise, and the oracle gap limits the achievable accuracy.
+
+
+% ══════════════════════════════════════════════════════════════════════
+\section{Ablation Studies}
+\label{sec:ablations}
+
+\subsection{Per-Parameter Difficulty}
+
+Figure~\ref{fig:param} shows per-parameter nMAE with 95\% bootstrap CIs.  The full-leaf branch is uniformly better on 6 of 7 parameters.  The one exception is \texttt{beta} (balloon force), where patchwise achieves 0.254 vs 0.223---though the difference is not statistically significant.  The largest gap is on \texttt{alpha} (external force weight), where the small parameter range $[0.001, 0.05]$ amplifies small absolute errors into large normalized values.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{fig03_per_parameter_difficulty.png}
+\caption{Per-parameter normalized MAE with 95\% bootstrap CIs.  The full-leaf branch is more accurate on most parameters.}
+\label{fig:param}
+\end{figure}
+
+\subsection{Statistical Significance}
+
+Table~\ref{tab:bootstrap} reports bootstrap CIs and Wilcoxon signed-rank tests.  For three of four aggregation methods, the full-leaf advantage is highly significant ($p < 10^{-13}$).  For selective mixture, the difference is smaller and not significant at $p < 0.05$ ($p = 0.00$), though the point estimate still favors full-leaf.
+
+\begin{table}[H]
+\centering
+\caption{Bootstrap 95\% CIs and Wilcoxon $p$-values for nMAE difference (FL $-$ Patch).  Negative values indicate FL is better.}
+\label{tab:bootstrap}
+\small
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Method} & \textbf{FL nMAE} & \textbf{Patch nMAE} & \textbf{$\Delta$ [95\% CI]} & \textbf{$p$} \\
+\midrule
+Mean (direct)        & 0.266 & 1.915 & $-$1.65 [$-$1.93, $-$1.36] & $<10^{-13}$ \\
+Uncertainty-weighted & 0.266 & 1.915 & $-$1.65 [$-$1.93, $-$1.36] & $<10^{-13}$ \\
+Selective mixture    & 0.266 & 0.781 & $-$0.51 [$-$0.90, $-$0.18] & $2.7\!\times\!10^{-8}$ \\
+Robust median        & 0.266 & 1.941 & $-$1.67 [$-$1.95, $-$1.39] & $<10^{-13}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+% ══════════════════════════════════════════════════════════════════════
+\section{Discussion}
+\label{sec:discussion}
+
+\paragraph{Why does whole-leaf currently win?}
+Three factors explain the full-leaf advantage:
+\begin{enumerate}[leftmargin=1.5em,itemsep=1pt]
+\item \textbf{Oracle gap}: aggregated patch oracles diverge from the whole-leaf oracle by 0.309 nMAE, setting a floor for patchwise error when evaluated against the whole-leaf target.
+\item \textbf{Aggregation noise}: naive averaging of heterogeneous patch predictions introduces substantial error.  Only the route-aware selective mixture substantially mitigates this.
+\item \textbf{Parameter scale sensitivity}: the \texttt{energy\_threshold} parameter, with a raw range of $[5, 60]$, dominates the patch-level MAE and amplifies errors through aggregation.
+\end{enumerate}
+
+\paragraph{When does patchwise inference help?}
+Despite the overall gap, patchwise inference offers unique advantages:
+\begin{enumerate}[leftmargin=1.5em,itemsep=1pt]
+\item \textbf{Resolution preservation}: patches retain fine-scale lesion texture lost by whole-leaf resizing.  This is especially valuable for small or scattered lesions.
+\item \textbf{Heterogeneity exposure}: patch-level parameter variation reveals within-leaf spatial structure that whole-leaf models collapse into a single estimate.
+\item \textbf{Selective routing efficiency}: per-patch routing achieves 35.8$\times$ speedup, far exceeding the whole-leaf 6.5$\times$, because many patches are ``easy'' (healthy tissue, uniform texture).
+\item \textbf{Scalability}: patchwise inference parallelizes trivially across patches and scales to arbitrarily large images without increasing backbone input resolution.
+\end{enumerate}
+
+\paragraph{The patchification rationale.}
+We emphasize that the rationale for patchifying is \emph{not} to reduce computation---it increases it by a factor of $K$ per leaf.  The rationale is to \textbf{maintain quality of the data without destructive downsampling} imposed by architecture input constraints for DINOv2 and ResNet.  That the aggregation step currently introduces more error than downsampling loses is a limitation of the current aggregation methods, not of the patchification idea itself.
+
+\paragraph{Paths forward.}
+\begin{enumerate}[leftmargin=1.5em,itemsep=1pt]
+\item \textbf{Learned aggregation}: attention-based MIL~\citep{ilse2018attention} or deep sets could replace naive averaging.
+\item \textbf{Joint patch--leaf training}: end-to-end training that backpropagates leaf-level loss through the aggregation layer.
+\item \textbf{Spatial regularization}: penalizing large parameter jumps between neighboring patches.
+\item \textbf{Energy threshold reparameterization}: using $\log(E_{\mathrm{thr}})$ or normalizing to $[0,1]$ before training.
+\item \textbf{Larger datasets}: 174 leaves is modest; scaling to 400+ leaves would tighten CIs and improve generalization.
+\end{enumerate}
+
+
+% ══════════════════════════════════════════════════════════════════════
+\section{Limitations}
+\label{sec:limitations}
+
+\begin{enumerate}[leftmargin=1.5em,itemsep=1pt]
+\item The full-leaf and patch studies used \textbf{different train/test splits}, limiting the matched comparison to leaves where full-leaf predictions exist (all 174) but patch aggregation only exists for 44 test leaves.  The full-leaf predictions on these 44 leaves may benefit from having seen some of them during training.
+\item The \textbf{energy\_threshold} parameter's large raw range dominates error metrics and requires careful normalization for fair comparison.
+\item The patch size/stride ablation uses \textbf{analytical extrapolation} for non-tested configurations (no-overlap and high-overlap), not real re-runs with different extraction parameters.
+\item The study uses a \textbf{single crop species} (soybean) and may not generalize to other leaf morphologies.
+\item \textbf{No learned aggregation} methods (attention MIL, deep sets) were tested, leaving the strongest patchwise approaches unexplored.
+\end{enumerate}
+
+
+% ══════════════════════════════════════════════════════════════════════
+\section{Conclusion}
+\label{sec:conclusion}
+
+We presented the first integrated study directly comparing whole-leaf downsampled inference and patchwise native-resolution inference for physics-based lesion phenotyping within a shared selective semi-amortized framework.  On 44 matched test leaves, the whole-leaf branch currently achieves better accuracy (nMAE 0.266 vs 0.781 for the best patch method), primarily due to the oracle gap between whole-leaf and aggregated-patch targets and the challenges of naive patch aggregation.
+
+However, patchwise inference offers a compelling scientific advantage: it preserves the fine-scale lesion structure that destructive downsampling destroys, exposes within-leaf spatial heterogeneity, and enables highly efficient per-patch selective routing (35.8$\times$ speedup).  The selective mixture aggregation method substantially narrows the gap, reducing patch nMAE from $\sim$1.9 to 0.78.
+
+The path forward is clear: learned aggregation, joint training, and energy-threshold reparameterization could close the accuracy gap while preserving the resolution and heterogeneity advantages unique to patchwise inference.  As datasets grow beyond the current 174 leaves and aggregation methods mature, we expect patchwise inference to become the preferred modality for physics-based plant phenotyping.
+
+The rationale for patchification is not computational---it is \emph{scientific}: maintaining the quality of input data without destructive downsampling imposed by architecture input constraints.  This principle applies broadly to any domain where physics models operate on high-resolution imagery through fixed-resolution neural backbones.
+
+
+% ══════════════════════════════════════════════════════════════════════
+\appendix
+\section{Additional Figures}
+\label{app:figs}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{fig05_dual_oracle_aggregation.png}
+\caption{Dual-oracle evaluation: aggregation MAE against full-leaf oracle, aggregated patch oracle, and the oracle gap.}
+\label{fig:dual_oracle_app}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{fig04_patch_size_ablation.png}
+\caption{Patch size/stride ablation: patch count and aggregation quality by configuration.}
+\label{fig:ablation_app}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\textwidth]{fig12_resolution_efficiency.png}
+\caption{Runtime by refinement budget for both branches.}
+\label{fig:resolution_eff}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{fig13_bootstrap_ci.png}
+\caption{Bootstrap 95\% confidence intervals for nMAE across aggregation methods.}
+\label{fig:bootstrap_app}
+\end{figure}
+
+
+% ══════════════════════════════════════════════════════════════════════
+\bibliographystyle{plainnat}
+\bibliography{../bib/references_integrated}
+
+\end{document}

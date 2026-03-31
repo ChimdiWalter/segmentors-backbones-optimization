@@ -1,0 +1,8 @@
+metric,value,source_analysis,source_file
+PCA2 variance (%),46.5,PCA_full_vectors,/cluster/VAST/kazict-lab/e/lesion_phes/code/segmentors_backbones/experiments/exp_v1/outputs/optimization_manifold_and_solid3d_final/tables/manifold_geometry_summary.csv
+Delta PCA2 variance (%),43.0,PCA_deltas,/cluster/VAST/kazict-lab/e/lesion_phes/code/segmentors_backbones/experiments/exp_v1/outputs/optimization_manifold_and_solid3d_final/tables/manifold_geometry_summary.csv
+Centroid shift (std),1.616,PCA_centroid_shift,/cluster/VAST/kazict-lab/e/lesion_phes/code/segmentors_backbones/experiments/exp_v1/outputs/optimization_manifold_and_solid3d_final/tables/manifold_geometry_summary.csv
+kNN dD agreement,0.534,kNN_dD_group,/cluster/VAST/kazict-lab/e/lesion_phes/code/segmentors_backbones/experiments/exp_v1/outputs/optimization_manifold_and_solid3d_final/tables/manifold_geometry_summary.csv
+Positive-dD patches,73.0,positive_dD_patches,/cluster/VAST/kazict-lab/e/lesion_phes/code/segmentors_backbones/experiments/exp_v1/outputs/optimization_manifold_and_solid3d_final/tables/manifold_geometry_summary.csv
+Negative-dD patches,48.0,negative_dD_patches,/cluster/VAST/kazict-lab/e/lesion_phes/code/segmentors_backbones/experiments/exp_v1/outputs/optimization_manifold_and_solid3d_final/tables/manifold_geometry_summary.csv
+Neutral-dD patches,29.0,neutral_dD_patches,/cluster/VAST/kazict-lab/e/lesion_phes/code/segmentors_backbones/experiments/exp_v1/outputs/optimization_manifold_and_solid3d_final/tables/manifold_geometry_summary.csv

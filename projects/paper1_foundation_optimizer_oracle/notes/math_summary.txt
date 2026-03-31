@@ -1,0 +1,107 @@
+Mathematical Framework Summary
+===============================
+
+This document summarizes the key equations and mathematical constructs
+in Paper 1 (main_paper1.tex).
+
+
+1. Per-Image Parameter Optimization (Eq 1)
+-------------------------------------------
+  theta* = argmax_{theta in Theta} S(I; theta)
+
+  theta = (mu, lambda, alpha, beta, gamma, T) is the physics parameter vector.
+  Theta is a bounded search space. S is the heuristic no-ground-truth score.
+
+
+2. Navier-Stokes Diffusion Update (Eq 2)
+-----------------------------------------
+  E^{t+1} = E^{t} + dt * ( mu * Lap(E^{t})
+             + (lambda + mu) * div(grad(E^{t}))
+             + q * (F - E^{t}) )
+
+  - E^{t}: evolving energy field on the image grid
+  - mu: viscosity (controls smoothing strength)
+  - (lambda + mu): elastic coupling coefficient
+  - F: forcing term = ||( I_x - S_x, I_y - S_y )||_2
+    (difference between fine-scale and coarse-scale gradients)
+  - q: edge-gating mask, q = 1[G > T] where G = ||grad I||
+  - Scalar diffusion-reaction PDE, explicit scheme, 80 iterations
+
+
+3. Candidate Trace Set (Eq 3)
+-----------------------------
+  T_i = { (theta_k, s_k, t_k) : k = 1, ..., K_i }
+
+  Records every candidate evaluation during optimization of image I_i.
+  s_k = S(I_i; theta_k) is the objective score, t_k is wall-clock time.
+
+
+4. Projected Pairwise Surfaces (Eq 4)
+--------------------------------------
+  S_{p,q}(I_i) = { (theta_k[p], theta_k[q], s_k) : (theta_k, s_k, t_k) in T_i }
+
+  For any parameter pair (p, q), yields a scatter-surface in R^3.
+  Reveals the objective landscape projected onto two parameter axes.
+  Distinct from PCA/UMAP embeddings: retains score information.
+
+
+5. Heuristic Objective Function (Eq 5)
+---------------------------------------
+  S(theta) = w_g * G(M, I) + w_c * C(M, I) + w_n * log(1 + N(M))
+             - P_area(M) - P_noise(M)
+
+  Terms:
+  - G(M, I): gradient alignment = E[G(x,y) | boundary] / E[G(x,y) | all]
+    Rewards boundaries sitting on strong image gradients.
+  - C(M, I): chromatic separability = || mu_in^{ab} - mu_out^{ab} ||_2 / (sqrt(2)*255)
+    Rewards Lab color separation between lesion interior and exterior.
+  - log(1 + N(M)): topological reward for lesion multiplicity.
+    Encourages multiple connected components without runaway fragmentation.
+  - P_area: penalty for empty or implausibly large masks.
+  - P_noise: penalty for ultra-small components (dust/sensor noise).
+
+
+6. Active Contour Energy (Eq 6)
+--------------------------------
+  E_snake(C) = int_0^1 (1/2)(alpha ||C'(s)||^2 + beta ||C''(s)||^2) ds
+               + int_0^1 E_ext(C(s)) ds
+
+  - alpha: tension (penalizes stretching, shrinkage bias)
+  - beta: rigidity (penalizes curvature, enforces smoothness)
+  - E_ext: external energy derived from diffused energy map E
+
+
+7. Snake Evolution PDE (Eq 7)
+------------------------------
+  dC/dt = alpha * C'' - beta * C'''' + gamma * n(s) - grad(E_ext)
+
+  - gamma: balloon/inflation force along outward normal n(s)
+  - Euler-Lagrange descent equation for E_snake with balloon term
+
+
+8. CFL Stability Condition
+---------------------------
+  dt <= h^2 / (4 * mu)
+
+  For the explicit diffusion scheme. Implementation: dt = 1, h = 1 (pixel grid),
+  mu <= 0.25. Satisfies the bound for all parameter settings.
+
+
+9. Parameter-Cloud Geometry
+----------------------------
+  - Parameter shift: delta_j = theta_j^local - theta_j^global in R^7
+  - Centroid shift: Delta_theta_bar = theta_bar^local - theta_bar^global
+    Magnitude in standardized units quantifies systematic displacement.
+  - Covariance matrices Sigma^g, Sigma^l define 2-sigma ellipsoids.
+  - PCA projection captures 46.5% variance in first 2 PCs.
+  - k-NN classification (k=7) on delta cloud: agreement 0.534 vs
+    random baseline 0.33, indicating predictive structure in shift direction.
+  - Nonlinear embeddings: t-SNE and UMAP for manifold visualization.
+
+
+10. Necrosis Ratio (Multi-Stage)
+---------------------------------
+  Necrosis ratio = |M_inner| / (|M_outer| + epsilon)
+
+  From two-stage inference: Stage-A produces outer lesion mask,
+  Stage-B produces inner necrotic core mask.

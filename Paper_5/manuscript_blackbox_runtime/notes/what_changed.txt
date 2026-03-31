@@ -1,0 +1,24 @@
+WHAT CHANGED (PAPER B)
+======================
+Previous state:
+- Earlier package draft was 9 pages and underused the extensive full-vs-patch and selective full-study evidence.
+- The draft still carried a semantically wrong selective-prediction citation.
+
+Current state:
+- Expanded to a 20-page full manuscript.
+- Added explicit lineage accounting for:
+  - integrated_full_vs_patch_manuscript.pdf
+  - main_integrated_full_vs_patch_codex_v1.pdf
+  - main_speciesref_fixed-1-1.pdf
+- Reframed Paper B as a black-box deployment paper instead of a mixed geometry/runtime manuscript.
+- Corrected the selective-prediction bibliography by replacing the bad entry with the repo-verified trading-accuracy citation.
+- Added many extensive-study figures already present in the repo:
+  - branch schematic and split accounting
+  - matched full-vs-patch comparison and oracle gap
+  - runtime-quality frontier and refinement curves
+  - calibration and risk-coverage
+  - aggregation, heterogeneity, patch ablation, and parameter difficulty
+  - method comparison, score recovery, learning curves, phenotype PCA, per-parameter scatter
+  - leaf comparison, routing, failure montage, and 18.7 panel
+- Added tables for shared substrates, paired tests, routing points, calibration bins, patch ablation, morphology fidelity, phenotype consistency, score tiers, parameter extremes, and backbone comparison.
+- Clarified throughout that the primary collections are leaves and 18.7, both leaf-image datasets.

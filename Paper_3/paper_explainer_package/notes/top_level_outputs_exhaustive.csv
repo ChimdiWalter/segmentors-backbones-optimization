@@ -1,0 +1,62 @@
+path,item_type,used_in_paper,should_be_used_in_paper,generated_by,experiment_family,status,meaning,paper_priority,notes
+opt_summary_local.csv,CSV,Yes,Yes,navier_optimize_robust_mostrecent.py,production_optimizer,FINAL,174-leaf production run results with parameters/scores/paths,P1-Main,"Core data source; 100% OK; mean score 21.10"
+ablations_objective/,folder,Yes (Table I),Yes,navier_optimize_robust_mostrecent.py (modified weights),ablation_objective,FINAL,Objective function ablations removing one term at a time,P1-Main,6 subdirs; 30-image stratified subset
+ablations_search/,folder,Yes (Table II),Yes,navier_optimize_robust_mostrecent.py (modified search),ablation_search,FINAL,Search strategy ablations modifying one search knob,P1-Main,5 subdirs; 30-image stratified subset
+objective_surface_traces_fullstudy/,folder,No,Maybe (appendix),instrument_full_optimizer_traces.py,trace_analysis,FINAL,Full-population trace study — all 174 leaves,P3-Supporting,Superseded by 9-leaf for main; useful as population evidence
+objective_surface_traces_representative_fullbudget/,folder,No,No,instrument_full_optimizer_traces_representative.py,trace_analysis,SUPERSEDED,Earlier pilot representative trace study,P4-Superseded,Replaced by 9-leaf study
+objective_surface_traces_representative_fullbudget_9leaf/,folder,Yes (Figs 9-12),Yes,instrument_full_optimizer_traces_representative_9leaf.py (SLURM 12783426),trace_analysis,FINAL,Definitive 9-leaf representative trace study,P1-Main,"3 high + 3 median + 3 low; homogeneous rerun; 833 trace rows"
+objective_surface_traces_representative_fullbudget_plus/,folder,No,Maybe (appendix with caveat),instrument_full_optimizer_traces_representative_plus.py,trace_analysis,PARTIAL,Extended representative beyond 9 leaves — manifold/solid3d EMPTY,P3-Supporting,"⚠ manifold_plots/ and solid_3d_plots/ never populated"
+optimization_surface_analysis/,folder,No,Maybe (appendix),analyze_optimization_surfaces.py,surface_analysis,FINAL,Score landscape cross-sections — heatmaps and 3D surfaces,P3-Supporting,97 files; superseded by trace-based analysis
+optimization_surface_analysis_codex/,folder,No,No,analyze_optimization_surfaces_codex.py,surface_analysis,DIAGNOSTIC,Codex-style alternate rendering of optimization surfaces,P4-Diagnostic,30 files; includes HTML; style variant only
+optimizer_full/,folder,No,No,N/A,placeholder,EMPTY,Empty placeholder directory,P4-Not applicable,Never used
+optimizer_full_alt/,folder,No,No,N/A,placeholder,EMPTY,Empty placeholder directory,P4-Not applicable,Never used
+optimizer_summary/,folder,Yes (Figs 1-3; A1-A2),Yes,summarize_optimizer.py,summary_stats,FINAL,Distribution summaries of 174-leaf production run,P1-Main + P2-Appendix,17 files; histograms + CSVs
+parameter_shift_3d_analysis/,folder,No,Maybe (appendix),analyze_parameter_shifts_3d.py,geometry,FINAL,3D parameter shift visualization (PCA 3D + pairplots),P3-Supporting,25 files; largely superseded by manifold/solid3D
+parameter_shift_3d_analysis_solid/,folder,Yes (Fig 15; C1),Yes,analyze_parameter_shifts_solid_3d.py,geometry,FINAL,Volumetric parameter geometry (hulls + ellipsoids + isosurfaces),P1-Main + P2-Appendix,25 files; centroid shift 1.616 std units
+parameter_shift_3d_analysis_solid_codex/,folder,No,No,analyze_parameter_shifts_solid_3d_codex.py,geometry,DIAGNOSTIC,Codex-style duplicate of solid 3D analysis,P4-Diagnostic,22 files; style variant only
+parameter_shift_manifold_geometry/,folder,Yes (Figs 13-14; C2),Yes,build_parameter_shift_manifold_geometry.py,geometry,FINAL,Comprehensive manifold analysis of 7D parameter space,P1-Main + P2-Appendix,"30 plots; 3 reports; 4 CSVs; k-NN 0.534"
+optimization_manifold_and_solid3d_final/,folder,Indirectly (provides figures),Yes,merge script,geometry,FINAL,Merged manifold + solid-3D final figures,P1-Main,19 figures; definitive geometry presentation
+patch_transfer_morphology_plots/,folder,Yes (Figs 17-19),Yes,patch transfer analysis script,morphology,FINAL,Area/count transfer fidelity plots,P1-Main,7 files
+patch_transfer_morphology_montages/,folder,No,Maybe (appendix),montage script,morphology,FINAL,Visual montages of patch transfer results,P3-Supporting,2 subdirs (analysis/ + montages/)
+patch_transfer_morphology_filled/,folder,No,No,filled morphology script,morphology,DIAGNOSTIC,Filled morphology variant visualization,P4-Diagnostic,Alternative rendering approach
+teacher_student_figures/,folder,Yes (Figs 5-6; 16),Yes,teacher-student evaluation script,distillation,FINAL,Teacher-student comparison montages and plots,P1-Main,"montage + examples/ + plots/ + summary"
+patches/,folder,No (infrastructure),No,patchification script,training_data,FINAL,512×512 training patches for UNet student,Infrastructure,images/ + masks/
+param_predictor/,folder,No,No (future work),N/A,future_work,NOT STARTED,Placeholder for amortized parameter prediction,P4-Future work,EMPTY directory
+experiment_summary_master/,folder,No,No,prior session,documentation,PARTIAL,Prior experiment summarization attempt,P4-Reference,6 subdirs; earlier attempt
+patch_local_opt_v2.csv,CSV,Yes (Table III),Yes,local optimization script,morphology,FINAL,Per-patch local re-optimization results (150 patches),P1-Main,15 leaves × 10 patches each
+patch_transfer_morphology_eval.csv,CSV,Yes (Table III),Yes,evaluation script,morphology,FINAL,Morphology-focused evaluation metrics,P1-Main,Area/count metrics for 150 patches
+patch_transfer_morphology_summary.txt,TXT,No,No,evaluation script,morphology,FINAL,Summary statistics text file,P3-Reference,Human-readable summary
+threshold_sweep.csv,CSV,Yes (Fig 4),Yes,threshold sweep script,distillation,FINAL,Threshold sweep across probability maps,P1-Main,Best at thr=0.3
+threshold_sweep_plot.png,PNG,Yes (Fig 4),Yes,plot script,distillation,FINAL,Threshold sweep visualization,P1-Main,Dice vs threshold curve
+teacher_student_metrics.csv,CSV,Yes (Sec 8.1),Yes,evaluation script,distillation,FINAL,Baseline teacher-student Dice/IoU for 174 leaves,P1-Main,"Mean Dice 0.598; 18 failures"
+teacher_student_metrics_roi_thr0p30.csv,CSV,Yes (Sec 8.1),Yes,evaluation script,distillation,FINAL,ROI-gated teacher-student metrics,P1-Main,"Mean Dice 0.599; negligible ROI effect"
+failures_dice_lt_0p3.csv,CSV,Yes (Discussion),Yes,failure analysis script,diagnostics,FINAL,18 failure cases with Dice < 0.3,P2-Appendix,"12/18 are teacher-empty"
+teacher_empty_cases.csv,CSV,Yes (Discussion),Yes,failure analysis script,diagnostics,FINAL,12 teacher-empty/student-nonempty disagreements,P2-Appendix,Dominant failure mode
+postprocess_sweep.csv,CSV,No,Maybe (appendix),postprocess sweep script,diagnostics,FINAL,Post-processing parameter sweep results,P3-Diagnostic,Not currently in paper
+paper_disagreement_montage_roi_thr0p30.png,PNG,Yes (Fig 6),Yes,montage script,distillation,FINAL,Disagreement montage visualization,P1-Main,Teacher-empty/student-nonempty cases
+representative_trace_audit.txt,TXT,No,No (documentation),audit script,documentation,DOCUMENTATION,Audit of 9-leaf trace study provenance,Documentation,Verifies clean provenance
+representative_trace_provenance.csv,CSV,No,No (documentation),audit script,documentation,DOCUMENTATION,Per-case provenance table for 9-leaf study,Documentation,9 rows; all safe for main paper
+outputs_audit_resume_status.txt,TXT,No,No,prior session,documentation,DOCUMENTATION,Resume status from prior audit session,Documentation,Session tracking
+outputs_inventory_detailed.md,MD,No,No,prior session,documentation,DOCUMENTATION,Prior inventory of outputs,Documentation,Earlier inventory attempt
+outputs_inventory_summary.txt,TXT,No,No,prior session,documentation,DOCUMENTATION,Prior inventory summary,Documentation,Earlier summary
+outputs_inventory_table.csv,CSV,No,No,prior session,documentation,DOCUMENTATION,Prior inventory table,Documentation,Earlier table
+montage_patch_opt_DSC_0060_segment_1_segmented_smoothed.png,PNG,No,No,montage script,diagnostics,DIAGNOSTIC,Per-leaf patch optimization montage,P4-Diagnostic,Visual diagnostic
+montage_patch_opt_DSC_0223_segment_1_segmented_smoothed.png,PNG,No,No,montage script,diagnostics,DIAGNOSTIC,Per-leaf patch optimization montage,P4-Diagnostic,Visual diagnostic
+montage_patch_opt_DSC_0242_segment_1_segmented_smoothed.png,PNG,No,No,montage script,diagnostics,DIAGNOSTIC,Per-leaf patch optimization montage,P4-Diagnostic,Visual diagnostic
+montage_patch_opt_v2_DSC_0060_segment_1_segmented_smoothed.png,PNG,No,No,montage script,diagnostics,DIAGNOSTIC,Per-leaf patch optimization montage (v2),P4-Diagnostic,Visual diagnostic
+montage_patch_opt_v2_DSC_0118_segment_1_segmented_smoothed.png,PNG,No,No,montage script,diagnostics,DIAGNOSTIC,Per-leaf patch optimization montage (v2),P4-Diagnostic,Visual diagnostic
+montage_patch_opt_v2_DSC_0149_segment_1_segmented_smoothed.png,PNG,No,No,montage script,diagnostics,DIAGNOSTIC,Per-leaf patch optimization montage (v2),P4-Diagnostic,Visual diagnostic
+montage_patch_opt_v2_DSC_0172_segment_1_segmented_smoothed.png,PNG,No,No,montage script,diagnostics,DIAGNOSTIC,Per-leaf patch optimization montage (v2),P4-Diagnostic,Visual diagnostic
+montage_patch_opt_v2_DSC_0180_segment_1_segmented_smoothed.png,PNG,No,No,montage script,diagnostics,DIAGNOSTIC,Per-leaf patch optimization montage (v2),P4-Diagnostic,Visual diagnostic
+montage_patch_opt_v2_DSC_0185_segment_1_segmented_smoothed.png,PNG,No,No,montage script,diagnostics,DIAGNOSTIC,Per-leaf patch optimization montage (v2),P4-Diagnostic,Visual diagnostic
+montage_patch_opt_v2_DSC_0210_segment_1_segmented_smoothed.png,PNG,No,No,montage script,diagnostics,DIAGNOSTIC,Per-leaf patch optimization montage (v2),P4-Diagnostic,Visual diagnostic
+montage_patch_opt_v2_DSC_0223_segment_1_segmented_smoothed.png,PNG,No,No,montage script,diagnostics,DIAGNOSTIC,Per-leaf patch optimization montage (v2),P4-Diagnostic,Visual diagnostic
+montage_patch_opt_v2_DSC_0235_segment_1_segmented_smoothed.png,PNG,No,No,montage script,diagnostics,DIAGNOSTIC,Per-leaf patch optimization montage (v2),P4-Diagnostic,Visual diagnostic
+montage_patch_opt_v2_DSC_0242_segment_1_segmented_smoothed.png,PNG,No,No,montage script,diagnostics,DIAGNOSTIC,Per-leaf patch optimization montage (v2),P4-Diagnostic,Visual diagnostic
+montage_patch_opt_v2_DSC_0260_segment_1_segmented_smoothed.png,PNG,No,No,montage script,diagnostics,DIAGNOSTIC,Per-leaf patch optimization montage (v2),P4-Diagnostic,Visual diagnostic
+montage_patch_opt_v2_DSC_0261_segment_1_segmented_smoothed.png,PNG,No,No,montage script,diagnostics,DIAGNOSTIC,Per-leaf patch optimization montage (v2),P4-Diagnostic,Visual diagnostic
+montage_patch_opt_v2_DSC_0267_segment_1_segmented_smoothed.png,PNG,No,No,montage script,diagnostics,DIAGNOSTIC,Per-leaf patch optimization montage (v2),P4-Diagnostic,Visual diagnostic
+montage_patch_opt_v2_DSC_0268_segment_1_segmented_smoothed.png,PNG,No,No,montage script,diagnostics,DIAGNOSTIC,Per-leaf patch optimization montage (v2),P4-Diagnostic,Visual diagnostic
+montage_patch_opt_v2_DSC_0370_segment_1_segmented_smoothed.png,PNG,No,No,montage script,diagnostics,DIAGNOSTIC,Per-leaf patch optimization montage (v2),P4-Diagnostic,Visual diagnostic
+_make_analysis_pdfs.py,Python,No,No,developer,infrastructure,INFRASTRUCTURE,Script for generating analysis PDF reports,Infrastructure,Utility script
+experiments/,folder,No,No,Various,meta,INFRASTRUCTURE,Subdirectory with experiment configs/scripts,Infrastructure,Contains experiment infrastructure

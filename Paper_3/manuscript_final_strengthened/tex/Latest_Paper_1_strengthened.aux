@@ -1,0 +1,234 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
+\HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
+\global\let\oldcontentsline\contentsline
+\gdef\contentsline#1#2#3#4{\oldcontentsline{#1}{#2}{#3}}
+\global\let\oldnewlabel\newlabel
+\gdef\newlabel#1#2{\newlabelxx{#1}#2}
+\gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
+\AtEndDocument{\ifx\hyper@anchor\@undefined
+\let\contentsline\oldcontentsline
+\let\newlabel\oldnewlabel
+\fi}
+\fi}
+\global\let\hyper@last\relax 
+\gdef\HyperFirstAtBeginDocument#1{#1}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{ronneberger2015u}
+\citation{he2017mask}
+\citation{xie2021segformer}
+\citation{kirillov2023segment}
+\citation{kass1988snakes}
+\citation{ronneberger2015u}
+\citation{oquab2023dinov2}
+\citation{hinton2015distilling}
+\@writefile{toc}{\contentsline {section}{\numberline {I}Introduction}{1}{section.1}}
+\citation{kass1988snakes}
+\citation{caselles1997geodesic}
+\citation{chan2001active}
+\citation{xu1998gvf}
+\citation{bertalmio2000navier}
+\citation{berry2018color,plantcv2025}
+\citation{ronneberger2015u}
+\citation{he2017mask}
+\citation{chen2018deeplabv3plus}
+\citation{xie2021segformer}
+\citation{kirillov2023segment}
+\citation{oquab2023dinov2}
+\citation{yu2020hyperparam}
+\citation{gehan2017high,mahlein2016plant}
+\citation{plantcv2025}
+\citation{singh2016machine}
+\@writefile{toc}{\contentsline {section}{\numberline {II}Related Work}{2}{section.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {II-A}}Active Contours, Level Sets, and External Forces}{2}{subsection.2.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {II-B}}PDEs and Fluid Dynamics in Vision}{2}{subsection.2.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {II-C}}Segmentation Models (2015--2025): CNNs, Transformers, and Foundation Models}{2}{subsection.2.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {II-D}}Black-Box and Hyperparameter Optimization for Vision}{2}{subsection.2.4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {II-E}}Plant Phenotyping Context and Tooling}{2}{subsection.2.5}}
+\@writefile{toc}{\contentsline {section}{\numberline {III}Problem Setup and Notation}{2}{section.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {III-A}}Candidate Trace Sets and Projected Surfaces}{2}{subsection.3.1}}
+\newlabel{sec:trace_surfaces}{{\unhbox \voidb@x \hbox {III-A}}{2}{Candidate Trace Sets and Projected Surfaces}{subsection.3.1}{}}
+\newlabel{eq:trace_set}{{2}{2}{Candidate Trace Sets and Projected Surfaces}{equation.3.2}{}}
+\newlabel{eq:proj_surface}{{3}{2}{Candidate Trace Sets and Projected Surfaces}{equation.3.3}{}}
+\citation{jolliffe2016pca}
+\citation{vandermaaten2008tsne}
+\citation{mcinnes2018umap}
+\citation{xu1998gvf}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {III-B}}Parameter-Cloud Geometry}{3}{subsection.3.2}}
+\newlabel{sec:param_geometry_math}{{\unhbox \voidb@x \hbox {III-B}}{3}{Parameter-Cloud Geometry}{subsection.3.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {IV}Mathematical Framework}{3}{section.4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {IV-A}}Navier-Stokes Diffusion for Edge Enhancement}{3}{subsection.4.1}}
+\newlabel{eq:diffusion_update}{{4}{3}{Navier-Stokes Diffusion for Edge Enhancement}{equation.4.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {\unhbox \voidb@x \hbox {IV-A}0a}Seed vs.\ Image Gradients.}{3}{paragraph.4.1.0.1}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {\unhbox \voidb@x \hbox {IV-A}0b}Edge-gating.}{3}{paragraph.4.1.0.2}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {\unhbox \voidb@x \hbox {IV-A}0c}Stability note.}{3}{paragraph.4.1.0.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {IV-B}}Active Contour Dynamics (Snakes)}{3}{subsection.4.2}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {\unhbox \voidb@x \hbox {IV-B}0a}Multi-lesion handling.}{3}{paragraph.4.2.0.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {V}Methodology: Stochastic Parameter Search}{3}{section.5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {V-A}}Overview of the Optimization Loop}{3}{subsection.5.1}}
+\citation{berry2018color,plantcv2025}
+\citation{yu2020hyperparam}
+\citation{berry2018color}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {V-B}}The Heuristic Objective Function}{4}{subsection.5.2}}
+\newlabel{sec:objective}{{\unhbox \voidb@x \hbox {V-B}}{4}{The Heuristic Objective Function}{subsection.5.2}{}}
+\newlabel{eq:objective}{{9}{4}{The Heuristic Objective Function}{equation.5.9}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {V-B}1}Gradient Alignment ($\mathcal  {G}$)}{4}{subsubsection.5.2.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {V-B}2}Chromatic Separability ($\mathcal  {C}$)}{4}{subsubsection.5.2.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {V-B}3}Topological Reward (Lesion Multiplicity)}{4}{subsubsection.5.2.3}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {V-B}4}Penalty Terms}{4}{subsubsection.5.2.4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {V-C}}Random-Restart Stochastic Hill Climbing}{4}{subsection.5.3}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {\unhbox \voidb@x \hbox {V-C}0a}Why gradient-free?}{4}{paragraph.5.3.0.1}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Stochastic Parameter Optimization (per image)}}{4}{algorithm.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Implementation Details and Engineering Choices}{4}{section.6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VI-A}}16-bit Handling, Masking, and Channel Fusion}{4}{subsection.6.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VI-B}}Scale-Aware Candidate Filtering}{4}{subsection.6.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VI-C}}Runtime Controls: Downscaling, Timeouts, and Parallelism}{4}{subsection.6.3}}
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Experiments}{4}{section.7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VII-A}}Dataset}{4}{subsection.7.1}}
+\citation{ronneberger2015u}
+\citation{xie2021segformer}
+\citation{kirillov2023segment}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VII-B}}Evaluation Protocol}{5}{subsection.7.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VII-C}}Teacher--Student Distillation (UNet Student)}{5}{subsection.7.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VII-D}}Baselines}{5}{subsection.7.4}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Optimizer run status distribution from stochastic search summary.}}{5}{figure.1}}
+\newlabel{fig:paramdist_status}{{1}{5}{Optimizer run status distribution from stochastic search summary}{figure.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Histogram of per-image optimizer runtime (elapsed seconds).}}{5}{figure.2}}
+\newlabel{fig:objterms_runtime}{{2}{5}{Histogram of per-image optimizer runtime (elapsed seconds)}{figure.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VII-E}}Metrics}{5}{subsection.7.5}}
+\@writefile{toc}{\contentsline {section}{\numberline {VIII}Results}{5}{section.8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VIII-A}}Teacher--Student Distillation (UNet)}{5}{subsection.8.1}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Histogram of optimizer objective scores across images.}}{6}{figure.3}}
+\newlabel{fig:optimizer_score_hist}{{3}{6}{Histogram of optimizer objective scores across images}{figure.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VIII-B}}Parameter Correlations with Morphology}{6}{subsection.8.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VIII-C}}Ablation Studies (Objective and Search)}{6}{subsection.8.3}}
+\newlabel{sec:ablations}{{\unhbox \voidb@x \hbox {VIII-C}}{6}{Ablation Studies (Objective and Search)}{subsection.8.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Threshold sweep on stitched probability maps. Dice decreases smoothly with increasing threshold, while teacher-empty disagreements persist across thresholds.}}{6}{figure.4}}
+\newlabel{fig:thresh_sweep}{{4}{6}{Threshold sweep on stitched probability maps. Dice decreases smoothly with increasing threshold, while teacher-empty disagreements persist across thresholds}{figure.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VIII-D}}Trace-Based Objective-Surface Analysis}{6}{subsection.8.4}}
+\newlabel{sec:trace_analysis}{{\unhbox \voidb@x \hbox {VIII-D}}{6}{Trace-Based Objective-Surface Analysis}{subsection.8.4}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VIII-D}1}Score Surfaces}{6}{subsubsection.8.4.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VIII-D}2}Optimization Trajectories}{6}{subsubsection.8.4.2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Teacher--student qualitative montage (worst/median/best). The teacher is the optimizer pseudo-label (inner mask), and the student is the stitched UNet prediction. ``Worst'' cases are often teacher-empty/student-nonempty disagreements.}}{7}{figure.5}}
+\newlabel{fig:teacher_student_montage}{{5}{7}{Teacher--student qualitative montage (worst/median/best). The teacher is the optimizer pseudo-label (inner mask), and the student is the stitched UNet prediction. ``Worst'' cases are often teacher-empty/student-nonempty disagreements}{figure.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Representative teacher-empty/student-nonempty disagreement cases. Columns: raw image, teacher overlay (optimizer; empty inner mask), and student overlay (UNet). These cases may reflect either optimizer false negatives under the inner-mask definition or a mismatch in necrosis/halo semantics.}}{7}{figure.6}}
+\newlabel{fig:disagreement}{{6}{7}{Representative teacher-empty/student-nonempty disagreement cases. Columns: raw image, teacher overlay (optimizer; empty inner mask), and student overlay (UNet). These cases may reflect either optimizer false negatives under the inner-mask definition or a mismatch in necrosis/halo semantics}{figure.6}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VIII-D}3}Landscape Geometry Across Score Tiers}{7}{subsubsection.8.4.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VIII-E}}Parameter-Cloud Geometry and Manifold Structure}{7}{subsection.8.5}}
+\newlabel{sec:param_geometry_results}{{\unhbox \voidb@x \hbox {VIII-E}}{7}{Parameter-Cloud Geometry and Manifold Structure}{subsection.8.5}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VIII-E}1}PCA Separation of Global and Local Optima}{7}{subsubsection.8.5.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VIII-E}2}Mean Parameter Shift Profile}{7}{subsubsection.8.5.2}}
+\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Objective ablations on the 30-image stratified subset. Each row removes one term from the composite objective (Eq.\nobreakspace  {}\ref  {eq:objective}).}}{8}{table.1}}
+\newlabel{tab:abl_obj}{{I}{8}{Objective ablations on the 30-image stratified subset. Each row removes one term from the composite objective (Eq.~\ref {eq:objective})}{table.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Search-strategy ablations on the 30-image stratified subset. Each row changes one knob of the stochastic search while keeping the full objective.}}{8}{table.2}}
+\newlabel{tab:abl_search}{{II}{8}{Search-strategy ablations on the 30-image stratified subset. Each row changes one knob of the stochastic search while keeping the full objective}{table.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Energy threshold vs.\ lesion count across 174 images. Higher thresholds suppress faint edges, yielding fewer connected components.}}{8}{figure.7}}
+\newlabel{fig:scatter_et_lc}{{7}{8}{Energy threshold vs.\ lesion count across 174 images. Higher thresholds suppress faint edges, yielding fewer connected components}{figure.7}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VIII-E}3}Solid 3D Geometry: Covariance Ellipsoids and Convex Hulls}{8}{subsubsection.8.5.3}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VIII-E}4}Neighbor Consistency and Predictive Structure}{8}{subsubsection.8.5.4}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Balloon force $\beta $ vs.\ area fraction. Larger balloon forces produce masks covering a greater proportion of the leaf.}}{8}{figure.8}}
+\newlabel{fig:scatter_beta_af}{{8}{8}{Balloon force $\beta $ vs.\ area fraction. Larger balloon forces produce masks covering a greater proportion of the leaf}{figure.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VIII-F}}Qualitative Results and Failure Taxonomy}{8}{subsection.8.6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Trace-based projected objective surface ($T$ vs.\ $\beta $) for a representative \emph  {high-score} leaf (DSC\_0198). All 112 evaluated candidates are shown as scatter points colored by score; the final optimum (red star), best random-phase point (orange triangle), and best refine-phase point (cyan square) are marked. A fitted triangulated surface is overlaid where sampling density permits.}}{9}{figure.9}}
+\newlabel{fig:surface_high}{{9}{9}{Trace-based projected objective surface ($T$ vs.\ $\beta $) for a representative \emph {high-score} leaf (DSC\_0198). All 112 evaluated candidates are shown as scatter points colored by score; the final optimum (red star), best random-phase point (orange triangle), and best refine-phase point (cyan square) are marked. A fitted triangulated surface is overlaid where sampling density permits}{figure.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Trace-based projected objective surface ($T$ vs.\ $\beta $) for a representative \emph  {median-score} leaf (DSC\_0379).}}{9}{figure.10}}
+\newlabel{fig:surface_med}{{10}{9}{Trace-based projected objective surface ($T$ vs.\ $\beta $) for a representative \emph {median-score} leaf (DSC\_0379)}{figure.10}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {IX}Multi-Stage Inference for Nested/Inner Lesions}{9}{section.9}}
+\newlabel{sec:multistage}{{IX}{9}{Multi-Stage Inference for Nested/Inner Lesions}{section.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Trace-based projected objective surface ($T$ vs.\ $\beta $) for a representative \emph  {low-score} leaf (DSC\_0261). The surface is flatter than for high-score leaves, consistent with a landscape that offers limited exploitable curvature.}}{9}{figure.11}}
+\newlabel{fig:surface_low}{{11}{9}{Trace-based projected objective surface ($T$ vs.\ $\beta $) for a representative \emph {low-score} leaf (DSC\_0261). The surface is flatter than for high-score leaves, consistent with a landscape that offers limited exploitable curvature}{figure.11}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Convergence trajectory: best score so far vs.\ candidate index for a high-score leaf (DSC\_0198). Random-phase candidates (blue region) establish initial optima; refine-phase candidates (orange region) improve upon them.}}{9}{figure.12}}
+\newlabel{fig:trajectory_high}{{12}{9}{Convergence trajectory: best score so far vs.\ candidate index for a high-score leaf (DSC\_0198). Random-phase candidates (blue region) establish initial optima; refine-phase candidates (orange region) improve upon them}{figure.12}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {X}Discussion and Limitations}{9}{section.10}}
+\citation{ronneberger2015u}
+\citation{gehan2017high,plantcv2025}
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces PCA 2D projection of global (circles) and local (triangles) parameter vectors from 150 patches. Points are colored by Dice improvement $\Delta D$. PC1 separates the two clouds, indicating a systematic directional shift from global to local optimization. The centroid shift magnitude is 1.616 standardized units.}}{10}{figure.13}}
+\newlabel{fig:pca2d_global_local}{{13}{10}{PCA 2D projection of global (circles) and local (triangles) parameter vectors from 150 patches. Points are colored by Dice improvement $\Delta D$. PC1 separates the two clouds, indicating a systematic directional shift from global to local optimization. The centroid shift magnitude is 1.616 standardized units}{figure.13}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Mean parameter shift (global $\to $ local) across 150 patches. Energy threshold is the dominant shift parameter; $\mu $, diffusion rate, and $\gamma $ also show significant systematic displacements.}}{10}{figure.14}}
+\newlabel{fig:mean_delta}{{14}{10}{Mean parameter shift (global $\to $ local) across 150 patches. Energy threshold is the dominant shift parameter; $\mu $, diffusion rate, and $\gamma $ also show significant systematic displacements}{figure.14}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces Covariance ellipsoids (2-sigma) for global (blue) and local (red) parameter clouds in PCA space. Star markers show centroids; black arrow indicates centroid shift direction. The ellipsoids overlap substantially but are systematically displaced, confirming structured parameter organization.}}{10}{figure.15}}
+\newlabel{fig:cov_ellipsoids}{{15}{10}{Covariance ellipsoids (2-sigma) for global (blue) and local (red) parameter clouds in PCA space. Star markers show centroids; black arrow indicates centroid shift direction. The ellipsoids overlap substantially but are systematically displaced, confirming structured parameter organization}{figure.15}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces Two-Stage Nested Lesion Inference}}{10}{algorithm.2}}
+\newlabel{alg:two_stage}{{2}{10}{Multi-Stage Inference for Nested/Inner Lesions}{algorithm.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces Qualitative grid across the Dice spectrum (6 rows, sorted worst-to-best). Columns: Input leaf image, teacher (optimizer) overlay, student (UNet) overlay, teacher mask, student mask. Rows span Dice${\approx }0.0$ (teacher-empty case) to Dice${\approx }0.84$ (high agreement).}}{11}{figure.16}}
+\newlabel{fig:qual_grid}{{16}{11}{Qualitative grid across the Dice spectrum (6 rows, sorted worst-to-best). Columns: Input leaf image, teacher (optimizer) overlay, student (UNet) overlay, teacher mask, student mask. Rows span Dice${\approx }0.0$ (teacher-empty case) to Dice${\approx }0.84$ (high agreement)}{figure.16}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces Patch-level morphology transfer: mean metrics across 150 patches (75 interior, 75 boundary). Area fraction is lesion area divided by valid pixels; count is connected components $\geq 16$\tmspace  +\thinmuskip {.1667em}px.}}{11}{table.3}}
+\newlabel{tab:patch_morph_transfer}{{III}{11}{Patch-level morphology transfer: mean metrics across 150 patches (75 interior, 75 boundary). Area fraction is lesion area divided by valid pixels; count is connected components $\geq 16$\,px}{table.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces Distribution of signed area-fraction error (predicted $-$ teacher) for global and local parameter sets across 150 patches. Both distributions are left-skewed, reflecting systematic underestimation of lesion area under patchification.}}{11}{figure.17}}
+\newlabel{fig:patch_area_err_hist}{{17}{11}{Distribution of signed area-fraction error (predicted $-$ teacher) for global and local parameter sets across 150 patches. Both distributions are left-skewed, reflecting systematic underestimation of lesion area under patchification}{figure.17}{}}
+\citation{hansen2001cma,jones1998ego}
+\citation{yu2020hyperparam,singh2016machine}
+\citation{hinton2015distilling}
+\citation{plantcv2025}
+\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces Distribution of signed lesion-count error (predicted $-$ teacher). Local re-optimization shifts the distribution closer to zero, reducing mean $|$count error$|$ by 35\%.}}{12}{figure.18}}
+\newlabel{fig:patch_count_err_hist}{{18}{12}{Distribution of signed lesion-count error (predicted $-$ teacher). Local re-optimization shifts the distribution closer to zero, reducing mean $|$count error$|$ by 35\%}{figure.18}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {19}{\ignorespaces Teacher vs.\ predicted lesion area fraction. Points below the diagonal indicate underestimation; both global and local predictions cluster well below the identity line, consistent with context-dependent area loss under patchification.}}{12}{figure.19}}
+\newlabel{fig:patch_area_scatter}{{19}{12}{Teacher vs.\ predicted lesion area fraction. Points below the diagonal indicate underestimation; both global and local predictions cluster well below the identity line, consistent with context-dependent area loss under patchification}{figure.19}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {\unhbox \voidb@x \hbox {X-}0a}Reproducibility and data availability.}{12}{paragraph.10.0.0.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {XI}Conclusion}{12}{section.11}}
+\@writefile{toc}{\contentsline {section}{Appendix\nobreakspace  A: Additional Optimizer Diagnostics}{13}{section*.1}}
+\@writefile{toc}{\contentsline {section}{Appendix\nobreakspace  B: Trace-Based Surface and Trajectory Supplementary Plots}{13}{section*.2}}
+\newlabel{sec:appendix_traces}{{B}{13}{\appendixname \nobreakspace \thesectiondis \\* Trace-Based Surface and Trajectory Supplementary Plots}{section*.2}{}}
+\@writefile{toc}{\contentsline {section}{Appendix\nobreakspace  C: Parameter-Cloud Geometry Supplementary Plots}{13}{section*.3}}
+\newlabel{sec:appendix_geometry}{{C}{13}{\appendixname \nobreakspace \thesectiondis \\* Parameter-Cloud Geometry Supplementary Plots}{section*.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {20}{\ignorespaces *}}{14}{figure.20}}
+\@writefile{lof}{\contentsline {figure}{\numberline {21}{\ignorespaces *}}{14}{figure.21}}
+\@writefile{lof}{\contentsline {figure}{\numberline {22}{\ignorespaces Additional optimizer output diagnostics across all images (OK runs).}}{14}{figure.22}}
+\newlabel{fig:appendix_optimizer_outputs}{{22}{14}{Additional optimizer output diagnostics across all images (OK runs)}{figure.22}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {23}{\ignorespaces *}}{15}{figure.23}}
+\@writefile{lof}{\contentsline {figure}{\numberline {24}{\ignorespaces *}}{15}{figure.24}}
+\@writefile{lof}{\contentsline {figure}{\numberline {25}{\ignorespaces *}}{15}{figure.25}}
+\@writefile{lof}{\contentsline {figure}{\numberline {26}{\ignorespaces *}}{15}{figure.26}}
+\@writefile{lof}{\contentsline {figure}{\numberline {27}{\ignorespaces *}}{15}{figure.27}}
+\@writefile{lof}{\contentsline {figure}{\numberline {28}{\ignorespaces *}}{15}{figure.28}}
+\@writefile{lof}{\contentsline {figure}{\numberline {29}{\ignorespaces *}}{15}{figure.29}}
+\@writefile{lof}{\contentsline {figure}{\numberline {30}{\ignorespaces Empirical distributions of optimized physics parameters across all images (OK runs).}}{15}{figure.30}}
+\newlabel{fig:appendix_param_hists}{{30}{15}{Empirical distributions of optimized physics parameters across all images (OK runs)}{figure.30}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {31}{\ignorespaces *}}{16}{figure.31}}
+\@writefile{lof}{\contentsline {figure}{\numberline {32}{\ignorespaces *}}{16}{figure.32}}
+\@writefile{lof}{\contentsline {figure}{\numberline {33}{\ignorespaces Best-score-so-far convergence trajectories for additional high-score leaves.}}{16}{figure.33}}
+\newlabel{fig:appendix_traj_high}{{33}{16}{Best-score-so-far convergence trajectories for additional high-score leaves}{figure.33}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {34}{\ignorespaces *}}{16}{figure.34}}
+\@writefile{lof}{\contentsline {figure}{\numberline {35}{\ignorespaces *}}{16}{figure.35}}
+\@writefile{lof}{\contentsline {figure}{\numberline {36}{\ignorespaces Best-score-so-far convergence trajectories for median-score leaves.}}{16}{figure.36}}
+\newlabel{fig:appendix_traj_med}{{36}{16}{Best-score-so-far convergence trajectories for median-score leaves}{figure.36}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {37}{\ignorespaces *}}{16}{figure.37}}
+\@writefile{lof}{\contentsline {figure}{\numberline {38}{\ignorespaces *}}{16}{figure.38}}
+\@writefile{lof}{\contentsline {figure}{\numberline {39}{\ignorespaces Best-score-so-far convergence trajectories for low-score leaves. Note the early plateau compared to high-score leaves.}}{16}{figure.39}}
+\newlabel{fig:appendix_traj_low}{{39}{16}{Best-score-so-far convergence trajectories for low-score leaves. Note the early plateau compared to high-score leaves}{figure.39}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {40}{\ignorespaces *}}{17}{figure.40}}
+\@writefile{lof}{\contentsline {figure}{\numberline {41}{\ignorespaces *}}{17}{figure.41}}
+\@writefile{lof}{\contentsline {figure}{\numberline {42}{\ignorespaces Supplementary solid-3D parameter geometry. (a) Convex hulls show the volumetric extent of global and local parameter clouds. (b) Separation of patches by Dice improvement sign reveals partial clustering of beneficial vs.\ detrimental local re-optimization in parameter space.}}{17}{figure.42}}
+\newlabel{fig:appendix_solid3d}{{42}{17}{Supplementary solid-3D parameter geometry. (a) Convex hulls show the volumetric extent of global and local parameter clouds. (b) Separation of patches by Dice improvement sign reveals partial clustering of beneficial vs.\ detrimental local re-optimization in parameter space}{figure.42}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {43}{\ignorespaces *}}{17}{figure.43}}
+\@writefile{lof}{\contentsline {figure}{\numberline {44}{\ignorespaces *}}{17}{figure.44}}
+\@writefile{lof}{\contentsline {figure}{\numberline {45}{\ignorespaces Supplementary manifold embeddings. (a) t-SNE projection of delta-parameter vectors shows partial clustering of $\Delta D$ groups, confirming that the shift direction carries predictive information. (b) Group-level centroid shifts in PCA space.}}{17}{figure.45}}
+\newlabel{fig:appendix_manifold}{{45}{17}{Supplementary manifold embeddings. (a) t-SNE projection of delta-parameter vectors shows partial clustering of $\Delta D$ groups, confirming that the shift direction carries predictive information. (b) Group-level centroid shifts in PCA space}{figure.45}{}}
+\bibstyle{IEEEtran}
+\bibdata{refs}
+\bibcite{ronneberger2015u}{1}
+\bibcite{he2017mask}{2}
+\bibcite{xie2021segformer}{3}
+\bibcite{kirillov2023segment}{4}
+\bibcite{kass1988snakes}{5}
+\bibcite{oquab2023dinov2}{6}
+\bibcite{hinton2015distilling}{7}
+\bibcite{caselles1997geodesic}{8}
+\bibcite{chan2001active}{9}
+\bibcite{xu1998gvf}{10}
+\bibcite{bertalmio2000navier}{11}
+\bibcite{berry2018color}{12}
+\bibcite{plantcv2025}{13}
+\bibcite{chen2018deeplabv3plus}{14}
+\bibcite{yu2020hyperparam}{15}
+\bibcite{gehan2017high}{16}
+\bibcite{mahlein2016plant}{17}
+\bibcite{singh2016machine}{18}
+\bibcite{jolliffe2016pca}{19}
+\bibcite{vandermaaten2008tsne}{20}
+\bibcite{mcinnes2018umap}{21}
+\bibcite{hansen2001cma}{22}
+\bibcite{jones1998ego}{23}
+\@writefile{toc}{\contentsline {section}{References}{18}{section*.4}}

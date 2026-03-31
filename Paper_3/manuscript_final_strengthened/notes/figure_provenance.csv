@@ -1,0 +1,22 @@
+figure_name,source_output_folder,source_file,analysis_type,main_or_appendix,caption_theme,notes
+fig:paramdist_status,optimizer_summary,status_bar.png,optimizer_diagnostics,main,Optimizer convergence status,100% OK
+fig:objterms_runtime,optimizer_summary,elapsed_seconds_hist.png,optimizer_diagnostics,main,Runtime distribution,Median ~250s
+fig:optimizer_score_hist,optimizer_summary,score_hist.png,optimizer_diagnostics,main,Score distribution,mean=21.10
+fig:thresh_sweep,threshold_sweep,threshold_sweep_plot.png,teacher_student,main,Threshold sensitivity,Optimal at 0.30
+fig:teacher_student_montage,teacher_student_figures,montage_teacher_student.png,teacher_student,main,Qualitative montage,Worst/median/best
+fig:disagreement,standalone,paper_disagreement_montage_roi_thr0p30.png,teacher_student,main,Teacher-empty disagreements,12 cases
+fig:scatter_et_lc,optimizer_summary,scatter_energy_threshold_vs_lesion_count.png,parameter_morphology,main,Threshold vs count,Physical interpretation
+fig:scatter_beta_af,optimizer_summary,scatter_beta_vs_area_frac.png,parameter_morphology,main,Beta vs area fraction,Inflation force
+fig:surface_high,fullbudget_9leaf/surface_plots,surface_DSC_0198_*_energy_threshold_vs_beta.png,trace_surfaces,main,High-score landscape,Sharp optima
+fig:surface_med,fullbudget_9leaf/surface_plots,surface_DSC_0379_*_energy_threshold_vs_beta.png,trace_surfaces,main,Median-score landscape,Intermediate
+fig:surface_low,fullbudget_9leaf/surface_plots,surface_DSC_0261_*_energy_threshold_vs_beta.png,trace_surfaces,main,Low-score landscape,Flat surface
+fig:trajectory_high,fullbudget_9leaf/trajectory_plots,traj_DSC_0198_*_best_score_so_far.png,trace_trajectories,main,Convergence trajectory,Random-to-refine
+fig:pca2d_global_local,parameter_shift_manifold_geometry/plots,pca2d_global_local_dD.png,manifold_geometry,main,PCA 2D global vs local,NEW — centroid shift 1.616
+fig:mean_delta,parameter_shift_manifold_geometry/plots,mean_delta_parameters.png,manifold_geometry,main,Mean parameter shift,NEW — threshold dominant
+fig:cov_ellipsoids,parameter_shift_3d_analysis_solid,pca3d_covariance_ellipsoids.png,solid_3d_geometry,main,Covariance ellipsoids,NEW — centroid shift arrow
+fig:qual_grid,teacher_student_figures,qual_grid_teacher_student.png,teacher_student,main,Dice spectrum grid,6 rows worst-to-best
+fig:patch_area_err_hist,patch_transfer_morphology_plots,hist_area_frac_error.png,morphology_transfer,main,Area fraction error,Underestimation
+fig:patch_count_err_hist,patch_transfer_morphology_plots,hist_count_error.png,morphology_transfer,main,Count error distribution,35% reduction
+fig:patch_area_scatter,patch_transfer_morphology_plots,scatter_teacher_vs_pred_area_frac.png,morphology_transfer,main,Teacher vs predicted area,Below diagonal
+fig:appendix_solid3d,parameter_shift_3d_analysis_solid,"pca3d_convex_hull_global_local.png, pca3d_positive_vs_negative_dD_surfaces.png",solid_3d_geometry,appendix,Hulls and dD separation,NEW
+fig:appendix_manifold,parameter_shift_manifold_geometry/plots,"tsne2d_delta_ddgroup.png, pca_centroid_shift_groups.png",manifold_geometry,appendix,t-SNE and centroid groups,NEW

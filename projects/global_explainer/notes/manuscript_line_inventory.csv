@@ -1,0 +1,17 @@
+path,type,manuscript_line,focus,completeness,supports_paper1,supports_paper2,status,notes
+Paper1_Optimization/,manuscript,optimizer,Gradient-free stochastic optimization of Navier-Stokes active contours,early_draft,yes,no,superseded,~10 pages; no bib; baseline version superseded by Paper_4
+Paper2_Distillation/,manuscript,deployment,Zero-shot lesion segmentation via physics-informed knowledge distillation,early_draft,no,yes,superseded,~7 pages; no bib; baseline version superseded by Paper_5
+Paper_3/,manuscript,both,Integrated optimizer + distillation + manifold manuscript,95%,yes,yes,near_complete,Multiple tex versions; strongest is manuscript_final_strengthened (803 lines); 51+ figures; 3 tables; refs.bib (27 entries)
+Paper_3/manuscript_final_strengthened/,manuscript_version,both,Strongest integrated version,95%,yes,yes,near_complete,803 lines; includes figures and tables directories; strongest Paper_3 variant
+Paper_3/manuscript_update_fullbudget_9leaf/,manuscript_version,both,Full-budget 9-leaf update,90%,yes,yes,near_complete,Intermediate version within Paper_3
+Paper_4/,manuscript,optimizer,Learning an optimizer-derived physics parameterization for lesion phenotyping,100%,yes,no,complete,Full 20-page manuscript in manuscript_physics_learning/; 27 bib entries; 13 main + 5 appendix figures; 6 tables
+Paper_5/,manuscript,deployment,Black-box selective semi-amortized inference for runtime-quality tradeoffs,100%,no,yes,complete,Full 20-page manuscript in manuscript_blackbox_runtime/; 19 bib entries; 9 main + 5 appendix figures; 13 tables
+Paper_6_patch_selective_semiamortized/,manuscript,deployment,Early patch selective semi-amortized study,40%,no,yes,abandoned,Has tex and bib (36 entries); empty figs/tables directories; superseded by fullstudy_v2
+Paper_6_patch_selective_semiamortized_fullstudy_v2/,manuscript,deployment,Full patch selective semi-amortized study,95%,no,yes,near_complete,29 figures; 6 CSV tables; 47 bib entries
+Paper_7_integrated_fullleaf_patch_selective_study/,manuscript,both,Integrated full-leaf vs patch selective comparison,98%,yes,yes,near_complete,26 figures; 8 CSV tables; 47 bib entries
+Paper_7_integrated_full_vs_patch_leaves_18p7_v1/,manuscript,both,Rigorous matched full-vs-patch comparison on 18.7 domain,100%,yes,yes,complete,36 figures; 9 CSV tables; 29 bib entries; strongest Paper_7 variant
+Paper_7_integrated_full_vs_patch_leaves_18p7_v2_fromscratch/,manuscript,both,Clean rewrite placeholder,0%,yes,yes,empty,Empty placeholder directory; no content
+Paper_8_integrated_full_vs_patch_leaves_18p7_codex_v1/,manuscript,both,Codex-generated comparison placeholder,0%,yes,yes,empty,Empty placeholder directory; no content
+Paper_9_integrated_full_vs_patch_leaves_18p7_codex_slurm_shadow_v1/,manuscript,both,Independent Codex replication with SLURM shadow,100%,yes,yes,complete,18 figures; 20 tables; 5 bib entries; independent replication
+refs.bib,bibliography,both,Top-level bibliography,n/a,yes,yes,active,Shared reference file
+refs_1.bib,bibliography,both,Secondary bibliography,n/a,yes,yes,active,Additional references

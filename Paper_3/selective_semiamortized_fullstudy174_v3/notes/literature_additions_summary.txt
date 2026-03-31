@@ -1,0 +1,36 @@
+Literature Additions Summary — v3
+====================================
+
+The v3 manuscript substantially strengthens the related work from 3 short
+paragraphs (v2) to 6 detailed subsections covering:
+
+1. AMORTIZED AND SEMI-AMORTIZED INFERENCE (5 citations)
+   - VAEs, simulation-based inference, neural posterior estimation
+   - Semi-amortized VAEs, iterative amortized inference
+   - Test-time adaptation as related paradigm
+
+2. SELECTIVE PREDICTION AND ABSTENTION (3 citations)
+   - Risk-coverage tradeoff theory
+   - Selective classification under domain shift
+   - Extension from binary to three-tier routing
+
+3. UNCERTAINTY QUANTIFICATION (4 citations)
+   - Deep ensembles (core method)
+   - MC-dropout alternative
+   - Uncertainty under distribution shift
+   - Calibration of regression models
+
+4. FOUNDATION MODELS FOR VISION (4 citations)
+   - DINOv2, register tokens, ResNet, SAM as context
+
+5. PHYSICS-INFORMED AND PHENOTYPING MODELS (8 citations)
+   - PINNs, physics-informed ML survey
+   - Active contours
+   - Plant phenotyping: disease imaging, deep learning, platforms
+
+6. COST-SENSITIVE AND ADAPTIVE COMPUTATION (3 citations)
+   - Cost-sensitive learning
+   - Bayesian optimization as alternative
+   - Conformal prediction for future work
+
+Total: 36 references (up from 15 in pilot)

@@ -1,0 +1,28 @@
+citation_key,topic,where_used_in_paper,why_relevant,linked_experiment_or_figure,notes
+kass1988snakes,Active contour models (Snakes),Introduction + Related Work 2.1 + Math Framework,Foundational reference for snake-based segmentation; establishes internal energy formulation,All mask/overlay outputs,Original snakes paper — core of the methodology
+caselles1997geodesic,Geodesic active contours,Related Work 2.1,Improved robustness to weak edges and topology changes; provides theoretical context,—,Extends snakes to level-set framework
+chan2001active,Chan-Vese active contours without edges,Related Work 2.1,Region-based approach that doesn't require edges; alternative to edge-based snakes,—,Key reference for region-based contour methods
+bertalmio2000navier,Navier-Stokes inpainting,Related Work 2.2,Pioneered fluid-dynamics analogies in computer vision; inspires the diffusion formulation,—,Namesake inspiration for the diffusion engine
+xu1998gvf,Gradient Vector Flow,Math Framework 4.1,Related diffusion approach for enlarging snake capture range; predecessor to the energy-field diffusion,—,GVF is the closest prior art to the diffusion engine
+ronneberger2015u,U-Net,Introduction + Related Work 2.3 + Experiments,Standard encoder-decoder for biomedical segmentation; used as the student architecture,teacher_student_figures/ + patches/,Student model architecture
+he2017mask,Mask R-CNN,Introduction + Related Work 2.3,Instance-aware segmentation baseline reference,—,Context for deep learning approaches
+chen2018deeplabv3plus,DeepLabv3+,Related Work 2.3,Atrous convolution and encoder-decoder refinement reference,—,Alternative segmentation architecture
+xie2021segformer,SegFormer,Introduction + Related Work 2.3 + Baselines,Transformer-based segmentation; recommended baseline,—,Represents transformer-era methods
+kirillov2023segment,SAM (Segment Anything),Introduction + Related Work 2.3 + Baselines,Foundation model for segmentation; recommended baseline,—,Represents foundation model era
+oquab2023dinov2,DINOv2,Introduction + Related Work 2.3,Self-supervised visual encoder for small-data regimes; relevant for feature reuse,—,Potential encoder for future student models
+hinton2015distilling,Knowledge distillation,Introduction + Discussion,Theoretical basis for teacher-student training paradigm,teacher_student_figures/,Motivates pseudo-label distillation approach
+raissi2019physics,Physics-Informed Neural Networks,—,Physics + ML integration context,—,Referenced in bib but not explicitly cited in current manuscript text
+he2016deep,ResNet,—,Deep residual learning reference,—,Referenced in bib but not explicitly cited in current manuscript text
+liu2021swin,Swin Transformer,—,Hierarchical vision transformer,—,Referenced in bib but not explicitly cited in current manuscript text
+yu2020hyperparam,Hyperparameter optimization survey,Related Work 2.4 + Discussion,Establishes that objectives and search-space matter more than optimizer for small budgets; justifies simple search,ablations_search/,Key justification for gradient-free approach
+hansen2001cma,CMA-ES,Discussion,Reference optimizer for landscape analysis context,—,Broader optimization landscape literature
+jones1998ego,Efficient Global Optimization (EGO),Discussion,Bayesian optimization reference for expensive black-box functions,—,Alternative optimization framework for context
+jolliffe2016pca,PCA review,Problem Setup 3.2 + Results 8.5,Dimensionality reduction for parameter-cloud analysis,parameter_shift_manifold_geometry/ + Figs 13-15,Core analysis tool for manifold geometry
+vandermaaten2008tsne,t-SNE,Problem Setup 3.2 + Appendix C,Nonlinear embedding for delta-parameter visualization,parameter_shift_manifold_geometry/ + Fig C2,Supplementary manifold analysis
+mcinnes2018umap,UMAP,Problem Setup 3.2,Nonlinear manifold embedding reference,parameter_shift_manifold_geometry/,Mentioned but t-SNE used more prominently
+gehan2017high,High-throughput phenotyping review,Related Work 2.5 + Discussion,Establishes need for repeatable trait-producing pipelines,—,Motivates phenotyping-ready pipeline design
+ubbens2017deep,Deep Plant Phenomics,—,Deep learning for plant phenotyping,—,Referenced in bib but sparse in text
+berry2018color,Color calibration in phenotyping,Related Work 2.2 + Objective (Sec 5.2.2),Motivates Lab-space chromatic separability term and careful pre-processing,ablations_objective/ (no_color_dist),Directly motivates the color distance objective term
+plantcv2025,PlantCV v4,Related Work 2.2 + 2.5 + Appendix A + Discussion,Standardized phenotyping workflows; emphasizes reproducibility and calibration,—,Key phenotyping tool reference; cited multiple times
+singh2016machine,ML for stress phenotyping,Related Work 2.5 + Discussion,Growing emphasis on automated feature extraction in phenotyping,—,Context for ML approaches to plant phenotyping
+mahlein2016plant,Plant disease detection by imaging,Related Work 2.5,Demands for precision agriculture imaging,—,Domain context reference

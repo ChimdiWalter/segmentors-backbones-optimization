@@ -1,0 +1,30 @@
+Main vs Appendix Figures — v3
+===============================
+
+MAIN PAPER FIGURES (8):
+  Fig 1: Runtime-Quality Pareto frontier (fig1_pareto_real.pdf)
+  Fig 2: Physics score recovery by budget (fig2_score_recovery.pdf)
+  Fig 3: Calibration plot (fig9_calibration.pdf)
+  Fig 4: Risk-coverage curve (fig10_risk_coverage.pdf)
+  Fig 5: Phenotype PCA consistency (fig7_phenotype_pca.pdf)
+  Fig 6: Convex hull overlap (geometry_convex_hull_2d.pdf)
+  Fig 7: Covariance ellipsoids (geometry_covariance_ellipsoids.pdf)
+  Fig 8: PCA displacement analysis (geometry_pca_displacement.pdf)
+
+APPENDIX FIGURES (7):
+  Fig A1: Residual distributions (fig13_residual_distributions.pdf)
+  Fig A2: Feature PCA (fig14_feature_pca.pdf)
+  Fig A3: Selective routing in PCA (geometry_selective_routing_pca.pdf)
+  Fig A4: Displacement histogram (geometry_displacement_hist.pdf)
+  Fig A5: 3D PCA (geometry_pca_3d.pdf)
+  Fig A6: Backbone comparison (fig15_backbone_comparison.pdf)
+  Fig A7: Score-tier analysis (fig11_score_tier.pdf)
+
+ADDITIONAL MAIN-BODY FIGURES (5):
+  Fig 3a: Method comparison bar chart (fig3_method_comparison.pdf)
+  Fig 6a: Selective policy scatter + pie (fig6_selective.pdf)
+  Fig 8a: Per-parameter scatter (fig8_per_param_scatter.pdf)
+  Fig 9a: Learning curves (fig4_learning_curves.pdf)
+  Fig 10a: Ensemble size ablation (fig12_ensemble_size.pdf)
+
+TOTAL: 20 figures (vs 9 in v2)

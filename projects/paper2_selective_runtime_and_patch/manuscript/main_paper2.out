@@ -1,0 +1,22 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Related Work}{}% 2
+\BOOKMARK [1][-]{section.3}{Problem Formulation}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{Dual Oracle Targets}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{Selective Semi-Amortized Routing}{section.3}% 5
+\BOOKMARK [1][-]{section.4}{Experimental Substrates and Provenance}{}% 6
+\BOOKMARK [1][-]{section.5}{Results}{}% 7
+\BOOKMARK [2][-]{subsection.5.1}{Matched Full-Leaf vs Patchwise Comparison: Better Local Detail, But a Real Oracle Gap}{section.5}% 8
+\BOOKMARK [2][-]{subsection.5.2}{Routing Exposes a Runtime\205Quality Frontier Instead of a Single Point Estimate}{section.5}% 9
+\BOOKMARK [2][-]{subsection.5.3}{Calibration and Risk\205Coverage Are Good Enough for Thresholding, Not for Strong Guarantees}{section.5}% 10
+\BOOKMARK [2][-]{subsection.5.4}{Branch Anatomy: Aggregation, Patch Geometry, Heterogeneity, and Parameter Difficulty}{section.5}% 11
+\BOOKMARK [2][-]{subsection.5.5}{Selective Full Study: Thresholds Help, but Learning Curves and Backbones Are Not Uniformly Well-Behaved}{section.5}% 12
+\BOOKMARK [2][-]{subsection.5.6}{Morphology Fidelity and Phenotype Consistency Show Why Deployment Quality Is Not Only About Parameter Error}{section.5}% 13
+\BOOKMARK [2][-]{subsection.5.7}{Leaf Panels and Failure Cases Show What the Numbers Mean}{section.5}% 14
+\BOOKMARK [2][-]{subsection.5.8}{Backbone and Robustness Evidence Are Mixed, Which Strengthens the Paper's Honesty}{section.5}% 15
+\BOOKMARK [1][-]{section.6}{Discussion}{}% 16
+\BOOKMARK [2][-]{subsection.6.1}{What the Evidence Supports}{section.6}% 17
+\BOOKMARK [2][-]{subsection.6.2}{What the Paper Does Not Support}{section.6}% 18
+\BOOKMARK [2][-]{subsection.6.3}{Scope and Distinction from Geometric Analysis}{section.6}% 19
+\BOOKMARK [2][-]{subsection.6.4}{Limitations}{section.6}% 20
+\BOOKMARK [1][-]{section.7}{Conclusion}{}% 21
+\BOOKMARK [1][-]{appendix.A}{Additional Deployment Views}{}% 22

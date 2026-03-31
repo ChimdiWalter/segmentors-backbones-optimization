@@ -1,0 +1,27 @@
+NEW MATHEMATICS ADDED
+======================
+
+Location: Section III-C "Parameter-Cloud Geometry" (new subsection)
+
+1. Parameter shift definition:
+   delta_j = theta_j^ell - theta_j^g in R^7
+   where theta^g is the globally optimized parameter vector and
+   theta^ell is the locally re-optimized parameter vector for patch j.
+
+2. Centroid shift vector:
+   Delta_bar_theta = bar_theta^ell - bar_theta^g
+   Magnitude ||Delta_bar_theta|| quantifies the systematic displacement
+   of local solutions from global solutions in standardized units.
+
+3. Covariance ellipsoids:
+   Sigma^g, Sigma^ell define 2-sigma ellipsoids whose overlap
+   measures the structural similarity of global and local solution sets.
+
+4. k-NN classification agreement:
+   For each point in the delta cloud, check if k=7 nearest neighbors
+   share the same Delta-D group (local-better, neutral, local-worse).
+   Agreement above random baseline (1/3) indicates predictive structure.
+
+These definitions support the new parameter-cloud geometry results section
+(Section V-G) and are consistent with the existing notation for theta,
+theta*, and the search space Theta.

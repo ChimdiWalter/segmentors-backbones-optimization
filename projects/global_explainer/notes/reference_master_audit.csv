@@ -1,0 +1,47 @@
+citation_key,title,authors,venue,year,doi_or_source,verified,used_in_paper1,used_in_paper2,topic_category,notes
+kass1988snakes,Snakes: Active contour models,"Kass, Witkin, Terzopoulos",IJCV,1988,doi:10.1007/BF00133570,yes,yes,no,classical_segmentation,Foundational active contour paper. Duplicate in Paper 2 as B_Kass1988.
+caselles1997geodesic,Geodesic active contours,"Caselles, Kimmel, Sapiro",IJCV,1997,doi:10.1023/A:1007979827043,yes,yes,no,classical_segmentation,Level-set based active contours.
+chan2001active,Active contours without edges,"Chan, Vese",IEEE TIP,2001,doi:10.1109/83.902291,yes,yes,no,classical_segmentation,Region-based segmentation without edge dependence.
+bertalmio2000navier,"Navier-stokes, fluid dynamics, and image and video inpainting","Bertalmio, Bertozzi, Sapiro",CVPR,2001,,yes,yes,no,image_inpainting,QUARANTINE: Citation key says 2000 but proceedings year is 2001. Minor key-year mismatch.
+xu1998gvf,"Snakes, shapes, and gradient vector flow","Xu, Prince",IEEE TIP,1998,doi:10.1109/83.661186,yes,yes,no,classical_segmentation,Gradient vector flow extension to snakes.
+ronneberger2015u,U-net: Convolutional networks for biomedical image segmentation,"Ronneberger, Fischer, Brox",arXiv,2015,arXiv:1505.04597,yes,yes,no,deep_segmentation,Foundational encoder-decoder architecture.
+hinton2015distilling,Distilling the knowledge in a neural network,"Hinton, Vinyals, Dean",arXiv,2015,arXiv:1503.02531,yes,yes,no,knowledge_distillation,Knowledge distillation framework.
+raissi2019physics,Physics-informed neural networks,"Raissi, Perdikaris, Karniadakis",JCP,2019,doi:10.1016/j.jcp.2018.10.045,yes,yes,no,physics_informed_ml,PINNs framework. Duplicate in Paper 2 as B_Raissi2019.
+he2016deep,Deep residual learning for image recognition,"He, Zhang, Ren, Sun",CVPR,2016,doi:10.1109/CVPR.2016.90,yes,yes,no,deep_learning_architectures,ResNet. Duplicate in Paper 2 as B_He2016.
+he2017mask,Mask R-CNN,"He, Gkioxari, Dollar, Girshick",arXiv,2017,arXiv:1703.06870,yes,yes,no,deep_segmentation,Instance segmentation framework.
+chen2018deeplabv3plus,Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation,Chen et al.,arXiv,2018,arXiv:1802.02611,yes,yes,no,deep_segmentation,DeepLabv3+ semantic segmentation.
+xie2021segformer,SegFormer: Simple and efficient design for semantic segmentation with transformers,Xie et al.,arXiv,2021,arXiv:2105.15203,yes,yes,no,transformer_segmentation,Transformer-based segmentation.
+liu2021swin,Swin Transformer: Hierarchical vision transformer using shifted windows,Liu et al.,ICCV,2021,doi:10.1109/ICCV48922.2021.00986,yes,yes,no,transformer_architectures,Hierarchical vision transformer.
+kirillov2023segment,Segment Anything,Kirillov et al.,arXiv,2023,arXiv:2304.02643,yes,yes,no,foundation_models,SAM foundation model for segmentation.
+oquab2023dinov2,DINOv2: Learning robust visual features without supervision,Oquab et al.,arXiv,2023,arXiv:2304.07193,yes,yes,yes,foundation_models,Self-supervised vision backbone. Duplicate in Paper 2 as B_Oquab2024.
+yu2020hyperparam,Hyper-parameter optimization: A review of algorithms and applications,"Yu, Zhu",arXiv,2020,arXiv:2003.05689,yes,yes,no,optimization,HPO survey.
+gehan2017high,High-throughput phenotyping,"Gehan, Kellogg",Am J Botany,2017,doi:10.3732/ajb.1700044,yes,yes,yes,plant_phenotyping,HTP review. Duplicate in Paper 2 as B_Gehan2017.
+ubbens2017deep,Deep Plant Phenomics: A deep learning platform for complex plant phenotyping tasks,"Ubbens, Stavness",Front Plant Sci,2017,doi:10.3389/fpls.2017.01190,yes,yes,no,plant_phenotyping,Deep learning for plant phenotyping.
+berry2018color,A method for rapid accurate color correction for plant phenotyping,Berry et al.,PeerJ,2018,doi:10.7717/peerj.5765,yes,yes,no,plant_phenotyping,Color correction methodology.
+plantcv2025,PlantCV v4,Feldman et al.,bioRxiv,2025,,partial,yes,no,plant_phenotyping,QUARANTINE: bioRxiv preprint. May not have final publication yet. Verify status before submission.
+hansen2001cma,Completely derandomized self-adaptation in evolution strategies,"Hansen, Ostermeier",Evol Comp,2001,doi:10.1162/106365601750190398,yes,yes,no,optimization,CMA-ES evolutionary strategy.
+jones1998ego,Efficient global optimization of expensive black-box functions,"Jones, Schonlau, Welch",J Global Opt,1998,doi:10.1023/A:1008306431147,yes,yes,no,optimization,Bayesian optimization / EGO.
+jolliffe2016pca,Principal component analysis: a review and recent developments,"Jolliffe, Cadima",Phil Trans Roy Soc A,2016,doi:10.1098/rsta.2015.0202,yes,yes,yes,dimensionality_reduction,PCA review.
+mcinnes2018umap,UMAP: Uniform manifold approximation and projection for dimension reduction,"McInnes, Healy, Melville",arXiv,2018,arXiv:1802.03426,yes,yes,no,dimensionality_reduction,UMAP nonlinear DR method.
+vandermaaten2008tsne,Visualizing data using t-SNE,"van der Maaten, Hinton",JMLR,2008,,yes,yes,no,dimensionality_reduction,t-SNE visualization.
+singh2016machine,Machine learning for high-throughput stress phenotyping in plants,Singh et al.,Trends Plant Sci,2016,doi:10.1016/j.tplants.2015.10.015,yes,yes,yes,plant_phenotyping,ML for plant stress phenotyping.
+mahlein2016plant,Plant disease detection by imaging sensors: parallels and specific demands,Mahlein,Plant Disease,2016,doi:10.1094/PDIS-03-15-0340-FE,yes,yes,yes,plant_phenotyping,Imaging sensors for plant disease. Duplicate in Paper 2 as B_Mahlein2016.
+B_Elyaniv2010,On the foundations of noise-free selective classification,"El-Yaniv, Wiener",JMLR,2010,,yes,no,yes,selective_classification,Theoretical foundations for selective classification.
+B_Geifman2017,Selective classification for deep neural networks,"Geifman, El-Yaniv",NeurIPS,2017,,yes,no,yes,selective_classification,Selective prediction for DNNs.
+B_Geifman2019,"SelectiveNet: A deep neural network with an integrated reject option","Geifman, El-Yaniv",ICML,2019,,yes,no,yes,selective_classification,End-to-end selective classification.
+B_Lakshminarayanan2017,Simple and scalable predictive uncertainty estimation using deep ensembles,Lakshminarayanan et al.,NeurIPS,2017,,yes,no,yes,uncertainty_estimation,Deep ensembles for uncertainty.
+B_Gal2016,Dropout as a Bayesian approximation: Representing model uncertainty in deep learning,"Gal, Ghahramani",ICML,2016,,yes,no,yes,uncertainty_estimation,MC Dropout for Bayesian inference.
+B_Ovadia2019,Can you trust your model's uncertainty? Evaluating predictive uncertainty under dataset shift,Ovadia et al.,NeurIPS,2019,,yes,no,yes,uncertainty_estimation,Uncertainty under distribution shift.
+B_Guo2017,On calibration of modern neural networks,Guo et al.,ICML,2017,,yes,no,yes,calibration,Temperature scaling and calibration.
+B_Kim2018,Semi-amortized variational autoencoders,Kim et al.,ICML,2018,,yes,no,yes,amortized_inference,Semi-amortized VAE refinement.
+B_Marino2018,Iterative amortized inference,Marino et al.,ICML,2018,,yes,no,yes,amortized_inference,Iterative refinement for amortized inference.
+B_Zaheer2017,Deep Sets,Zaheer et al.,NeurIPS,2017,,yes,no,yes,set_functions,Permutation-invariant architectures.
+B_Ilse2018,Attention-based deep multiple instance learning,Ilse et al.,ICML,2018,,yes,no,yes,attention_mechanisms,Attention MIL pooling.
+B_He2016,Deep residual learning for image recognition,He et al.,CVPR,2016,,yes,no,yes,deep_learning_architectures,DUPLICATE of he2016deep. Needs deduplication.
+B_Oquab2024,DINOv2: Learning robust visual features without supervision,Oquab et al.,arXiv,2023,,yes,no,yes,foundation_models,DUPLICATE of oquab2023dinov2. Key says 2024 but content is 2023. Needs deduplication.
+B_Mahlein2016,Plant disease detection by imaging sensors,Mahlein,Plant Disease,2016,,yes,no,yes,plant_phenotyping,DUPLICATE of mahlein2016plant. Needs deduplication.
+B_Raissi2019,Physics-informed neural networks,Raissi et al.,JCP,2019,,yes,no,yes,physics_informed_ml,DUPLICATE of raissi2019physics. Needs deduplication.
+B_Wilcoxon1945,Individual comparisons by ranking methods,Wilcoxon,Biometrics,1945,doi:10.2307/3001968,yes,no,yes,statistics,Wilcoxon signed-rank test.
+B_Efron1979,Bootstrap methods: Another look at the jackknife,Efron,Annals of Statistics,1979,doi:10.1214/aos/1176344552,yes,no,yes,statistics,Bootstrap resampling.
+B_Kass1988,Snakes: Active contour models,"Kass, Witkin, Terzopoulos",IJCV,1988,,yes,no,yes,classical_segmentation,DUPLICATE of kass1988snakes. Needs deduplication.
+B_Gehan2017,High-throughput phenotyping,"Gehan, Kellogg",Am J Botany,2017,,yes,no,yes,plant_phenotyping,DUPLICATE of gehan2017high. Needs deduplication.

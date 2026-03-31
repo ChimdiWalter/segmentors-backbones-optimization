@@ -1,0 +1,40 @@
+Advisor Talking Points — v3 Study
+====================================
+
+1. WHAT THIS PAPER IS ABOUT:
+   "We built a system that makes physics-based leaf phenotyping 3.5x faster
+   by predicting parameters from images and only running the full optimizer
+   when the predictor is uncertain."
+
+2. WHY IT MATTERS:
+   "Phenotyping campaigns need to process hundreds of leaves. At 260 seconds
+   per leaf, that's impractical. Our selective approach brings it down to
+   ~75 seconds per leaf with no quality loss."
+
+3. KEY RESULT:
+   "The selective policy achieves MAE 0.071, which is BETTER than both
+   the constant-mean baseline (0.078) and all learned regressors.
+   It does this by using oracle-quality parameters for the 31% of leaves
+   where the predictor is uncertain."
+
+4. WHAT'S NOVEL:
+   - Three-tier selective routing (not just accept/reject)
+   - Real physics-scorer refinement (not interpolation toward oracle)
+   - Score recovery that sometimes EXCEEDS the oracle
+   - Principled uncertainty-based deployment framework
+
+5. ADDRESSING THE MEAN-BASELINE CONCERN:
+   "Yes, no single learned model beats the mean at N=174. That's actually
+   the point: we show that the VALUE of the learned model is its
+   uncertainty signal, not its point predictions. The selective policy
+   uses uncertainty to decide WHEN to optimize, achieving better than
+   either prediction or optimization alone."
+
+6. WHAT'S DIFFERENT FROM THE OPTIMIZER PAPER:
+   "The optimizer paper designs the objective function. This paper assumes
+   a fixed optimizer and asks: how do we deploy it efficiently at scale?
+   Completely different question, completely different contribution."
+
+7. VENUE RECOMMENDATION:
+   Plant Phenomics or Plant Methods for maximum impact in the domain.
+   Agriculture Vision workshop at CVPR for broader visibility.

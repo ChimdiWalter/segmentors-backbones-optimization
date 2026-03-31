@@ -1,0 +1,21 @@
+WHAT CHANGED (PAPER A)
+======================
+Previous state:
+- Earlier package draft was 11 pages and underused the extensive optimization/manifold evidence.
+- The draft still carried wording and citation remnants from other manuscript lines.
+
+Current state:
+- Expanded to a 20-page full manuscript.
+- Added explicit lineage accounting for:
+  - integrated_full_vs_patch_manuscript.pdf
+  - main_integrated_full_vs_patch_codex_v1.pdf
+  - main_speciesref_fixed-1-1.pdf
+- Recentered the narrative on optimizer/manifold outputs.
+- Added many extensive-study figures already present in the repo:
+  - manifold and solid-3D geometry
+  - teacher-target distributions
+  - leaf montages
+  - representative optimization landscapes and traces
+- Added tables for geometry, refinement budgets, morphology fidelity, per-parameter difficulty, and representation/phenotype consistency.
+- Removed the weak PlantCV citation rather than carrying an uncertain bibliographic detail into the final draft.
+- Clarified throughout that the primary image collections are leaves and 18.7, both leaf-image datasets, while Paper A draws its main evidence from the leaves-centered optimizer/manifold line.

@@ -1,0 +1,2 @@
+patch_size,stride,patches_per_leaf_leaves,patches_per_leaf_external,n_total_patches,n_leaves_main,n_leaves_external
+224,112,5,3,1059,174,63

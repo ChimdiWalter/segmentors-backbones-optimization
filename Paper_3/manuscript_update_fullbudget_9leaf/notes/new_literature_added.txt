@@ -1,0 +1,12 @@
+New Literature Added
+====================
+
+1. hansen2001cma - Hansen & Ostermeier (2001): CMA-ES
+   Reason: canonical reference for derivative-free optimization; contextualizes
+   our random-restart hill climbing as a simpler but effective alternative.
+
+2. jones1998ego - Jones, Schonlau, Welch (1998): Efficient Global Optimization
+   Reason: Bayesian optimization baseline reference for objective landscape discussion.
+
+3. muller2019trivial - Mueller et al. (2019): Trivial or impossible landscapes
+   Reason: relates to our finding that some leaves have flat/trivial objective landscapes.

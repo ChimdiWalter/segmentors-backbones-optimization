@@ -1,0 +1,62 @@
+Training on: cuda
+[Dataset] Loaded 4025 patch pairs (dropped 0).
+Epoch 01/40 | Train Loss: 0.6366, Train IoU: 0.2633 | Val Loss: 0.5816, Val IoU: 0.3517
+  [Saved best] lesion_unet_patches_best.pth
+Epoch 02/40 | Train Loss: 0.5373, Train IoU: 0.3396 | Val Loss: 0.5092, Val IoU: 0.3572
+  [Saved best] lesion_unet_patches_best.pth
+Epoch 03/40 | Train Loss: 0.4761, Train IoU: 0.3626 | Val Loss: 0.4518, Val IoU: 0.3683
+  [Saved best] lesion_unet_patches_best.pth
+Epoch 04/40 | Train Loss: 0.4345, Train IoU: 0.3755 | Val Loss: 0.4064, Val IoU: 0.4204
+  [Saved best] lesion_unet_patches_best.pth
+Epoch 05/40 | Train Loss: 0.4031, Train IoU: 0.3818 | Val Loss: 0.3790, Val IoU: 0.3910
+  [Saved best] lesion_unet_patches_best.pth
+Epoch 06/40 | Train Loss: 0.3818, Train IoU: 0.3928 | Val Loss: 0.3559, Val IoU: 0.4318
+  [Saved best] lesion_unet_patches_best.pth
+Epoch 07/40 | Train Loss: 0.3693, Train IoU: 0.3979 | Val Loss: 0.3469, Val IoU: 0.4356
+  [Saved best] lesion_unet_patches_best.pth
+Epoch 08/40 | Train Loss: 0.3621, Train IoU: 0.4033 | Val Loss: 0.3430, Val IoU: 0.4402
+  [Saved best] lesion_unet_patches_best.pth
+Epoch 09/40 | Train Loss: 0.3549, Train IoU: 0.4083 | Val Loss: 0.3306, Val IoU: 0.4446
+  [Saved best] lesion_unet_patches_best.pth
+Epoch 10/40 | Train Loss: 0.3517, Train IoU: 0.4045 | Val Loss: 0.3341, Val IoU: 0.4262
+Epoch 11/40 | Train Loss: 0.3500, Train IoU: 0.4137 | Val Loss: 0.3308, Val IoU: 0.4341
+Epoch 12/40 | Train Loss: 0.3468, Train IoU: 0.4174 | Val Loss: 0.3546, Val IoU: 0.3853
+Epoch 13/40 | Train Loss: 0.3443, Train IoU: 0.4196 | Val Loss: 0.3292, Val IoU: 0.4401
+  [Saved best] lesion_unet_patches_best.pth
+Epoch 14/40 | Train Loss: 0.3400, Train IoU: 0.4255 | Val Loss: 0.3242, Val IoU: 0.4423
+  [Saved best] lesion_unet_patches_best.pth
+Epoch 15/40 | Train Loss: 0.3394, Train IoU: 0.4243 | Val Loss: 0.3256, Val IoU: 0.4466
+Epoch 16/40 | Train Loss: 0.3406, Train IoU: 0.4268 | Val Loss: 0.3205, Val IoU: 0.4502
+  [Saved best] lesion_unet_patches_best.pth
+Epoch 17/40 | Train Loss: 0.3388, Train IoU: 0.4263 | Val Loss: 0.3333, Val IoU: 0.4233
+Epoch 18/40 | Train Loss: 0.3376, Train IoU: 0.4239 | Val Loss: 0.3270, Val IoU: 0.4434
+Epoch 19/40 | Train Loss: 0.3382, Train IoU: 0.4271 | Val Loss: 0.3294, Val IoU: 0.4463
+Epoch 20/40 | Train Loss: 0.3354, Train IoU: 0.4316 | Val Loss: 0.3238, Val IoU: 0.4503
+Epoch 21/40 | Train Loss: 0.3385, Train IoU: 0.4294 | Val Loss: 0.3192, Val IoU: 0.4524
+  [Saved best] lesion_unet_patches_best.pth
+Epoch 22/40 | Train Loss: 0.3358, Train IoU: 0.4326 | Val Loss: 0.3357, Val IoU: 0.4230
+Epoch 23/40 | Train Loss: 0.3341, Train IoU: 0.4320 | Val Loss: 0.3204, Val IoU: 0.4587
+Epoch 24/40 | Train Loss: 0.3311, Train IoU: 0.4355 | Val Loss: 0.3180, Val IoU: 0.4622
+  [Saved best] lesion_unet_patches_best.pth
+Epoch 25/40 | Train Loss: 0.3334, Train IoU: 0.4327 | Val Loss: 0.3236, Val IoU: 0.4547
+Epoch 26/40 | Train Loss: 0.3330, Train IoU: 0.4346 | Val Loss: 0.3182, Val IoU: 0.4364
+Epoch 27/40 | Train Loss: 0.3290, Train IoU: 0.4418 | Val Loss: 0.3264, Val IoU: 0.4453
+Epoch 28/40 | Train Loss: 0.3318, Train IoU: 0.4370 | Val Loss: 0.3190, Val IoU: 0.4537
+Epoch 29/40 | Train Loss: 0.3298, Train IoU: 0.4365 | Val Loss: 0.3249, Val IoU: 0.4466
+Epoch 30/40 | Train Loss: 0.3307, Train IoU: 0.4371 | Val Loss: 0.3298, Val IoU: 0.4453
+Epoch 31/40 | Train Loss: 0.3290, Train IoU: 0.4386 | Val Loss: 0.3168, Val IoU: 0.4631
+  [Saved best] lesion_unet_patches_best.pth
+Epoch 32/40 | Train Loss: 0.3275, Train IoU: 0.4417 | Val Loss: 0.3203, Val IoU: 0.4517
+Epoch 33/40 | Train Loss: 0.3288, Train IoU: 0.4446 | Val Loss: 0.3195, Val IoU: 0.4553
+Epoch 34/40 | Train Loss: 0.3278, Train IoU: 0.4421 | Val Loss: 0.3193, Val IoU: 0.4510
+Epoch 35/40 | Train Loss: 0.3255, Train IoU: 0.4410 | Val Loss: 0.3140, Val IoU: 0.4635
+  [Saved best] lesion_unet_patches_best.pth
+Epoch 36/40 | Train Loss: 0.3290, Train IoU: 0.4421 | Val Loss: 0.3136, Val IoU: 0.4637
+  [Saved best] lesion_unet_patches_best.pth
+Epoch 37/40 | Train Loss: 0.3267, Train IoU: 0.4421 | Val Loss: 0.3300, Val IoU: 0.4409
+Epoch 38/40 | Train Loss: 0.3250, Train IoU: 0.4440 | Val Loss: 0.3151, Val IoU: 0.4487
+Epoch 39/40 | Train Loss: 0.3236, Train IoU: 0.4453 | Val Loss: 0.3237, Val IoU: 0.4512
+Epoch 40/40 | Train Loss: 0.3258, Train IoU: 0.4439 | Val Loss: 0.3178, Val IoU: 0.4584
+
+Done. Best model: lesion_unet_patches_best.pth
+Final model: lesion_unet_patches_best_final.pth

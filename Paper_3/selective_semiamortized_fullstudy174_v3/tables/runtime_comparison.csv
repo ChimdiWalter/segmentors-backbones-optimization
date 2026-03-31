@@ -1,0 +1,7 @@
+method,runtime_sec
+full_optimizer,260.49
+B4_direct,2.98
+B4_tiny,11.03
+B4_small,17.97
+B4_medium,28.88
+selective_policy,74.69

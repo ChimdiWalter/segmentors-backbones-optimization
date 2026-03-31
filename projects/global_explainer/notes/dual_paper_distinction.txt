@@ -1,0 +1,191 @@
+DUAL-PAPER DISTINCTION ANALYSIS
+=================================
+Date: 2026-03-30
+
+Purpose: Ensure clean intellectual separation between Paper 1 and Paper 2 so
+that reviewers, editors, and readers perceive them as complementary but
+independent contributions with minimal overlap.
+
+================================================================================
+PAPER 1 EXCLUSIVE TERRITORY
+"Gradient-Free Stochastic Optimization of Navier-Stokes Active Contours
+ for Unsupervised High-Throughput Phenotyping"
+================================================================================
+
+The following topics, methods, analyses, and claims belong ONLY to Paper 1.
+Paper 2 must not present these as its own contributions.
+
+METHODS:
+  - Navier-Stokes active contour formulation and physics parameter space
+  - Heuristic objective function design (gradient alignment + chromatic
+    separability + topology terms)
+  - Random-restart hill climbing optimizer architecture
+  - Search strategy: random exploration phase + local refinement phase
+
+ANALYSES:
+  - Objective function ablations (drop-one-term experiments)
+    * Topology term contribution: +11.12 pts
+    * Gradient alignment contribution: +5.09 pts
+  - Search strategy ablations (random-only vs full pipeline)
+    * Random phase captures ~90% of final score
+    * Refinement adds ~10%
+  - Trace-based objective surface analysis
+    * Score-tier-dependent landscape geometry
+    * Sharp peaks for high-score images, flat plateaus for low-score images
+  - Parameter-cloud geometry and manifold structure
+    * PCA: 2 components capture 46.5% variance
+    * t-SNE and UMAP embeddings of solution space
+    * Centroid shift: 1.616 standard deviation units
+  - k-NN agreement analysis
+    * Agreement rate 0.534 vs 0.33 random baseline
+    * Parameter shift direction predicts optimization success
+  - Distilled UNet student (as secondary consequence of optimization)
+    * Mean Dice 0.598, median Dice 0.682
+
+FRAMING:
+  - "How to design an unsupervised optimizer for physics-based segmentation"
+  - Optimization landscape analysis and understanding
+  - Parameter space geometry and structure
+  - Method contribution: the optimizer itself
+
+FIGURES & TABLES (exclusive to P1):
+  - Objective surface trace plots (representative and full-budget)
+  - PCA/t-SNE/UMAP manifold visualizations
+  - Ablation bar charts (objective terms and search phases)
+  - k-NN agreement plots
+  - Optimizer convergence curves
+  - 51+ figures in Paper_3/manuscript_final_strengthened/
+
+================================================================================
+PAPER 2 EXCLUSIVE TERRITORY
+"Selective Semi-Amortized Inference for Runtime-Quality Tradeoffs
+ in Physics-Based Lesion Phenotyping"
+================================================================================
+
+The following topics, methods, analyses, and claims belong ONLY to Paper 2.
+Paper 1 must not present these as its own contributions.
+
+METHODS:
+  - Selective routing policy (direct prediction vs short refinement vs full
+    optimization)
+  - Patchwise aggregation strategy (mean aggregation across patches)
+  - Full-leaf vs patchwise comparison framework
+  - Semi-amortized inference architecture
+  - Uncertainty-based routing decision logic
+
+ANALYSES:
+  - Patchwise vs full-leaf parameter estimation
+    * Patchwise nMAE 0.906 vs full-leaf 1.154
+    * 21.5% improvement, p=0.003
+  - Oracle gap quantification
+    * 0.327 nMAE irreducible floor from granularity mismatch
+  - Selective routing runtime-quality frontier
+    * 3.5-4.7x speedup (260s down to 55-74s)
+  - Calibration analysis
+    * Monotonic uncertainty-error relationship
+    * Directionally correct routing decisions
+  - Per-parameter routing analysis
+    * 5/7 parameters benefit from patchwise
+    * 2/7 parameters favor full-leaf
+    * Beta: 62.5% improvement with patchwise
+  - Cross-collection robustness evaluation
+    * 28 external leaves from collection 18.7
+  - Failure taxonomy
+    * Both good: 29%
+    * Full-leaf only: 20%
+    * Patchwise only: 20%
+    * Both bad: 31%
+
+FRAMING:
+  - "How to allocate compute between prediction and optimization at deployment"
+  - Runtime-quality tradeoff analysis
+  - Deployment-oriented engineering decisions
+  - Method contribution: the routing policy and aggregation strategy
+
+FIGURES & TABLES (exclusive to P2):
+  - Runtime-quality Pareto frontier plots
+  - Risk-coverage curves
+  - Per-parameter nMAE comparison tables
+  - Failure taxonomy quadrant plots
+  - Patchwise vs full-leaf scatter plots
+  - Calibration / reliability diagrams
+  - Cross-collection generalization tables
+
+================================================================================
+SHARED TERRITORY (MINIMAL — REQUIRES CAREFUL MANAGEMENT)
+================================================================================
+
+ITEM 1: Refinement budget table
+  In P1: Framed as "how much refinement helps the optimizer" (search ablation).
+         Emphasis on convergence behavior and diminishing returns.
+  In P2: Framed as "how much refinement budget to allocate per routing tier."
+         Emphasis on runtime cost and quality threshold.
+  MANAGEMENT: Use different table layouts. P1 shows score vs iteration count.
+    P2 shows runtime vs nMAE with routing tier labels. Cite each other.
+
+ITEM 2: Per-parameter difficulty
+  In P1: Framed as "some physics parameters are harder to optimize" (optimizer
+         landscape insight). Discussed in context of surface geometry.
+  In P2: Framed as "some parameters benefit more from patchwise aggregation"
+         (routing policy input). Discussed in context of selective routing.
+  MANAGEMENT: P1 reports difficulty via optimization convergence metrics.
+    P2 reports difficulty via nMAE improvement ratios. Different metrics,
+    different tables, complementary interpretations.
+
+ITEM 3: The 174-image dataset
+  In P1: Primary evaluation set for optimizer convergence and ablations.
+  In P2: Training/evaluation set for routing policy and aggregation study.
+  MANAGEMENT: Both papers describe the dataset. Use consistent numbers but
+    different levels of detail. P1 emphasizes image-level properties relevant
+    to optimization. P2 emphasizes patch-level statistics relevant to
+    aggregation.
+
+ITEM 4: The Navier-Stokes active contour model
+  In P1: Central object of study. Full mathematical formulation presented.
+  In P2: Treated as a black-box optimizer that the routing policy wraps around.
+         Mathematical details referenced via citation to P1.
+  MANAGEMENT: P2 includes a brief model summary (1-2 paragraphs) and cites P1
+    for full details. P2 should NOT re-derive the physics equations.
+
+================================================================================
+ONE-SENTENCE DISTINCTION TEST
+================================================================================
+
+If a reviewer asks "how is this different from your other paper?":
+
+  Paper 1 answer: "Paper 1 designs and analyzes the optimizer; Paper 2 decides
+  when to use it."
+
+  Paper 2 answer: "Paper 1 shows the optimizer works; Paper 2 shows how to
+  deploy it efficiently by routing between direct prediction and optimization."
+
+================================================================================
+VENUE STRATEGY IMPLICATIONS
+================================================================================
+
+Paper 1 fits:
+  - Methods-focused venues (IEEE TPAMI, IJCV, Medical Image Analysis)
+  - Optimization-focused venues (NeurIPS optimization workshop)
+  - The contribution is a METHOD with thorough empirical analysis
+
+Paper 2 fits:
+  - Systems/deployment-focused venues (MLSys, AAAI applied track)
+  - Application-focused venues (Plant Phenomics, Frontiers in Plant Science)
+  - The contribution is a DEPLOYMENT STRATEGY with runtime-quality analysis
+
+Submitting to different venue types minimizes overlap concerns entirely.
+
+================================================================================
+CITATION PROTOCOL
+================================================================================
+
+Paper 1 cites Paper 2: In the discussion/future work, note that a companion
+  paper addresses deployment-time compute allocation using the optimizer
+  developed here.
+
+Paper 2 cites Paper 1: In the methods section, cite Paper 1 as the source of
+  the Navier-Stokes active contour optimizer and heuristic objective. Do not
+  re-derive; reference.
+
+If both are under review simultaneously: Use "Anonymous (under review)" or
+  arXiv preprint citation as appropriate for the venue's policy.

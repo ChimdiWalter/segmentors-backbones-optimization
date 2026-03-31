@@ -1,0 +1,39 @@
+Mathematical Framework Summary — Paper 2
+==========================================
+
+1. Direct Branch
+   theta_hat_direct(x) = f_phi(x)
+   A learned predictor maps a leaf image directly to 7 physics parameters.
+
+2. Patch Branch with Aggregation
+   theta_hat_patch(x) = A({(theta_k, u_k)}_{k=1}^{K})
+   K patches at native resolution, per-patch predictions aggregated.
+   Five aggregation operators:
+   - Mean: simple average
+   - Uncertainty-weighted: inverse-std weighting
+   - Selective mixture: 0.7*mean(high-conf) + 0.3*median(low-conf)
+   - Robust median: element-wise median
+   - Top-k confident: mean of K/2 lowest-uncertainty patches
+
+3. Dual Oracle Targets
+   Full-leaf oracle: theta*_leaf (from exhaustive optimization on whole leaf)
+   Aggregated patch oracle: theta*_patch (from aggregating per-patch optima)
+   Oracle gap: Delta_oracle = ||theta*_leaf - theta*_patch||
+   Measured at 0.327 nMAE — fundamental mismatch between resolutions.
+
+4. Selective Semi-Amortized Routing
+   pi(u) = { DIRECT    if u <= tau_lo
+            { REFINE    if tau_lo < u <= tau_hi
+            { FALLBACK  if u > tau_hi
+   Three-action policy based on uncertainty score u(x).
+   Direct: return amortized prediction immediately (~3s).
+   Refine: short local perturbation search (~11-29s).
+   Fallback: full optimizer (~260s).
+
+5. Key Metrics
+   - nMAE: normalized mean absolute error (relative to parameter ranges)
+   - MAE: mean absolute error
+   - Wilcoxon signed-rank test for paired comparisons
+   - Bootstrap 95% confidence intervals (1000 resamples)
+   - Risk-coverage curves for selective prediction evaluation
+   - Calibration: binned uncertainty vs actual error monotonicity

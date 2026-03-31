@@ -1,0 +1,68 @@
+OUTPUTS PRIORITY MAP
+=====================
+Date: 2026-03-13
+
+PRIORITY 1 — MAIN PAPER (Essential Evidence)
+----------------------------------------------
+1. opt_summary_local.csv                          — Core production run data (all results depend on this)
+2. optimizer_summary/                             — Figs 1-3 (status, runtime, score distributions)
+3. ablations_objective/                           — Table I (objective ablation)
+4. ablations_search/                              — Table II (search ablation)
+5. objective_surface_traces_representative_fullbudget_9leaf/  — Figs 9-12 (trace surfaces + trajectories)
+6. parameter_shift_manifold_geometry/             — Figs 13-14 (PCA, mean delta)
+7. parameter_shift_3d_analysis_solid/             — Fig 15 (covariance ellipsoids)
+8. teacher_student_figures/                       — Figs 5-6, 16 (montages, qualitative grid)
+9. teacher_student_metrics.csv                    — Section 8.1 (baseline distillation metrics)
+10. teacher_student_metrics_roi_thr0p30.csv       — Section 8.1 (ROI-gated metrics)
+11. threshold_sweep.csv + threshold_sweep_plot.png — Fig 4
+12. patch_transfer_morphology_plots/              — Figs 17-19 (area/count histograms, scatter)
+13. patch_transfer_morphology_eval.csv            — Table III
+14. patch_local_opt_v2.csv                        — Table III data source
+
+PRIORITY 2 — APPENDIX (Supporting Evidence)
+---------------------------------------------
+15. optimizer_summary/ (parameter histograms)     — Appendix A (Figs A1-A2)
+16. objective_surface_traces_representative_fullbudget_9leaf/ (additional trajectories) — Appendix B
+17. parameter_shift_3d_analysis_solid/ (hulls, dD surfaces) — Appendix C (Fig C1)
+18. parameter_shift_manifold_geometry/ (t-SNE, centroid groups) — Appendix C (Fig C2)
+19. optimization_manifold_and_solid3d_final/      — Final merged geometry figures
+20. failures_dice_lt_0p3.csv                      — Failure analysis
+21. teacher_empty_cases.csv                       — Teacher-empty diagnostics
+
+PRIORITY 3 — SUPPORTING/DIAGNOSTIC
+-------------------------------------
+22. objective_surface_traces_fullstudy/           — Full-population traces (too many for paper)
+23. objective_surface_traces_representative_fullbudget_plus/ — Extended representative (PARTIAL)
+24. optimization_surface_analysis/                — Earlier surface analysis (superseded)
+25. parameter_shift_3d_analysis/                  — Earlier 3D analysis (superseded)
+26. patch_transfer_morphology_montages/           — Visual montages
+27. patch_transfer_morphology_filled/             — Filled morphology variant
+28. postprocess_sweep.csv                         — Post-processing sweep
+29. montage_patch_opt_*.png                       — Per-leaf montages
+
+PRIORITY 4 — DIAGNOSTIC ONLY / SUPERSEDED
+--------------------------------------------
+30. optimization_surface_analysis_codex/          — Codex style variant
+31. parameter_shift_3d_analysis_solid_codex/      — Codex style variant
+32. objective_surface_traces_representative_fullbudget/ — SUPERSEDED by 9-leaf
+33. optimizer_full/, optimizer_full_alt/           — EMPTY directories
+34. param_predictor/                              — EMPTY (future work)
+35. experiment_summary_master/                    — Prior summary attempt
+
+STRONGEST EVIDENCE FOR THE PAPER
+-----------------------------------
+1. opt_summary_local.csv: 100% convergence across 174 heterogeneous leaves
+2. Ablation Tables I-II: Each objective/search component justified
+3. 9-leaf trace surfaces: Score-tier-dependent landscape geometry
+4. Manifold geometry: 46.5% variance in 2 PCs; k-NN agreement 0.534
+5. Solid-3D ellipsoids: Centroid shift 1.616 std units
+6. Teacher-student: Median Dice 0.682 (teacher-nonempty)
+7. Morphology transfer: Local re-opt reduces count error 35%
+
+WEAKEST / MOST PROVISIONAL EVIDENCE
+--------------------------------------
+1. Teacher-empty disagreements (12 cases) — not resolved
+2. Area underestimation under patchification (0.026 vs 0.169) — structural limitation
+3. fullbudget_plus manifold/solid3d subdirs — NEVER POPULATED
+4. param_predictor — NOT STARTED
+5. fullstudy traces — useful but overwhelming

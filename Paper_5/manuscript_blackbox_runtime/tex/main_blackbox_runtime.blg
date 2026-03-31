@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99d (TeX Live 2018)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: main_blackbox_runtime.aux
+The style file: plainnat.bst
+Database file #1: refs_blackbox_runtime.bib
+You've used 17 entries,
+            2773 wiz_defined-function locations,
+            691 strings with 8118 characters,
+and the built_in function-call counts, 9860 in all, are:
+= -- 845
+> -- 729
+< -- 12
++ -- 245
+- -- 228
+* -- 813
+:= -- 1510
+add.period$ -- 51
+call.type$ -- 17
+change.case$ -- 127
+chr.to.int$ -- 17
+cite$ -- 34
+duplicate$ -- 414
+empty$ -- 691
+format.name$ -- 253
+if$ -- 2062
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 17
+newline$ -- 93
+num.names$ -- 68
+pop$ -- 258
+preamble$ -- 1
+purify$ -- 110
+quote$ -- 0
+skip$ -- 371
+stack$ -- 0
+substring$ -- 325
+swap$ -- 77
+text.length$ -- 5
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 187
+warning$ -- 0
+while$ -- 74
+width$ -- 0
+write$ -- 224

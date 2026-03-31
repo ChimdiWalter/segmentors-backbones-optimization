@@ -1,0 +1,28 @@
+MAIN VS APPENDIX PLAN (PAPER A)
+================================
+Paper identity:
+- Main claim: the optimizer-derived parameterization is structured and learnable enough to justify amortized prediction plus semi-amortized refinement.
+- Explicit non-claim: this paper is not the full-vs-patch deployment paper and not the calibration/routing paper.
+
+Source-line accounting:
+- integrated_full_vs_patch_manuscript.pdf: overlap only in shared refinement-budget and parameter-difficulty evidence.
+- main_integrated_full_vs_patch_codex_v1.pdf: corroborative shadow line only; not a separate narrative source.
+- main_speciesref_fixed-1-1.pdf: used only for selective-study ablations that clarify learnability limits.
+- optimizer/manifold strengthened outputs: primary figure family and narrative center.
+
+Main text curation:
+- Intro and lineage table: explicit separation of the three prior manuscript lines.
+- Geometry core: PCA, convex hulls, compact audited geometry summary.
+- Geometry secondary: embedding consistency, mean displacement, PCA-3D, covariance ellipsoids, raw 3D surfaces.
+- Learnability limits: per-parameter difficulty plus morphology-linked scatter plots.
+- Semi-amortized value: refinement contraction and morphology-fidelity tables.
+- Qualitative interpretation: leaf montages and representative optimization landscapes.
+
+Appendix curation:
+- Additional manifold diagnostics: centroid-shift groups, radar means, t-SNE, parallel-coordinate deltas, pairwise delta plots, density isosurfaces.
+- Teacher-target distributions: optimizer score/runtime/status, area and contour histograms, parameter histograms.
+- Extra morphology linkage: teacher-vs-predicted area fraction and threshold sweep.
+
+Why this split works:
+- Main text carries the paper's scientific claim and enough qualitative evidence to justify it.
+- Appendix absorbs the broader extensive-study figure family without changing the paper into a runtime/deployment narrative.

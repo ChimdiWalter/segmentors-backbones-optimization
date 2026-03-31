@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99d (TeX Live 2018)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: main_physics_learning.aux
+The style file: plainnat.bst
+Database file #1: refs_physics_learning.bib
+You've used 17 entries,
+            2773 wiz_defined-function locations,
+            695 strings with 8188 characters,
+and the built_in function-call counts, 8593 in all, are:
+= -- 706
+> -- 657
+< -- 9
++ -- 221
+- -- 204
+* -- 698
+:= -- 1361
+add.period$ -- 51
+call.type$ -- 17
+change.case$ -- 119
+chr.to.int$ -- 17
+cite$ -- 34
+duplicate$ -- 374
+empty$ -- 614
+format.name$ -- 229
+if$ -- 1768
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 17
+newline$ -- 93
+num.names$ -- 68
+pop$ -- 249
+preamble$ -- 1
+purify$ -- 102
+quote$ -- 0
+skip$ -- 313
+stack$ -- 0
+substring$ -- 160
+swap$ -- 43
+text.length$ -- 2
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 187
+warning$ -- 0
+while$ -- 61
+width$ -- 0
+write$ -- 216

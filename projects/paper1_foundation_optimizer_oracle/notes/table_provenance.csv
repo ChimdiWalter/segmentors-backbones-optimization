@@ -1,0 +1,4 @@
+table_label,description,source_data_path,notes
+tab:abl_obj,Objective ablations (6 variants) on 30-image stratified subset,experiments/exp_v1/outputs (ablation CSVs),Each row removes one term from the composite objective (Eq 5). Metrics: OK% / non-empty% / median score / median area / median n_c / median time.
+tab:abl_search,Search-strategy ablations (5 variants) on 30-image stratified subset,experiments/exp_v1/outputs (ablation CSVs),Each row changes one knob of the stochastic search while keeping the full objective. Variants: full pipeline / random-only / low budget K=16 / no downscale s=1.0 / fast 60s timeout.
+tab:patch_morph_transfer,Patch-level morphology transfer metrics across 150 patches (75 interior + 75 boundary) from 15 leaves,experiments/exp_v1/outputs (patch-level metrics CSV),Compares global vs local parameter sets on Dice / area fraction / count error. Shows systematic area underestimation and 35% count-error reduction from local re-optimization.

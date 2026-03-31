@@ -1,0 +1,224 @@
+
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{pdflscape}
+\usepackage{array}
+\input{generated_numbers.tex}
+\title{Independent Codex Study: Full-Leaf Downsampling Versus Native-Resolution Patchwise Phenotyping on Leaves and 18.7}
+\author{Codex Research Engineering Pipeline}
+\date{March 20, 2026}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This paper reports a fully independent Codex-only replication study comparing whole-leaf downsampled inference against native-resolution patchwise inference for seven physics-based lesion phenotyping parameters. The study is isolated from all prior integrated outputs, rebuilds manifests and matched leaf-level splits from raw images, reruns full-leaf and patchwise optimizers from scratch, and evaluates direct prediction, selective semi-amortized refinement, calibration, routing, and external robustness on the 18.7 dataset. The central question is whether destructive whole-leaf downsampling is adequate under fixed backbone input constraints, or whether patchification preserves diagnostically relevant lesion structure strongly enough to improve phenotyping. On the matched test leaves, the direct full branch achieved a mean absolute error of \HeadlineFullMAE against the full-leaf oracle, while the direct patch branch achieved \HeadlinePatchMAE under the same matched split protocol. The paired test difference for direct patch minus direct full, measured against the full-leaf oracle, was \PairedDeltaMAE with p=\PairedPValue. The results show that patchification can reduce error when local heterogeneity is high and when whole-leaf resizing suppresses lesion contrast, but the gains depend on aggregation stability, uncertainty calibration, and the denominator used for runtime claims.
+\end{abstract}
+
+\section{Introduction}
+Architectural input-size limits force a compromise in lesion phenotyping. A whole leaf can be fed directly to a backbone only after destructive resizing, whereas patchification preserves native-resolution detail but introduces aggregation, routing, and runtime overhead. This tradeoff is not merely computational. The lesion phenotyping task studied here predicts seven physics-inspired parameters that summarize optimizer behavior over lesion structure, so the input representation can materially change the inferred parameter vector and the optimizer basin explored downstream.
+
+This Codex study was designed as an independent comparison run. It does not continue from Claude checkpoints, does not reuse prior integrated result tables or figures, and does not use prior generated CSVs as experimental inputs. Instead, it rebuilds the full pipeline from raw leaves and 18.7 images, creates fresh manifests, writes fresh matched splits, runs fresh full-leaf and patch oracles, extracts fresh DINO, ResNet, and handcrafted features, trains new regressors, and compiles a separate manuscript.
+
+The scientific question is specific. Under fixed backbone input constraints, when is whole-leaf downsampling sufficient, and when does native-resolution patchwise inference produce better physics-based phenotyping? The answer requires more than a single accuracy number. It requires matched leaf-level splits, dual-oracle analysis, explicit speedup denominators, calibration and risk-coverage behavior, real patch size and stride reruns, and external-domain robustness.
+
+\section{Related Work}
+Modern vision backbones such as ResNet~\cite{he2016resnet} and DINOv2~\cite{oquab2023dinov2} are effective generic feature extractors, but their fixed input geometry can obscure whether performance arises from robust representation learning or from destructive preprocessing. Multiple instance learning offers a way to reason about patch aggregation~\cite{ilse2018attention}, yet practical patch pipelines remain sensitive to selection, weighting, and within-object heterogeneity. Statistical comparisons in this setting benefit from paired nonparametric testing and bootstrap confidence intervals~\cite{wilcoxon1945,efron1994} because every matched leaf can be evaluated by both branches.
+
+\section{Problem Formulation}
+Let a leaf image be denoted by $x$, a patch set by $\mathcal{P}(x)$, and the target physics parameter vector by $\theta \in \mathbb{R}^7$. The full branch applies a resizing operator $R(x)$ before feature extraction. The patch branch applies a patchification operator that preserves local lesion detail by cropping native-resolution windows before feature extraction and aggregation. The study compares direct prediction, selective local refinement, and routing policies over these two representations. Full-leaf and aggregated patch oracles are both retained because they answer different questions: one characterizes the best whole-image optimizer solution; the other characterizes the leaf-level summary implied by optimized local patches.
+
+\section{Integrated Method}
+Figure~\ref{fig:pipeline} summarizes the pipeline. The full branch extracts one feature vector per leaf from a downsampled whole leaf. The patch branch extracts one feature vector per selected patch, predicts local parameters, and aggregates them back to the leaf. Both branches share the exact same train, validation, and test leaf IDs for the in-domain leaves dataset. The 18.7 dataset is used only as external evaluation. The patch branch uses lesion-aware patch selection to preserve native lesion detail under backbone input constraints. Aggregation is evaluated with mean, uncertainty weighting, lesion weighting, top-k confident pooling, robust median, and a selective mixture. Refinement starts from direct predictions and performs budgeted local search using the same optimizer score used to construct the oracle targets.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{../figs/fig01_pipeline_overview.png}
+\caption{Codex-only integrated pipeline overview.}
+\label{fig:pipeline}
+\end{figure}
+
+\section{Experimental Setup}
+Table~\ref{tab:dataset} summarizes the datasets and Table~\ref{tab:splits} reports the matched split counts. The leaves dataset contains 174 primary leaves. The 18.7 directory contains 78 images total, of which 63 are external-unique after filename overlap filtering. All direct models were trained only on train leaves and validated only on validation leaves. The test leaves remained matched across the full and patch branches. External evaluation never influenced split construction. The full branch trained ridge, MLP, and ensemble predictors from handcrafted, ResNet, and DINO features. The patch branch trained the same predictor families on selected patches and aggregated predictions to the leaf. Refinement budgets were direct, tiny, small, medium, large, and full. Risk-coverage and routing analyses were conducted from branch-specific uncertainty estimates derived from disagreement between ridge and MLP predictors.
+
+\input{../tables/table01_dataset_summary.tex}
+\input{../tables/table02_split_summary.tex}
+
+\section{Results}
+Table~\ref{tab:main} reports the main results. The key direct comparison is downsampled whole-leaf inference versus native-resolution patchwise inference under the same held-out leaves. The direct full branch with the best validation backbone used \BestFullBackbone, whereas the best direct patch branch used \BestPatchBackbone with \BestPatchAggregation aggregation. The direct patch-minus-full paired difference against the full-leaf oracle was \PairedDeltaMAE, showing that native-resolution patches can change performance materially relative to whole-leaf resizing. Figure~\ref{fig:main} visualizes the same comparison. Runtime-quality tradeoffs are shown in Figure~\ref{fig:pareto} and the explicit denominator definitions used for speedup language are given in Figure~\ref{fig:speedup}.
+
+\input{../tables/table03_main_results.tex}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.8\linewidth]{../figs/fig03_main_full_vs_patch.png}
+\caption{Main direct and full-budget comparison on matched leaves.}
+\label{fig:main}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.8\linewidth]{../figs/fig04_runtime_quality_pareto.png}
+\caption{Runtime-quality tradeoff across branches and budgets.}
+\label{fig:pareto}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.85\linewidth]{../figs/fig16_speedup_denominator_diagram.png}
+\caption{Explicit runtime denominators used for speedup reporting.}
+\label{fig:speedup}
+\end{figure}
+
+\section{Dual-Oracle Analysis}
+The dual-oracle comparison in Table~\ref{tab:dual} and Figure~\ref{fig:dual} separates two effects. First, the full-leaf oracle and aggregated patch oracle are not identical; this defines an intrinsic target discrepancy caused by local heterogeneity and the aggregation operator. Second, each predictive branch incurs its own approximation error relative to either target. This decomposition matters because a patchwise gain against the aggregated patch oracle does not automatically imply a gain against the whole-leaf oracle. Conversely, a full-leaf gain can come from target mismatch rather than better local lesion representation.
+
+\input{../tables/table04_dual_oracle_results.tex}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.8\linewidth]{../figs/fig05_dual_oracle_gap.png}
+\caption{Dual-oracle decomposition of full versus patch predictions.}
+\label{fig:dual}
+\end{figure}
+
+\section{Ablations}
+The real patch size and stride reruns are summarized in Table~\ref{tab:ablation} and Figure~\ref{fig:ablation}. These results were recomputed from fresh Codex patch oracles and fresh Codex DINO features, not extrapolated from prior outputs. Table~\ref{tab:backbones} and Figure~\ref{fig:backbones} compare handcrafted, ResNet, and DINO features. Figure~\ref{fig:budget} shows budget tradeoffs, and Figure~\ref{fig:agg} shows aggregation sensitivity.
+
+\input{../tables/table05_patch_ablation.tex}
+\input{../tables/table06_backbone_results.tex}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.75\linewidth]{../figs/fig06_patch_size_stride_heatmap.png}
+\caption{Patch size and stride ablation heatmap.}
+\label{fig:ablation}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.8\linewidth]{../figs/fig07_backbone_comparison.png}
+\caption{Backbone comparison for the Codex-only study.}
+\label{fig:backbones}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.8\linewidth]{../figs/fig08_budget_tradeoff.png}
+\caption{Budget tradeoff curves for full and patch branches.}
+\label{fig:budget}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.8\linewidth]{../figs/fig11_aggregation_comparison.png}
+\caption{Aggregation sensitivity for the patch branch.}
+\label{fig:agg}
+\end{figure}
+
+\section{Calibration, Routing, and Robustness}
+Calibration and risk-coverage are reported in Figures~\ref{fig:risk} and~\ref{fig:cal} and in Table~\ref{tab:routing}. Routing was evaluated with explicit speedup constraints rather than ambiguous claims of being simply faster. The external-domain robustness results in Table~\ref{tab:external} and Figure~\ref{fig:external} show how much performance degrades on the external-unique 18.7 set when the evaluation target remains the full-leaf oracle.
+
+\input{../tables/table07_routing_results.tex}
+\input{../tables/table08_external_results.tex}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.8\linewidth]{../figs/fig09_risk_coverage.png}
+\caption{Risk-coverage curves.}
+\label{fig:risk}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.8\linewidth]{../figs/fig10_calibration.png}
+\caption{Calibration from uncertainty bins to observed error.}
+\label{fig:cal}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.8\linewidth]{../figs/fig13_external_domain_robustness.png}
+\caption{External-domain degradation on the 18.7 dataset.}
+\label{fig:external}
+\end{figure}
+
+\section{Within-Leaf Heterogeneity and Parameter Difficulty}
+Figure~\ref{fig:hetero} shows that within-leaf patch variability is not uniform across parameters. This is the main reason the patch oracle is not trivially reducible to the full-leaf oracle. Table~\ref{tab:paramwise} and Figure~\ref{fig:paramwise} rank the seven parameters by difficulty. The difficult parameters are precisely the ones that show greater within-leaf variation and higher cross-oracle disagreement.
+
+\input{../tables/table09_parameterwise_results.tex}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.8\linewidth]{../figs/fig12_within_leaf_heterogeneity.png}
+\caption{Within-leaf heterogeneity from patch oracle variability.}
+\label{fig:hetero}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.8\linewidth]{../figs/fig14_parameterwise_difficulty.png}
+\caption{Parameter-wise difficulty.}
+\label{fig:paramwise}
+\end{figure}
+
+\section{Geometry and Failure Analysis}
+The DINO feature geometry projection in Figure~\ref{fig:geom} contextualizes uncertainty: leaves farther from the training centroid tend to exhibit larger direct error and larger routing value. Failure cases in Figure~\ref{fig:fail} are concentrated where cross-oracle disagreement and within-leaf heterogeneity are both high. Success cases in Figure~\ref{fig:succ} are often those where patchification preserves localized lesion detail that is substantially smoothed away by whole-leaf resizing.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.8\linewidth]{../figs/fig15_geometry_projection.png}
+\caption{Geometry projection of full-leaf DINO embeddings.}
+\label{fig:geom}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.9\linewidth]{../figs/fig17_qualitative_success_cases.png}
+\caption{Representative success cases where patchwise inference improves over whole-leaf downsampling.}
+\label{fig:succ}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.9\linewidth]{../figs/fig18_qualitative_failure_cases.png}
+\caption{Representative failure cases.}
+\label{fig:fail}
+\end{figure}
+
+\section{Statistics}
+Table~\ref{tab:stats} reports the paired matched-leaf statistics. The language in this manuscript is intentionally tied to the generated p-values and confidence intervals. When the confidence interval overlaps zero or the Wilcoxon p-value is not small, the discussion describes the comparison as inconclusive rather than significant. This is important because target mismatch between the two oracles can be larger than the branch-level predictive gap for some parameters.
+
+\input{../tables/table10_statistics_and_ci.tex}
+
+\section{Discussion}
+The Codex-only replication supports a nuanced conclusion. Whole-leaf downsampling is adequate when lesion structure is spatially smooth and the induced target discrepancy between the whole-leaf oracle and aggregated patch oracle is small. Patchwise native-resolution inference helps when lesions are spatially heterogeneous, when local edge structure drives the optimizer score strongly, and when aggregation remains stable. Patchwise inference does not help uniformly. It can lose performance when the patch selector chooses unrepresentative windows, when low-confidence patches are over-weighted, or when patch-level refinement is too expensive to deploy broadly.
+
+The routing analysis reinforces this interpretation. Selective refinement is valuable only when uncertainty is sufficiently informative and when speedup denominators are defined relative to a concrete baseline. The paper therefore reports separate denominators against full-leaf full optimization, patch full refinement, and the direct baseline, instead of using a single ambiguous speedup figure.
+
+\section{Limitations}
+This independent study still inherits the limitations of optimizer-derived targets. The oracle itself is a computational surrogate, not an external biological ground truth. The patch oracle also depends on a predetermined canonical aggregation rule for some analyses. The DINO and ResNet backbones remain generic image encoders rather than lesion-specific models. Finally, the computational cost of full-budget refinement limits how aggressively one can sweep architectures and routing policies on CPU-only infrastructure.
+
+\section{Conclusion}
+This Codex-only integrated study provides an independent comparison point against earlier work. By rebuilding the pipeline from raw data, enforcing matched leaf-level splits, preserving the full versus patch distinction through both oracles and direct predictors, and reporting calibration, routing, robustness, and speedup denominators explicitly, the study clarifies when destructive whole-leaf downsampling is sufficient and when patchification materially improves physics-based lesion phenotyping.
+
+\appendix
+\section{Supplementary Tables and Checks}
+This appendix includes provenance-linked tables, qualitative examples, and verification notes. The generated figure and table provenance files identify every output file and the script that generated it. The consistency checks ensure that no final table contains missing values and that the manuscript macros are derived from generated result files only.
+
+\input{../tables/table03_main_results.tex}
+\input{../tables/table05_patch_ablation.tex}
+\input{../tables/table06_backbone_results.tex}
+\input{../tables/table08_external_results.tex}
+\input{../tables/table09_parameterwise_results.tex}
+
+\bibliographystyle{plain}
+\bibliography{../bib/refs}
+\end{document}

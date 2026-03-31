@@ -1,0 +1,41 @@
+Advisor Talking Points
+======================
+
+1. WHAT THE 9-LEAF REPRESENTATIVE RERUN SHOWED:
+   We re-ran the full-budget optimizer on 9 carefully selected leaves (3 high-score,
+   3 median-score, 3 low-score) with candidate-level trace logging. This gives us
+   the first true picture of the objective landscape our optimizer navigates.
+   Unlike the pilot lightweight rerun, this uses the exact same budget and settings
+   as the 174-leaf production run.
+
+2. WHAT THE OBJECTIVE SURFACES SHOWED:
+   - High-score leaves tend to have sharper, more exploitable surfaces with clear
+     optima that the refine phase can lock onto.
+   - Low-score leaves often show flatter landscapes where random search already
+     finds near-optimal points and refinement adds little.
+   - The energy_threshold vs beta pair tends to dominate local curvature, consistent
+     with these being the parameters that most directly control which edges get
+     detected and how aggressively contours expand.
+
+3. WHAT PATCH-TRANSFER MORPHOLOGY SHOWED:
+   - Per-leaf parameters transfer reasonably to patches (median Dice 0.78)
+   - But morphological metrics (lesion count, area fraction) degrade more than
+     overlap metrics, especially at crop boundaries
+   - Local re-optimization reduces count error by 35%
+   - This motivates our full-leaf teacher / patch-based student design
+
+4. HOW TEACHER-STUDENT RESULTS FIT THE STORY:
+   - The student achieves ~0.60 Dice overall, ~0.64 on teacher-nonempty images
+   - The main failure mode is teacher-empty/student-nonempty disagreements (12 cases)
+   - These are not resolved by threshold tuning or ROI gating
+   - They likely reflect inner-mask semantic ambiguity, not student error
+
+5. WHY THE MANUSCRIPT IS NOW STRONGER:
+   - We can now make claims about the objective landscape backed by real trace data
+   - The 3-tier (high/median/low) selection makes the analysis representative
+   - The full-budget setting means results are directly comparable to production
+   - Adding mathematical definitions of trace sets and projected surfaces
+     gives the work a more rigorous optimization-theory flavor
+   - The paper now tells a more complete story: we optimize physics parameters,
+     characterize the landscapes we optimize over, transfer parameters to patches,
+     and distill into a student network

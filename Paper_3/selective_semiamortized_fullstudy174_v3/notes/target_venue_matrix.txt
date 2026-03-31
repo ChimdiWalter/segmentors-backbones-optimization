@@ -1,0 +1,12 @@
+Target Venue Matrix
+====================
+
+Venue                    | Type    | Length | Fit  | Key Evidence Required
+-------------------------|---------|--------|------|------------------------------
+Plant Phenomics          | Journal | 15+pp  | ★★★★★| Bio interpretation, field use
+Plant Methods            | Journal | 15+pp  | ★★★★★| Reproducibility, open tools
+Frontiers Plant Sci      | Journal | 12+pp  | ★★★★ | Broader phenotyping context
+Computers & Electronics  | Journal | 15+pp  | ★★★★ | Engineering deployment angle
+Ag Vision (CVPR WS)      | Conf WS | 8pp    | ★★★★ | CV baselines, visual results
+NeurIPS UQ Workshop      | Conf WS | 6pp    | ★★★  | Theory, broader UQ experiments
+IEEE TPAMI               | Journal | 15+pp  | ★★★  | Generalization beyond plants

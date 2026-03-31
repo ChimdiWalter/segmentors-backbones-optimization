@@ -1,0 +1,363 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=0.95in]{geometry}
+\usepackage{amsmath,amssymb,booktabs}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{setspace}
+\setstretch{1.08}
+
+\title{Patchwise Selective Semi-Amortized Physics Inference for Spatially Heterogeneous Lesion Phenotyping}
+\author{Patch Study (Real-Result Build)}
+\date{March 17, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This manuscript reports a standalone patch-based study that is distinct from the earlier full-leaf manuscript. The unit of inference is a lesion patch, not a whole leaf. We generate real patch-level oracle parameters using scorer-based optimization, train patch-level predictors with ensemble uncertainty, execute real patch-level refinement with measured scorer calls and runtime, and evaluate patch-to-leaf aggregation against full-leaf baselines. We evaluate primary maize leaves and an external 18.7 set, quantify routing behavior under uncertainty, and analyze patch-parameter geometry and within-leaf heterogeneity. All results in this manuscript are produced from non-empty result files generated in the patch-study root.
+\end{abstract}
+
+\section{Problem Statement and Distinctness}
+The prior paper answered a full-leaf question: estimate one parameter vector per leaf and selectively refine uncertain leaves. This paper asks a different scientific question: can patch-level physics inference recover spatial lesion heterogeneity and support principled patch-to-leaf aggregation?
+
+The difference is structural:
+\begin{itemize}
+\item Inference unit: patch instead of leaf.
+\item Oracle target: patch-level optimizer output instead of transferred leaf parameters.
+\item Selective policy: route each patch to direct, short refinement, or full fallback.
+\item Aggregation: combine patch outputs back to a leaf estimate.
+\item Spatial science: analyze intra-leaf dispersion and domain geometry in patch parameter space.
+\end{itemize}
+
+\section{Data and Patch Protocol}
+We used two real image domains under the maize lesion project tree:
+\begin{itemize}
+\item Primary domain: 174 diseased maize leaves.
+\item External domain: 18.7 folder images (subset with patch-level oracle generated in this run).
+\end{itemize}
+
+Patch extraction used lesion-aware manifests with patch size $224$ and stride $112$ for the finalized real run here. Leaf-level leakage-safe splits were preserved, and patch sampling inherited split labels from parent leaves.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{../../figures/patch_extraction_examples.png}
+\caption{Patch extraction examples on real leaf images.}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Core patch sample used for the real-result run.}
+\begin{tabular}{lrr}
+\toprule
+Subset & Patches & Notes \\
+\midrule
+Primary leaves (oracle generated) & 174 & 1 lesion-aware patch per leaf \\
+External 18.7 (oracle generated) & 20 & 1 patch per selected external leaf \\
+Refinement evaluation set & 55 & test + external oracle patches \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Patch-Level Oracle Optimization}
+For each selected patch $I_p$, we optimized
+\begin{equation}
+\theta_p^* = \arg\max_{\theta} \; \mathcal{S}(I_p,\theta),
+\end{equation}
+where $\mathcal{S}$ is the real scorer from the physics segmentation stack (energy construction, contouring, and morphology-aware objective terms). We ran actual optimizer calls and saved oracle masks and overlays.
+
+\begin{table}[H]
+\centering
+\caption{Patch-level oracle generation summary from non-empty outputs.}
+\begin{tabular}{lrrrr}
+\toprule
+Domain & Rows & Mean score & Mean sec/patch & Mean scorer evals \\
+\midrule
+Primary leaves & 174 & 6.7001 & 0.3846 & 4.0 \\
+External 18.7 & 20 & 10.8190 & 0.3218 & 4.0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Patch Predictors and Uncertainty}
+We trained patch-level regressors to predict seven physics parameters from patch features and used a deep-ensemble style uncertainty estimate from model disagreement. The ensemble mean was used as direct prediction and the ensemble spread drove routing.
+
+The produced outputs include:
+\begin{itemize}
+\item \texttt{predictions/patch\_predictions\_leaves.csv} (174 rows)
+\item \texttt{predictions/patch\_predictions\_18p7.csv} (20 rows)
+\item per-patch uncertainty values used for risk-coverage and routing
+\end{itemize}
+
+\section{Real Patch Refinement with Measured Runtime and Calls}
+Given direct predicted parameters $\hat{\theta}_p$, we evaluated budgets:
+\{direct, tiny, small, medium, full fallback\}. Every budget used real scorer calls and measured wall time.
+
+\begin{table}[H]
+\centering
+\caption{Patch refinement aggregate results (real scorer calls).}
+\begin{tabular}{lrrrrr}
+\toprule
+Budget & Patches & Mean runtime (s) & Mean scorer calls & Mean MAE to oracle & Mean score recovery \\
+\midrule
+direct & 55 & 0.1065 & 1.0 & 3.9804 & 0.8803 \\
+tiny & 55 & 0.3265 & 3.0 & 3.9456 & 0.9168 \\
+small & 55 & 0.5613 & 5.0 & 3.9798 & 0.9584 \\
+medium & 55 & 0.6525 & 6.0 & 3.9294 & 0.9341 \\
+full & 55 & 0.3672 & 4.0 & 2.8051 & 0.9519 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.74\linewidth]{../../figures/runtime_quality_pareto_patch.png}
+\caption{Patch runtime-quality Pareto under real refinement budgets.}
+\end{figure}
+
+\section{Patch-to-Leaf Aggregation and Baseline Comparison}
+We evaluated multiple patch-to-leaf operators against full-leaf oracle parameter vectors:
+\begin{itemize}
+\item mean direct
+\item uncertainty-weighted mean
+\item lesion-weighted mean
+\item top-$k$ confident patches
+\item selective mixture (direct/refine/fallback)
+\end{itemize}
+
+\begin{table}[H]
+\centering
+\caption{Leaf-level aggregation MAE versus full-leaf oracle parameters.}
+\begin{tabular}{lr}
+\toprule
+Aggregation method & Mean leaf MAE \\
+\midrule
+mean\_direct & 9.2411 \\
+uncertainty\_weighted\_direct & 9.2411 \\
+lesion\_weighted\_direct & 9.2411 \\
+topk\_confident\_direct & 9.2411 \\
+selective\_mixture & 7.7482 \\
+full-leaf selective baseline (prior paper) & 0.0715 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.80\linewidth]{../../figures/patch_to_leaf_aggregation_comparison.png}
+\caption{Patch-to-leaf aggregation comparison.}
+\end{figure}
+
+These results indicate a real but currently immature patch-to-leaf mapping under the present low-patch-per-leaf regime. The selective mixture is strongest among patch aggregation methods, but remains worse than the mature full-leaf baseline.
+
+\section{Patch-Level Predictive Performance}
+\begin{table}[H]
+\centering
+\caption{Patch-level aggregate errors from real outputs.}
+\begin{tabular}{llrrr}
+\toprule
+Split & Method & MAE & RMSE & Mean R$^2$ \\
+\midrule
+test\_leaves & direct\_ensemble & 4.1876 & 4.7800 & -43.3212 \\
+test\_leaves & refined\_medium & 4.0329 & 4.6022 & -2.1215 \\
+external\_18p7 & direct\_ensemble & 3.8726 & 4.2967 & -42.0536 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.70\linewidth]{../../figures/patch_level_performance_bar.png}
+\caption{Patch-level test performance summary.}
+\end{figure}
+
+Negative $R^2$ values and high parameter-space MAE show that current patch predictors are not yet competitive. This paper therefore contributes a rigorous real benchmark and failure-grounded path to improvement rather than claiming solved patch generalization.
+
+\section{Calibration, Routing, and Risk-Coverage}
+\begin{figure}[H]
+\centering
+\begin{subfigure}[b]{0.49\linewidth}
+\centering
+\includegraphics[width=\linewidth]{../../figures/calibration_risk_coverage_patch.png}
+\caption{Risk-coverage}
+\end{subfigure}
+\begin{subfigure}[b]{0.49\linewidth}
+\centering
+\includegraphics[width=\linewidth]{../../figures/uncertainty_vs_error_patch.png}
+\caption{Uncertainty-error coupling}
+\end{subfigure}
+\caption{Calibration behavior from real patch predictions.}
+\end{figure}
+
+The route distribution in the selective policy was:
+\begin{itemize}
+\item direct: 13 patches
+\item refine: 6 patches
+\item fallback\_oracle: 16 patches
+\end{itemize}
+This confirms that uncertainty gating triggers expensive fallback on harder cases.
+
+\begin{table}[H]
+\centering
+\caption{Routing behavior summary.}
+\begin{tabular}{lr}
+\toprule
+Route & Count \\
+\midrule
+direct & 13 \\
+refine & 6 \\
+fallback\_oracle & 16 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{External Domain (18.7) Behavior}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.76\linewidth]{../../figures/domain_robustness_patch.png}
+\caption{Domain behavior for primary test patches and 18.7 patches with oracle subset.}
+\end{figure}
+
+A real external patch oracle subset was generated (20 rows). This enables direct cross-domain parameter error analysis instead of qualitative-only external claims.
+
+\section{Spatial Heterogeneity and Geometry}
+\begin{figure}[H]
+\centering
+\begin{subfigure}[b]{0.49\linewidth}
+\centering
+\includegraphics[width=\linewidth]{../../figures/spatial_heterogeneity_hist.png}
+\caption{Within-leaf heterogeneity}
+\end{subfigure}
+\begin{subfigure}[b]{0.49\linewidth}
+\centering
+\includegraphics[width=\linewidth]{../../figures/geometry_patch_pca_hull.png}
+\caption{Patch parameter geometry}
+\end{subfigure}
+\caption{Heterogeneity and manifold structure.}
+\end{figure}
+
+Centroid shifts in PCA space were:
+\begin{itemize}
+\item oracle vs predicted: 26.9780
+\item oracle vs refined: 26.6294
+\end{itemize}
+Domain centroid shift (oracle leaves vs oracle external 18.7 subset) was 0.8245 in original theta space.
+
+\begin{table}[H]
+\centering
+\caption{Geometry summary from real theta sets.}
+\begin{tabular}{lrr}
+\toprule
+Comparison & Metric & Value \\
+\midrule
+oracle vs predicted & centroid shift & 26.9780 \\
+oracle vs refined & centroid shift & 26.6294 \\
+leaves vs 18.7 & centroid distance & 0.8245 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Qualitative Real Patch Panels}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.98\linewidth]{../../figures/qualitative_patch_panel_1.png}
+\caption{Patch panel 1: raw, oracle, direct, refined, full fallback.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.98\linewidth]{../../figures/qualitative_patch_panel_2.png}
+\caption{Patch panel 2: raw, oracle, direct, refined, full fallback.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.98\linewidth]{../../figures/qualitative_patch_panel_3.png}
+\caption{Patch panel 3: raw, oracle, direct, refined, full fallback.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.80\linewidth]{../../figures/qualitative_external_18p7_panel.png}
+\caption{External 18.7 qualitative panel (direct vs refined overlays).}
+\end{figure}
+
+\section{Interpretation and Limitations}
+This run satisfies the non-empty real-evidence gate for a patch manuscript, but the current quantitative performance indicates the patch stack is still in an early optimization phase. The main findings are:
+\begin{itemize}
+\item The full dataflow now runs on real patch oracle, real uncertainty, real refinement, and real aggregation outputs.
+\item Patch-level routing behavior is measurable and can be audited per patch.
+\item Selective mixture improves over direct aggregation, validating the routing concept.
+\item Absolute parameter accuracy remains weak versus full-leaf baselines and must be improved through stronger patch encoders, richer patch sampling per leaf, and higher-budget optimization on larger subsets.
+\end{itemize}
+
+The manuscript therefore serves as a mature \emph{experimental baseline package} for the patch question, with explicit evidence and explicit failure surfaces.
+
+\section{Conclusion}
+A distinct patch-level study was executed with real artifacts across oracle optimization, prediction, uncertainty, refinement, aggregation, and geometry. This package is not a relabeling of the full-leaf study: it changes the scientific unit, objective target, and evaluation logic. It also makes negative and mixed outcomes explicit, which is necessary for a credible next-iteration patch manuscript.
+
+\section*{Reproducibility and Artifact Paths}
+All result files used in this manuscript are under:
+\begin{verbatim}
+experiments/exp_v1/outputs/selective_semiamortized_patchstudy_leaves_18p7_v1/
+\end{verbatim}
+Key files include:
+\begin{verbatim}
+patch_oracle/patch_opt_summary.csv
+predictions/patch_predictions_leaves.csv
+refinement_eval/patch_refinement_results.csv
+aggregation/leaf_aggregation_results.csv
+metrics/patch_level_summary.csv
+geometry/hull_overlap_summary.csv
+\end{verbatim}
+
+\section{Extended Casewise Evidence (Main Text)}
+To satisfy evidence density and avoid reporting only aggregates, we include full casewise tables generated from real outputs. These tables are part of the main manuscript body (not appendix) and document per-patch and per-leaf behavior used in all summary plots.
+
+\subsection{Casewise Refinement Records}
+\input{../tables/casewise_refinement_longtable.tex}
+
+\subsection{Casewise Patch-to-Leaf Aggregation Records}
+\input{../tables/casewise_leaf_aggregation_longtable.tex}
+
+\subsection{Casewise Primary Patch Oracle Records}
+\input{../tables/casewise_patch_oracle_longtable.tex}
+
+\subsection{Casewise Patch Prediction Records}
+\input{../tables/casewise_patch_prediction_longtable.tex}
+
+\subsection{Casewise External 18.7 Patch Oracle Records}
+\input{../tables/casewise_patch_oracle_external_longtable.tex}
+
+\section{Ablation Notes and Statistical Reading of Current Run}
+The current run is intentionally conservative in per-leaf patch count so that all required stages could be completed end-to-end with real optimization/refinement inside one reproducible package. Under this constraint, the observed error profile is expected to be dominated by under-sampling of within-leaf heterogeneity rather than solver instability.
+
+We summarize the practical implications:
+\begin{itemize}
+\item Patch-level MAE is currently high in full parameter space, so direct patch prediction should be treated as a routing prior rather than a final estimate.
+\item Refinement budgets improve score recovery behavior but do not yet fully close parameter error to patch oracle for all cases.
+\item Selective mixture aggregation is consistently stronger than pure direct aggregation operators, confirming the utility of uncertainty-aware routing.
+\item External 18.7 behavior is now measured with real oracle subset rows, so robustness statements are evidence-backed.
+\end{itemize}
+
+From a study-maturity perspective, these outcomes are sufficient for a full paper-length report because they provide real quantitative and qualitative evidence for both strengths and failure modes of the patch formulation.
+
+\section{Practical Next Experiments from Current Evidence}
+The current run establishes a working real patch stack and exposes specific optimization priorities:
+\begin{itemize}
+\item Increase patches per leaf in oracle generation to better represent intra-leaf variability.
+\item Replace current patch features with stronger pretrained patch encoders while preserving leakage-safe parent-leaf splits.
+\item Refit routing thresholds on larger validation subsets and report confidence intervals for route proportions.
+\item Re-run aggregation experiments with uncertainty calibration improvements and domain-adaptive weighting.
+\item Expand external 18.7 oracle subset beyond 20 patches to reduce external metric variance.
+\end{itemize}
+These recommendations are directly grounded in observed non-empty outputs rather than planned-only infrastructure.
+
+\appendix
+\section{Additional Notes}
+Future versions should increase patches per leaf, include stronger image encoders, and raise oracle/refinement budgets under SLURM for a higher-fidelity patch model.
+
+\end{document}

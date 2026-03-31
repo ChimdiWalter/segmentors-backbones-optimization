@@ -1,0 +1,12 @@
+Main figure candidates:
+- patch_extraction_examples
+- patch count/domain summary plots
+- (to add) patch runtime-quality selective Pareto
+- (to add) patch-to-leaf aggregation comparison
+- (to add) geometry patch manifolds/hulls
+
+Appendix figure candidates:
+- per-patch case montages
+- extended 18.7 qualitative panels
+- per-configuration extraction ablations
+- additional heterogeneity maps

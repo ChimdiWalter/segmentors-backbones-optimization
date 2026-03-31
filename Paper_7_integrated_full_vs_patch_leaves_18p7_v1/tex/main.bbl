@@ -1,0 +1,171 @@
+\begin{thebibliography}{24}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Cranmer et~al.(2020)Cranmer, Brehmer, and
+  Louppe]{cranmer2020amortized}
+Kyle Cranmer, Johann Brehmer, and Gilles Louppe.
+\newblock The frontier of simulation-based inference.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 117\penalty0
+  (48):\penalty0 30055--30062, 2020.
+
+\bibitem[Efron(1979)]{efron1979bootstrap}
+Bradley Efron.
+\newblock Bootstrap methods: Another look at the jackknife.
+\newblock \emph{The Annals of Statistics}, 7\penalty0 (1):\penalty0 1--26,
+  1979.
+
+\bibitem[Gal and Ghahramani(2016)]{gal2016dropout}
+Yarin Gal and Zoubin Ghahramani.
+\newblock Dropout as a bayesian approximation: Representing model uncertainty
+  in deep learning.
+\newblock \emph{International Conference on Machine Learning}, pages
+  1050--1059, 2016.
+
+\bibitem[Geifman and El-Yaniv(2019)]{geifman2019selectivenet}
+Yonatan Geifman and Ran El-Yaniv.
+\newblock Selectivenet: A deep neural network with an integrated reject option.
+\newblock \emph{International Conference on Machine Learning}, pages
+  2151--2159, 2019.
+
+\bibitem[Ghosal et~al.(2018)Ghosal, Blystone, Singh, Ganapathysubramanian,
+  Singh, and Sarkar]{ghosal2018explainable}
+Sambuddha Ghosal, David Blystone, Asheesh~Kumar Singh, Baskar
+  Ganapathysubramanian, Arti Singh, and Soumik Sarkar.
+\newblock An explainable deep machine vision framework for plant stress
+  phenotyping.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 115\penalty0
+  (18):\penalty0 4613--4618, 2018.
+
+\bibitem[He et~al.(2016)He, Zhang, Ren, and Sun]{he2016resnet}
+Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun.
+\newblock Deep residual learning for image recognition.
+\newblock \emph{IEEE Conference on Computer Vision and Pattern Recognition},
+  pages 770--778, 2016.
+
+\bibitem[Hinton et~al.(2015)Hinton, Vinyals, and Dean]{hinton2015distilling}
+Geoffrey Hinton, Oriol Vinyals, and Jeff Dean.
+\newblock Distilling the knowledge in a neural network.
+\newblock \emph{arXiv preprint arXiv:1503.02531}, 2015.
+
+\bibitem[Ilse et~al.(2018)Ilse, Tomczak, and Welling]{ilse2018attention}
+Maximilian Ilse, Jakub Tomczak, and Max Welling.
+\newblock Attention-based deep multiple instance learning.
+\newblock \emph{International Conference on Machine Learning}, pages
+  2127--2136, 2018.
+
+\bibitem[Kass et~al.(1988)Kass, Witkin, and Terzopoulos]{kass1988snakes}
+Michael Kass, Andrew Witkin, and Demetri Terzopoulos.
+\newblock Snakes: Active contour models.
+\newblock \emph{International Journal of Computer Vision}, 1\penalty0
+  (4):\penalty0 321--331, 1988.
+
+\bibitem[Kingma and Ba(2015)]{kingma2014adam}
+Diederik~P Kingma and Jimmy Ba.
+\newblock Adam: A method for stochastic optimization.
+\newblock \emph{International Conference on Learning Representations}, 2015.
+
+\bibitem[Lakshminarayanan et~al.(2017)Lakshminarayanan, Pritzel, and
+  Blundell]{lakshminarayanan2017simple}
+Balaji Lakshminarayanan, Alexander Pritzel, and Charles Blundell.
+\newblock Simple and scalable predictive uncertainty estimation using deep
+  ensembles.
+\newblock \emph{Advances in Neural Information Processing Systems}, 30, 2017.
+
+\bibitem[Lu et~al.(2021)Lu, Williamson, Chen, Chen, Barbieri, and
+  Mahmood]{lu2021mil}
+Ming~Y Lu, Drew~FK Williamson, Tiffany~Y Chen, Richard~J Chen, Matteo Barbieri,
+  and Faisal Mahmood.
+\newblock Data-efficient and weakly supervised computational pathology on
+  whole-slide images.
+\newblock \emph{Nature Biomedical Engineering}, 5\penalty0 (6):\penalty0
+  555--570, 2021.
+
+\bibitem[Maro{\~n}as et~al.(2021)Maro{\~n}as, Hamelijnck, Knoblauch, and
+  Turner]{maronas2021calibration}
+Juan Maro{\~n}as, Oliver Hamelijnck, Jeremias Knoblauch, and Richard~E Turner.
+\newblock Calibration of deep probabilistic models with decoupled bayesian
+  neural networks.
+\newblock \emph{Neurocomputing}, 461:\penalty0 319--334, 2021.
+
+\bibitem[McAllester(2003)]{mcallester2003pac}
+David~A McAllester.
+\newblock Pac-bayesian stochastic model selection.
+\newblock \emph{Machine Learning}, 51\penalty0 (1):\penalty0 5--21, 2003.
+
+\bibitem[McInnes et~al.(2018)McInnes, Healy, and Melville]{mcinnes2018umap}
+Leland McInnes, John Healy, and James Melville.
+\newblock Umap: Uniform manifold approximation and projection for dimension
+  reduction.
+\newblock \emph{arXiv preprint arXiv:1802.03426}, 2018.
+
+\bibitem[Navier(1823)]{navier1823memoire}
+Claude-Louis Navier.
+\newblock M{\'e}moire sur les lois du mouvement des fluides.
+\newblock \emph{M{\'e}moires de l'Acad{\'e}mie Royale des Sciences de
+  l'Institut de France}, 6:\penalty0 389--440, 1823.
+
+\bibitem[Oquab et~al.(2024)Oquab, Darcet, Moutakanni, Vo, Szafraniec, Khalidov,
+  Fernandez, Haziza, Massa, El-Nouby, et~al.]{oquab2024dinov2}
+Maxime Oquab, Timoth{\'e}e Darcet, Theo Moutakanni, Huy Vo, Marc Szafraniec,
+  Vasil Khalidov, Pierre Fernandez, Daniel Haziza, Francisco Massa, Alaaeldin
+  El-Nouby, et~al.
+\newblock Dinov2: Learning robust visual features without supervision.
+\newblock \emph{Transactions on Machine Learning Research}, 2024.
+
+\bibitem[Patel and Bhoite(2023)]{patel2024mil_survey}
+Kedar Patel and Manish Bhoite.
+\newblock A comprehensive survey on multiple instance learning.
+\newblock \emph{Pattern Recognition}, 143:\penalty0 109774, 2023.
+
+\bibitem[Pedregosa et~al.(2011)Pedregosa, Varoquaux, Gramfort, Michel, Thirion,
+  Grisel, Blondel, Prettenhofer, Weiss, Dubourg, et~al.]{scikit-learn}
+Fabian Pedregosa, Ga{\"e}l Varoquaux, Alexandre Gramfort, Vincent Michel,
+  Bertrand Thirion, Olivier Grisel, Mathieu Blondel, Peter Prettenhofer, Ron
+  Weiss, Vincent Dubourg, et~al.
+\newblock Scikit-learn: Machine learning in python.
+\newblock \emph{Journal of Machine Learning Research}, 12:\penalty0 2825--2830,
+  2011.
+
+\bibitem[Radev et~al.(2020)Radev, Mertens, Voss, Ardizzone, and
+  K{\"o}the]{radev2020bayesflow}
+Stefan~T Radev, Ulf~K Mertens, Andreas Voss, Lynton Ardizzone, and Ullrich
+  K{\"o}the.
+\newblock Bayesflow: Learning complex stochastic models with invertible neural
+  networks.
+\newblock \emph{IEEE Transactions on Neural Networks and Learning Systems},
+  33\penalty0 (4):\penalty0 1452--1466, 2020.
+
+\bibitem[Raissi et~al.(2019)Raissi, Perdikaris, and
+  Karniadakis]{raissi2019pinn}
+Maziar Raissi, Paris Perdikaris, and George~E Karniadakis.
+\newblock Physics-informed neural networks: A deep learning framework for
+  solving forward and inverse problems involving nonlinear partial differential
+  equations.
+\newblock \emph{Journal of Computational Physics}, 378:\penalty0 686--707,
+  2019.
+
+\bibitem[Singh et~al.(2016)Singh, Ganapathysubramanian, Singh, and
+  Sarkar]{singh2018plantdisease}
+Arti Singh, Baskar Ganapathysubramanian, Asheesh~Kumar Singh, and Soumik
+  Sarkar.
+\newblock Machine learning for high-throughput stress phenotyping in plants.
+\newblock \emph{Trends in Plant Science}, 21\penalty0 (2):\penalty0 110--124,
+  2016.
+
+\bibitem[Wilcoxon(1945)]{wilcoxon1945individual}
+Frank Wilcoxon.
+\newblock Individual comparisons by ranking methods.
+\newblock \emph{Biometrics Bulletin}, 1\penalty0 (6):\penalty0 80--83, 1945.
+
+\bibitem[Zaheer et~al.(2017)Zaheer, Kottur, Ravanbakhsh, Poczos, Salakhutdinov,
+  and Smola]{zaheer2017deepsets}
+Manzil Zaheer, Satwik Kottur, Siamak Ravanbakhsh, Barnabas Poczos, Russ~R
+  Salakhutdinov, and Alexander~J Smola.
+\newblock Deep sets.
+\newblock \emph{Advances in Neural Information Processing Systems}, 30, 2017.
+
+\end{thebibliography}

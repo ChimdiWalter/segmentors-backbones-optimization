@@ -1,0 +1,37 @@
+NEW LITERATURE ADDED
+=====================
+
+1. hansen2001cma
+   Hansen & Ostermeier (2001). "Completely derandomized self-adaptation in evolution strategies."
+   Evolutionary Computation 9(2):159-195.
+   Context: Black-box optimization landscape analysis; cited in discussion of landscape geometry.
+
+2. jones1998ego
+   Jones, Schonlau & Welch (1998). "Efficient global optimization of expensive black-box functions."
+   Journal of Global Optimization 13(4):455-492.
+   Context: Bayesian optimization reference; cited alongside hansen2001cma for landscape analysis.
+
+3. jolliffe2016pca
+   Jolliffe & Cadima (2016). "Principal component analysis: a review and recent developments."
+   Phil Trans R Soc A 374(2065):20150202.
+   Context: Cited in new math section for PCA of parameter clouds.
+
+4. mcinnes2018umap
+   McInnes, Healy & Melville (2018). "UMAP: Uniform Manifold Approximation and Projection."
+   arXiv:1802.03426.
+   Context: Cited for UMAP embedding of parameter vectors.
+
+5. vandermaaten2008tsne
+   van der Maaten & Hinton (2008). "Visualizing data using t-SNE."
+   JMLR 9:2579-2605.
+   Context: Cited for t-SNE embedding of delta-parameter vectors.
+
+6. singh2016machine
+   Singh et al. (2016). "Machine learning for high-throughput stress phenotyping in plants."
+   Trends in Plant Science 21(2):110-124.
+   Context: Cited in Related Work and Discussion for ML in phenotyping context.
+
+7. mahlein2016plant
+   Mahlein (2016). "Plant disease detection by imaging sensors."
+   Plant Disease 100(2):241-251.
+   Context: Cited in Related Work for plant disease phenotyping context.

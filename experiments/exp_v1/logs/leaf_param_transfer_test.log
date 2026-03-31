@@ -1,0 +1,18 @@
+Testing leaves: 10
+
+Per-leaf patch-consistency (Dice):
+  worst DSC_0223_segment_1_segmented_smoothed mean 0.6336478159204845 median 0.7114471602152763 n 27
+  worst DSC_0261_segment_1_segmented_smoothed mean 0.6364268594420968 median 0.7314026317647597 n 36
+  worst DSC_0210_segment_1_segmented_smoothed mean 0.6497329718058391 median 0.6228475602428383 n 27
+  worst DSC_0268_segment_1_segmented_smoothed mean 0.6892903574273225 median 0.798714778248728 n 27
+  worst DSC_0235_segment_1_segmented_smoothed mean 0.7274253803675074 median 0.800828720745823 n 27
+  best  DSC_0060_segment_1_segmented_smoothed mean 0.8197345805757751 median 0.8852191448928387 n 27
+  best  DSC_0260_segment_1_segmented_smoothed mean 0.8047275669222842 median 0.9559512652708985 n 27
+  best  DSC_0242_segment_1_segmented_smoothed mean 0.7941793125970033 median 0.9663182346239573 n 27
+  best  DSC_0172_segment_1_segmented_smoothed mean 0.7446539135805051 median 0.6649746201396584 n 27
+  best  DSC_0185_segment_1_segmented_smoothed mean 0.734978467257483 median 0.7701689816495596 n 18
+
+Overall patch-consistency Dice:
+  mean: 0.7201946689957839
+  median: 0.7804357368493287
+  p10/p90: 0.33998857653072884 1.0
