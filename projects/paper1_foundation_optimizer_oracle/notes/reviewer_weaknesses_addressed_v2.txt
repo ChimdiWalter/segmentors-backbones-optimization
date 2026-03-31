@@ -1,0 +1,99 @@
+Paper 1 v2 — Reviewer Weaknesses Addressed
+==========================================
+File: manuscript/main_paper1_v2.tex
+Compiled PDF: pdf/paper1_v2_final.pdf
+Date: 2026-03-31
+
+WEAKNESS 1 — ABSTRACT: CO-EQUAL FRAMING OF OPTIMIZER AND DISTILLATION
+-----------------------------------------------------------------------
+Type: Rhetorical / scope
+Problem: The v1 abstract presented distillation as a co-equal contribution alongside
+  the optimizer and the no-GT objective. A reviewer focused on the core contribution
+  would correctly note that distillation is a consequence, not the central claim.
+Fix applied: Rewrote abstract to lead with the optimizer and no-GT objective as primary
+  contribution. Distillation is mentioned explicitly as "a secondary consequence" in the
+  final sentence. All key quantitative results (ablation drops: -34% and -75%, kNN 0.534,
+  centroid shift 1.616) moved to the abstract for immediate evidence anchoring.
+
+WEAKNESS 2 — RECOMMENDATION-STYLE WRITING IN RESULTS/EXPERIMENTS
+-----------------------------------------------------------------
+Type: Rhetorical (future-tense / academic hedging)
+Problem: Multiple "We recommend..." statements throughout the manuscript:
+  - Baselines section: "We recommend comparing against..."
+  - Metrics section: "In addition to Dice/IoU, we recommend..."
+  - Qualitative Results section: "We recommend organizing qualitative results by..."
+  - Discussion: "recommend a small manually annotated subset to adjudicate..."
+Fix applied:
+  - Baselines: Rewritten as "For completeness, classical approaches serve as natural
+    baselines... The present evaluation focuses on the no-GT objective and distillation
+    metrics; external annotated comparison is deferred to follow-up work."
+  - Metrics: Changed to "we report:" with specific figures/tables cited.
+  - Qualitative Results: Changed to "Figure X organizes qualitative results across the
+    Dice spectrum, spanning..."
+  - Discussion: Changed to active description with note that adjudication "is reserved
+    as a natural extension of this work."
+
+WEAKNESS 3 — INFORMAL PLACEHOLDER LANGUAGE IN MULTI-STAGE SECTION
+------------------------------------------------------------------
+Type: Rhetorical / professionalism
+Problem: Section 7 (Multi-Stage Inference) opened with:
+  "Your later code indicates a practical phenomenon: broad lesions may contain inner
+  oscillating/necrotic substructures."
+  This is informal placeholder language from drafting, not publication-ready text.
+Fix applied: Replaced with:
+  "Broad lesions frequently contain inner oscillating or necrotic substructures that
+  are biologically distinct from the outer chlorotic halo. We address this with a
+  two-stage nested inference strategy:"
+
+WEAKNESS 4 — RESULTS SECTION ORDERING (DISTILLATION BEFORE ABLATIONS)
+----------------------------------------------------------------------
+Type: Structural
+Problem: The Results section in v1 placed Teacher-Student Distillation results (Dice
+  numbers, threshold sweep, montages) BEFORE the ablation studies and trace analysis.
+  This made it appear as if distillation was the primary result.
+Fix applied: Restructured Results section ordering:
+  1. Optimizer Performance and Claim-to-Evidence Summary (new, with Table III)
+  2. Teacher-Student Distillation Results (relabeled as secondary, with framing:
+     "As a secondary application of the optimizer pseudo-labels...")
+  3. Parameter Correlations with Morphology
+  4. Ablation Studies (objective and search) — now clearly primary evidence
+  5. Trace-Based Objective-Surface Analysis
+  6. Parameter-Cloud Geometry and Manifold Structure
+  7. Qualitative Results and Failure Taxonomy
+
+WEAKNESS 5 — NO CLAIM-TO-EVIDENCE SUMMARY TABLE
+------------------------------------------------
+Type: Structural / evidential
+Problem: A reviewer could not easily match each paper claim to the specific experiment
+  or table supporting it, making the paper feel diffuse.
+Fix applied: Added Table III "Claim-to-evidence mapping" at the start of Results.
+  Seven primary claims mapped to specific figures/tables and quantitative evidence.
+
+WEAKNESS 6 — MANIFOLD/GEOMETRY OVERSTATEMENT
+--------------------------------------------
+Type: Evidential / rhetorical
+Problem: Discussion language could be read as claiming the system "learns the governing
+  physics." Specifically: "This is consistent with the physics of the PDE pipeline"
+  could be interpreted as a stronger mechanistic claim than the data support.
+Fix applied: Replaced with explicit disclaimer:
+  "We emphasize that this is a statement about the geometry of the optimizer's output
+  space, not a claim that the method learns the governing physics from images."
+  Reframed the energy threshold dominance finding as operational rather than physical.
+
+WEAKNESS 7 — PARAMETER CORRELATIONS SECTION (RECOMMENDATION LANGUAGE)
+----------------------------------------------------------------------
+Type: Rhetorical
+Problem: "We recommend analyzing correlations between theta* and morphology:" followed
+  by bullet points read as future-work suggestions.
+Fix applied: Changed to direct description: "The optimized parameters exhibit interpretable
+  correlations with lesion morphology. High-threshold, high-inflation solutions correspond
+  to discrete necrotic spots; [etc.]" — treating these as completed observations.
+
+SUMMARY OF CHANGES
+------------------
+Lines changed: ~30 targeted text replacements
+Sections restructured: Results section ordering (distillation moved to secondary)
+New content added: Table III (claim-to-evidence), strengthened abstract
+No mathematical content modified
+No figures removed or added
+All existing experimental numbers preserved exactly
