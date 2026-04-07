@@ -1,0 +1,91 @@
+Paper 2 v2 — Reviewer Weaknesses Addressed
+==========================================
+File: manuscript/main_paper2_v2.tex
+Compiled PDF: pdf/paper2_v2_final.pdf
+Date: 2026-03-31
+
+Note: Paper 2 (v1) was already a well-structured, deployment-focused manuscript.
+The v2 hardening pass is therefore lighter but addresses specific remaining vulnerabilities.
+
+WEAKNESS 1 — NO EXPLICIT SCOPE STATEMENT IN INTRODUCTION
+---------------------------------------------------------
+Type: Rhetorical / scope
+Problem: A reviewer might misinterpret the scope — e.g., expecting formal coverage
+  guarantees from the uncertainty analysis, or expecting the paper to make physics-
+  learning claims.
+Fix applied: Added explicit "Scope and what this paper does not claim" paragraph
+  immediately after the Contributions list in the Introduction:
+  "This paper does not claim to recover the governing physics from images, to prove that
+  patchwise inference generalizes equally to all imaging conditions without re-audit, or
+  to provide formal coverage guarantees from uncertainty scores. [...] The contribution
+  is operational: given an expensive oracle, which inference branch, aggregation rule,
+  and routing policy are actually justified for a given runtime budget on these leaf
+  collections?"
+
+WEAKNESS 2 — SUBSTRATE TABLE NOT CROSS-REFERENCED FROM INTRODUCTION
+--------------------------------------------------------------------
+Type: Structural / reader orientation
+Problem: The substrate table (Table 1, distinguishing 35-leaf integrated vs. 174-leaf
+  full study) is defined in Section 3, but the Introduction does not point to it.
+  A reviewer reading linearly might be confused by the different N values in the abstract.
+Fix applied: Added "(Table~\ref{tab:substrates} for the split accounting)" cross-reference
+  in the Contributions list point #2 in the Introduction.
+
+WEAKNESS 3 — DENOMINATOR NOT EXPLICIT IN MATCHED COMPARISON TABLE
+-----------------------------------------------------------------
+Type: Structural / statistical
+Problem: Table 2 (matched full-leaf vs. patchwise comparison) did not explicitly state
+  the n=35 denominator in the column headers or caption.
+Fix applied:
+  - Caption now reads: "Matched full-leaf versus patchwise comparison (n=35 leaves,
+    integrated split). Lower nMAE is better. Oracle gap is constant because it depends
+    only on the two oracle definitions, not the predictor."
+  - Added explicit "n" column showing 35 for all rows.
+
+WEAKNESS 4 — ORACLE GAP NOT FULLY DEFENDED AGAINST "FLAW" READING
+------------------------------------------------------------------
+Type: Rhetorical / evidential
+Problem: A reviewer unfamiliar with dual-oracle experimental design might read the
+  0.327 nMAE oracle gap as evidence that patchwise inference is fundamentally broken
+  rather than as an expected property of the experimental design.
+Fix applied: Added "Why the oracle gap is not a flaw" paragraph to Discussion:
+  "The oracle gap (0.327 nMAE) is a property of the experimental design, not a failure
+  of the predictor. Full-leaf and patch oracles are solving related but distinct sub-
+  problems: the full-leaf optimizer operates with global image context, while patch
+  oracles operate on cropped regions with truncated boundary context. This is not a
+  flaw; it is the inherent structure of the task."
+
+WEAKNESS 5 — NON-MONOTONE LEARNING CURVES NOT EXPLAINED
+--------------------------------------------------------
+Type: Evidential / rhetorical
+Problem: The paper includes deliberately non-monotone learning curves as evidence of
+  problem difficulty, but without explicit explanation a reviewer might interpret this
+  as a sign that the method is unreliable or the evaluation is noisy.
+Fix applied: Added "On non-monotone learning curves" paragraph to Discussion:
+  "The learning-curve irregularity is evidence about the problem, not noise to suppress.
+  It suggests the task remains sensitive to split composition, backbone mismatch, or
+  target noise from the optimizer. This finding argues for treating learning-curve
+  instability as a diagnostic signal when deploying amortized predictors."
+
+WEAKNESS 6 — UNCERTAINTY GUARANTEE LIMITATIONS NOT FULLY ADDRESSED
+-------------------------------------------------------------------
+Type: Evidential / statistical
+Problem: The paper states uncertainty is good for thresholding but not formal guarantees.
+  A reviewer might ask what would be needed to achieve stronger guarantees.
+Fix applied: Added "On strengthening uncertainty guarantees" paragraph:
+  "Achieving stronger guarantees would require conformal prediction techniques with
+  held-out calibration sets, or a richer uncertainty model than the ensemble variance
+  used here. These are natural future extensions; the present work establishes that
+  the simpler uncertainty signal is already useful for the operational deployment problem."
+
+SUMMARY OF CHANGES
+------------------
+Lines changed: ~40 targeted additions and replacements
+New content added: Scope paragraph in Introduction, oracle gap defense, learning curve
+  explanation, uncertainty limitation discussion in Discussion section.
+Table 2: caption and column structure made denominator-explicit (n=35 column added).
+No mathematical content modified.
+No figures removed or added.
+All experimental numbers preserved exactly from v1.
+Paper identity preserved: this remains the runtime-quality / selective semi-amortized
+deployment paper, not a geometry or physics paper.
