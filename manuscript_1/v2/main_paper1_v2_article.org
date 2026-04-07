@@ -1,0 +1,306 @@
+#+TITLE: Gradient-Free Stochastic Optimization of Navier-Stokes Active Contours for Unsupervised High-Throughput Phenotyping
+#+AUTHOR: Chimdi Walter Ndubuisi and Toni Kazic
+#+OPTIONS: toc:2 num:t
+
+- Compiled PDF :: [[file:../paper1_v2_article_final.pdf][paper1_v2_article_final.pdf]]
+- LaTeX source :: [[file:main_paper1_v2_article.tex][main_paper1_v2_article.tex]]
+- Figures dir :: [[file:figures/][figures/]]
+
+* Abstract
+Quantitative phenotyping of plant disease lesions requires accurate segmentation of heterogeneous morphologies without ground-truth annotation in most practical settings. Physics-based active contour models offer an unsupervised alternative to data-hungry deep learning, but are notoriously sensitive to hyperparameter selection. We present a fully automated, unsupervised segmentation framework that treats per-image tuning of Navier-Stokes active contours as a high-dimensional black-box optimization problem—-making the per-image optimizer and its no-ground-truth objective the primary contribution. The composite objective integrates gradient alignment, chromatic separability in Lab color space, and topological constraints to score candidates without any annotation; a random-restart stochastic hill-climbing algorithm navigates the non-convex parameter space per image. Evaluated on 174 high-resolution 16-bit leaf images spanning diverse necrotic and chlorotic phenotypes, the optimizer achieves 100\% non-empty segmentation rate under all tested configurations. Objective ablations confirm that gradient alignment and contour topology are the most critical terms: removing gradient alignment reduces median score by 34\%; removing the contour topology reward drops it by 75\%. Search-strategy ablations show the refinement phase adds measurable value for morphologically complex leaves while contributing minimally on flat-landscape images. Trace-based objective-surface reconstruction reveals that high-score leaves present landscapes with exploitable local curvature, while low-score leaves yield flat surfaces where random exploration suffices. Analysis of the optimizer's solution geometry shows that per-image parameters occupy a structured, low-dimensional subspace—-kNN group agreement 0.534 versus random baseline 0.33, centroid shift 1.616 standardized units—-indicating systematic, optimizer-derived parameter organization. As a secondary consequence, this structure supports training compact amortized predictors (demonstrated with a patch-based UNet student) from optimizer pseudo-labels, providing rapid inference without any manual annotation.
+
+* Introduction
+
+* Related Work
+
+** Active Contours, Level Sets, and External Forces
+
+** PDEs and Fluid Dynamics in Vision
+
+** Segmentation Models (2015—2025): CNNs, Transformers, and Foundation Models
+
+** Black-Box and Hyperparameter Optimization for Vision
+
+** Plant Phenotyping Context and Tooling
+
+* Problem Setup and Notation
+
+** Candidate Trace Sets and Projected Surfaces
+
+** Parameter-Cloud Geometry
+
+* Mathematical Framework
+
+** Navier-Stokes Diffusion for Edge Enhancement
+
+** Active Contour Dynamics (Snakes)
+
+* Methodology: Stochastic Parameter Search
+
+** Overview of the Optimization Loop
+
+** The Heuristic Objective Function
+
+*** Gradient Alignment ($G$)
+
+*** Chromatic Separability ($C$)
+
+*** Topological Reward (Lesion Multiplicity)
+
+*** Penalty Terms
+
+** Random-Restart Stochastic Hill Climbing
+
+* Implementation Details and Engineering Choices
+
+** 16-bit Handling, Masking, and Channel Fusion
+
+** Scale-Aware Candidate Filtering
+
+** Runtime Controls: Downscaling, Timeouts, and Parallelism
+
+* Experiments
+
+** Dataset
+
+** Evaluation Protocol
+
+** Teacher—Student Distillation (UNet Student)
+
+** Baselines
+
+** Metrics
+
+* Results
+
+** Optimizer Performance and Claim-to-Evidence Summary
+
+#+CAPTION: Optimizer run status distribution from stochastic search summary across all 174 images.
+#+NAME: fig:paramdist_status
+[[file:figures/optimizer_status_bar.png]]
+
+#+CAPTION: Histogram of per-image optimizer runtime (elapsed seconds). Median runtime is approximately 4,000 seconds; the ``fast'' variant (60\,s timeout) demonstrates that meaningful segmentations can be obtained within tight compute budgets.
+#+NAME: fig:paramdist_status
+[[file:figures/optimizer_elapsed_seconds_hist.png]]
+
+#+CAPTION: Histogram of optimizer objective scores across 174 images. The score distribution is unimodal and right-skewed, indicating a meaningful spread of per-image optimization difficulty.
+#+NAME: fig:objterms_runtime
+[[file:figures/optimizer_score_hist.png]]
+
+** Teacher—Student Distillation Results
+
+#+CAPTION: Threshold sweep on stitched probability maps. Dice decreases smoothly with increasing threshold, while teacher-empty disagreements persist across thresholds.
+#+NAME: fig:thresh_sweep
+[[file:figures/threshold_sweep_plot.png]]
+
+#+CAPTION: Teacher—student qualitative montage (worst/median/best). The teacher is the optimizer pseudo-label (inner mask), and the student is the stitched UNet prediction. ``Worst'' cases are often teacher-empty/student-nonempty disagreements.
+#+NAME: fig:thresh_sweep
+[[file:figures/montage_teacher_student.png]]
+
+#+CAPTION: Representative teacher-empty/student-nonempty disagreement cases. Columns: raw image, teacher overlay (optimizer; empty inner mask), and student overlay (UNet). These cases may reflect either optimizer false negatives under the inner-mask definition or a mismatch in necrosis/halo semantics.
+#+NAME: fig:teacher_student_montage
+[[file:figures/montage_disagreement_roi.png]]
+
+** Parameter Correlations with Morphology
+
+#+CAPTION: Energy threshold vs.\ lesion count across 174 images. Higher thresholds suppress faint edges, yielding fewer connected components.
+#+NAME: fig:scatter_et_lc
+[[file:figures/scatter_energy_threshold_vs_lesion_count.png]]
+
+#+CAPTION: Balloon force $$ vs.\ area fraction. Larger balloon forces produce masks covering a greater proportion of the leaf.
+#+NAME: fig:scatter_et_lc
+[[file:figures/scatter_beta_vs_area_frac.png]]
+
+** Ablation Studies: Objective Terms and Search Strategy
+
+** Trace-Based Objective-Surface Analysis
+
+*** Score Surfaces
+
+#+CAPTION: Trace-based projected objective surface ($T$ vs.\ $$) for a representative /high-score/ leaf (DSC\_0198). All 112 evaluated candidates are shown as scatter points colored by score; the final optimum (red star), best random-phase point (orange triangle), and best refine-phase point (cyan square) are 
+#+NAME: fig:surface_high
+[[file:figures/surface_DSC_0198_segment_1_segmented_smoothed__surface_energy_threshold_vs_beta.png]]
+
+#+CAPTION: Trace-based projected objective surface ($T$ vs.\ $$) for a representative /median-score/ leaf (DSC\_0379).
+#+NAME: fig:surface_high
+[[file:figures/surface_DSC_0379_segment_1_segmented_smoothed__surface_energy_threshold_vs_beta.png]]
+
+#+CAPTION: Trace-based projected objective surface ($T$ vs.\ $$) for a representative /low-score/ leaf (DSC\_0261). The surface is flatter than for high-score leaves, consistent with a landscape that offers limited exploitable curvature.
+#+NAME: fig:surface_med
+[[file:figures/surface_DSC_0261_segment_1_segmented_smoothed__surface_energy_threshold_vs_beta.png]]
+
+*** Optimization Trajectories
+
+#+CAPTION: Convergence trajectory: best score so far vs.\ candidate index for a high-score leaf (DSC\_0198). Random-phase candidates (blue region) establish initial optima; refine-phase candidates (orange region) improve upon them.
+#+NAME: fig:trajectory_high
+[[file:figures/traj_DSC_0198_segment_1_segmented_smoothed__trajectory_best_score_so_far.png]]
+
+*** Landscape Geometry Across Score Tiers
+
+** Parameter-Cloud Geometry and Manifold Structure
+
+*** PCA Separation of Global and Local Optima
+
+#+CAPTION: PCA 2D projection of global (circles) and local (triangles) parameter vectors from 150 patches. Points are colored by Dice improvement $ D$. PC1 separates the two clouds, indicating a systematic directional shift from global to local optimization. The centroid shift magnitude is 1.616 standardized u
+#+NAME: fig:pca2d_global_local
+[[file:figures/pca2d_global_local_dD.png]]
+
+*** Mean Parameter Shift Profile
+
+#+CAPTION: Mean parameter shift (global $$ local) across 150 patches. Energy threshold is the dominant shift parameter; $$, diffusion rate, and $$ also show significant systematic displacements.
+#+NAME: fig:mean_delta
+[[file:figures/mean_delta_parameters.png]]
+
+*** Solid 3D Geometry: Covariance Ellipsoids and Convex Hulls
+
+#+CAPTION: Covariance ellipsoids (2-sigma) for global (blue) and local (red) parameter clouds in PCA space. Star markers show centroids; black arrow indicates centroid shift direction. The ellipsoids overlap substantially but are systematically displaced, confirming structured parameter organization.
+#+NAME: fig:cov_ellipsoids
+[[file:figures/pca3d_covariance_ellipsoids.png]]
+
+*** Neighbor Consistency and Predictive Structure
+
+** Qualitative Results and Failure Taxonomy
+
+#+CAPTION: Qualitative grid across the Dice spectrum (6 rows, sorted worst-to-best). Columns: Input leaf image, teacher (optimizer) overlay, student (UNet) overlay, teacher mask, student mask. Rows span Dice${}0.0$ (teacher-empty case) to Dice${}0.84$ (high agreement).
+#+NAME: fig:qual_grid
+[[file:figures/qual_grid_teacher_student.png]]
+
+* Multi-Stage Inference for Nested/Inner Lesions
+
+* Discussion and Limitations
+
+#+CAPTION: Distribution of signed area-fraction error (predicted $-$ teacher) for global and local parameter sets across 150 patches. Both distributions are left-skewed, reflecting systematic underestimation of lesion area under patchification.
+#+NAME: fig:patch_area_err_hist
+[[file:figures/hist_area_frac_error.png]]
+
+#+CAPTION: Distribution of signed lesion-count error (predicted $-$ teacher). Local re-optimization shifts the distribution closer to zero, reducing mean $|$count error$|$ by 35\%.
+#+NAME: fig:patch_area_err_hist
+[[file:figures/hist_count_error.png]]
+
+#+CAPTION: Teacher vs.\ predicted lesion area fraction. Points below the diagonal indicate underestimation; both global and local predictions cluster well below the identity line, consistent with context-dependent area loss under patchification.
+#+NAME: fig:patch_count_err_hist
+[[file:figures/scatter_teacher_vs_pred_area_frac.png]]
+
+* Conclusion
+
+* Additional Optimizer Diagnostics
+
+#+CAPTION: Additional optimizer output diagnostics across all images (OK runs).
+#+NAME: fig:appendix_optimizer_outputs
+[[file:figures/n_contours_hist.png]]
+
+#+CAPTION: Additional optimizer output diagnostics across all images (OK runs).
+#+NAME: fig:appendix_optimizer_outputs
+[[file:figures/area_px_hist.png]]
+
+#+CAPTION: Empirical distributions of optimized physics parameters across all images (OK runs).
+#+NAME: fig:appendix_param_hists
+[[file:figures/param_mu_hist.png]]
+
+#+CAPTION: Empirical distributions of optimized physics parameters across all images (OK runs).
+#+NAME: fig:appendix_param_hists
+[[file:figures/param_lambda_hist.png]]
+
+#+CAPTION: Empirical distributions of optimized physics parameters across all images (OK runs).
+#+NAME: fig:appendix_param_hists
+[[file:figures/param_diffusion_rate_hist.png]]
+
+#+CAPTION: Empirical distributions of optimized physics parameters across all images (OK runs).
+#+NAME: fig:appendix_param_hists
+[[file:figures/param_alpha_hist.png]]
+
+#+CAPTION: Empirical distributions of optimized physics parameters across all images (OK runs).
+#+NAME: fig:appendix_param_hists
+[[file:figures/param_beta_hist.png]]
+
+#+CAPTION: Empirical distributions of optimized physics parameters across all images (OK runs).
+#+NAME: fig:appendix_param_hists
+[[file:figures/param_gamma_hist.png]]
+
+#+CAPTION: Empirical distributions of optimized physics parameters across all images (OK runs).
+#+NAME: fig:appendix_param_hists
+[[file:figures/param_energy_threshold_hist.png]]
+
+* Trace-Based Surface and Trajectory Supplementary Plots
+
+#+CAPTION: Best-score-so-far convergence trajectories for additional high-score leaves.
+#+NAME: fig:appendix_traj_high
+[[file:figures/traj_DSC_0166_segment_1_segmented_smoothed__trajectory_best_score_so_far.png]]
+
+#+CAPTION: Best-score-so-far convergence trajectories for additional high-score leaves.
+#+NAME: fig:appendix_traj_high
+[[file:figures/traj_DSC_0163_segment_1_segmented_smoothed__trajectory_best_score_so_far.png]]
+
+#+CAPTION: Best-score-so-far convergence trajectories for median-score leaves.
+#+NAME: fig:appendix_traj_med
+[[file:figures/traj_DSC_0274_segment_1_segmented_smoothed__trajectory_best_score_so_far.png]]
+
+#+CAPTION: Best-score-so-far convergence trajectories for median-score leaves.
+#+NAME: fig:appendix_traj_med
+[[file:figures/traj_DSC_0205_segment_1_segmented_smoothed__trajectory_best_score_so_far.png]]
+
+#+CAPTION: Best-score-so-far convergence trajectories for low-score leaves. Note the early plateau compared to high-score leaves.
+#+NAME: fig:appendix_traj_low
+[[file:figures/traj_DSC_0185_segment_1_segmented_smoothed__trajectory_best_score_so_far.png]]
+
+#+CAPTION: Best-score-so-far convergence trajectories for low-score leaves. Note the early plateau compared to high-score leaves.
+#+NAME: fig:appendix_traj_low
+[[file:figures/traj_DSC_0199_segment_1_segmented_smoothed__trajectory_best_score_so_far.png]]
+
+* Parameter-Cloud Geometry Supplementary Plots
+
+#+CAPTION: Supplementary solid-3D parameter geometry. (a) Convex hulls show the volumetric extent of global and local parameter clouds. (b) Separation of patches by Dice improvement sign reveals partial clustering of beneficial vs.\ detrimental local re-optimization in parameter space.
+#+NAME: fig:appendix_solid3d
+[[file:figures/pca3d_convex_hull_global_local.png]]
+
+#+CAPTION: Supplementary solid-3D parameter geometry. (a) Convex hulls show the volumetric extent of global and local parameter clouds. (b) Separation of patches by Dice improvement sign reveals partial clustering of beneficial vs.\ detrimental local re-optimization in parameter space.
+#+NAME: fig:appendix_solid3d
+[[file:figures/pca3d_positive_vs_negative_dD_surfaces.png]]
+
+#+CAPTION: Supplementary manifold embeddings. (a) t-SNE projection of delta-parameter vectors shows partial clustering of $ D$ groups, confirming that the shift direction carries predictive information. (b) Group-level centroid shifts in PCA space.
+#+NAME: fig:appendix_manifold
+[[file:figures/tsne2d_delta_ddgroup.png]]
+
+#+CAPTION: Supplementary manifold embeddings. (a) t-SNE projection of delta-parameter vectors shows partial clustering of $ D$ groups, confirming that the shift direction carries predictive information. (b) Group-level centroid shifts in PCA space.
+#+NAME: fig:appendix_manifold
+[[file:figures/pca_centroid_shift_groups.png]]
+
+* Figure Index (all referenced figures)
+- [[file:figures/optimizer_status_bar.png][optimizer_status_bar.png]] — _Optimizer Performance and Claim-to-Evidence Summary_ — Optimizer run status distribution from stochastic search summary across all 174 images.
+- [[file:figures/optimizer_elapsed_seconds_hist.png][optimizer_elapsed_seconds_hist.png]] — _Optimizer Performance and Claim-to-Evidence Summary_ — Histogram of per-image optimizer runtime (elapsed seconds). Median runtime is approximately 4,000 seconds; the ``fast'' …
+- [[file:figures/optimizer_score_hist.png][optimizer_score_hist.png]] — _Optimizer Performance and Claim-to-Evidence Summary_ — Histogram of optimizer objective scores across 174 images. The score distribution is unimodal and right-skewed, indicati…
+- [[file:figures/threshold_sweep_plot.png][threshold_sweep_plot.png]] — _Teacher—Student Distillation Results_ — Threshold sweep on stitched probability maps. Dice decreases smoothly with increasing threshold, while teacher-empty dis…
+- [[file:figures/montage_teacher_student.png][montage_teacher_student.png]] — _Teacher—Student Distillation Results_ — Teacher—student qualitative montage (worst/median/best). The teacher is the optimizer pseudo-label (inner mask), and the…
+- [[file:figures/montage_disagreement_roi.png][montage_disagreement_roi.png]] — _Teacher—Student Distillation Results_ — Representative teacher-empty/student-nonempty disagreement cases. Columns: raw image, teacher overlay (optimizer; empty …
+- [[file:figures/scatter_energy_threshold_vs_lesion_count.png][scatter_energy_threshold_vs_lesion_count.png]] — _Parameter Correlations with Morphology_ — Energy threshold vs.\ lesion count across 174 images. Higher thresholds suppress faint edges, yielding fewer connected c…
+- [[file:figures/scatter_beta_vs_area_frac.png][scatter_beta_vs_area_frac.png]] — _Parameter Correlations with Morphology_ — Balloon force $$ vs.\ area fraction. Larger balloon forces produce masks covering a greater proportion of the leaf.
+- [[file:figures/surface_DSC_0198_segment_1_segmented_smoothed__surface_energy_threshold_vs_beta.png][surface_DSC_0198_segment_1_segmented_smoothed__surface_energy_threshold_vs_beta.png]] — _Score Surfaces_ — Trace-based projected objective surface ($T$ vs.\ $$) for a representative /high-score/ leaf (DSC\_0198). All 112 evalua…
+- [[file:figures/surface_DSC_0379_segment_1_segmented_smoothed__surface_energy_threshold_vs_beta.png][surface_DSC_0379_segment_1_segmented_smoothed__surface_energy_threshold_vs_beta.png]] — _Score Surfaces_ — Trace-based projected objective surface ($T$ vs.\ $$) for a representative /median-score/ leaf (DSC\_0379).
+- [[file:figures/surface_DSC_0261_segment_1_segmented_smoothed__surface_energy_threshold_vs_beta.png][surface_DSC_0261_segment_1_segmented_smoothed__surface_energy_threshold_vs_beta.png]] — _Score Surfaces_ — Trace-based projected objective surface ($T$ vs.\ $$) for a representative /low-score/ leaf (DSC\_0261). The surface is …
+- [[file:figures/traj_DSC_0198_segment_1_segmented_smoothed__trajectory_best_score_so_far.png][traj_DSC_0198_segment_1_segmented_smoothed__trajectory_best_score_so_far.png]] — _Optimization Trajectories_ — Convergence trajectory: best score so far vs.\ candidate index for a high-score leaf (DSC\_0198). Random-phase candidate…
+- [[file:figures/pca2d_global_local_dD.png][pca2d_global_local_dD.png]] — _PCA Separation of Global and Local Optima_ — PCA 2D projection of global (circles) and local (triangles) parameter vectors from 150 patches. Points are colored by Di…
+- [[file:figures/mean_delta_parameters.png][mean_delta_parameters.png]] — _Mean Parameter Shift Profile_ — Mean parameter shift (global $$ local) across 150 patches. Energy threshold is the dominant shift parameter; $$, diffusi…
+- [[file:figures/pca3d_covariance_ellipsoids.png][pca3d_covariance_ellipsoids.png]] — _Solid 3D Geometry: Covariance Ellipsoids and Convex Hulls_ — Covariance ellipsoids (2-sigma) for global (blue) and local (red) parameter clouds in PCA space. Star markers show centr…
+- [[file:figures/qual_grid_teacher_student.png][qual_grid_teacher_student.png]] — _Qualitative Results and Failure Taxonomy_ — Qualitative grid across the Dice spectrum (6 rows, sorted worst-to-best). Columns: Input leaf image, teacher (optimizer)…
+- [[file:figures/hist_area_frac_error.png][hist_area_frac_error.png]] — _Discussion and Limitations_ — Distribution of signed area-fraction error (predicted $-$ teacher) for global and local parameter sets across 150 patche…
+- [[file:figures/hist_count_error.png][hist_count_error.png]] — _Discussion and Limitations_ — Distribution of signed lesion-count error (predicted $-$ teacher). Local re-optimization shifts the distribution closer …
+- [[file:figures/scatter_teacher_vs_pred_area_frac.png][scatter_teacher_vs_pred_area_frac.png]] — _Discussion and Limitations_ — Teacher vs.\ predicted lesion area fraction. Points below the diagonal indicate underestimation; both global and local p…
+- [[file:figures/n_contours_hist.png][n_contours_hist.png]] — _Additional Optimizer Diagnostics_ — Additional optimizer output diagnostics across all images (OK runs).
+- [[file:figures/area_px_hist.png][area_px_hist.png]] — _Additional Optimizer Diagnostics_ — Additional optimizer output diagnostics across all images (OK runs).
+- [[file:figures/param_mu_hist.png][param_mu_hist.png]] — _Additional Optimizer Diagnostics_ — Empirical distributions of optimized physics parameters across all images (OK runs).
+- [[file:figures/param_lambda_hist.png][param_lambda_hist.png]] — _Additional Optimizer Diagnostics_ — Empirical distributions of optimized physics parameters across all images (OK runs).
+- [[file:figures/param_diffusion_rate_hist.png][param_diffusion_rate_hist.png]] — _Additional Optimizer Diagnostics_ — Empirical distributions of optimized physics parameters across all images (OK runs).
+- [[file:figures/param_alpha_hist.png][param_alpha_hist.png]] — _Additional Optimizer Diagnostics_ — Empirical distributions of optimized physics parameters across all images (OK runs).
+- [[file:figures/param_beta_hist.png][param_beta_hist.png]] — _Additional Optimizer Diagnostics_ — Empirical distributions of optimized physics parameters across all images (OK runs).
+- [[file:figures/param_gamma_hist.png][param_gamma_hist.png]] — _Additional Optimizer Diagnostics_ — Empirical distributions of optimized physics parameters across all images (OK runs).
+- [[file:figures/param_energy_threshold_hist.png][param_energy_threshold_hist.png]] — _Additional Optimizer Diagnostics_ — Empirical distributions of optimized physics parameters across all images (OK runs).
+- [[file:figures/traj_DSC_0166_segment_1_segmented_smoothed__trajectory_best_score_so_far.png][traj_DSC_0166_segment_1_segmented_smoothed__trajectory_best_score_so_far.png]] — _Trace-Based Surface and Trajectory Supplementary Plots_ — Best-score-so-far convergence trajectories for additional high-score leaves.
+- [[file:figures/traj_DSC_0163_segment_1_segmented_smoothed__trajectory_best_score_so_far.png][traj_DSC_0163_segment_1_segmented_smoothed__trajectory_best_score_so_far.png]] — _Trace-Based Surface and Trajectory Supplementary Plots_ — Best-score-so-far convergence trajectories for additional high-score leaves.
+- [[file:figures/traj_DSC_0274_segment_1_segmented_smoothed__trajectory_best_score_so_far.png][traj_DSC_0274_segment_1_segmented_smoothed__trajectory_best_score_so_far.png]] — _Trace-Based Surface and Trajectory Supplementary Plots_ — Best-score-so-far convergence trajectories for median-score leaves.
+- [[file:figures/traj_DSC_0205_segment_1_segmented_smoothed__trajectory_best_score_so_far.png][traj_DSC_0205_segment_1_segmented_smoothed__trajectory_best_score_so_far.png]] — _Trace-Based Surface and Trajectory Supplementary Plots_ — Best-score-so-far convergence trajectories for median-score leaves.
+- [[file:figures/traj_DSC_0185_segment_1_segmented_smoothed__trajectory_best_score_so_far.png][traj_DSC_0185_segment_1_segmented_smoothed__trajectory_best_score_so_far.png]] — _Trace-Based Surface and Trajectory Supplementary Plots_ — Best-score-so-far convergence trajectories for low-score leaves. Note the early plateau compared to high-score leaves.
+- [[file:figures/traj_DSC_0199_segment_1_segmented_smoothed__trajectory_best_score_so_far.png][traj_DSC_0199_segment_1_segmented_smoothed__trajectory_best_score_so_far.png]] — _Trace-Based Surface and Trajectory Supplementary Plots_ — Best-score-so-far convergence trajectories for low-score leaves. Note the early plateau compared to high-score leaves.
+- [[file:figures/pca3d_convex_hull_global_local.png][pca3d_convex_hull_global_local.png]] — _Parameter-Cloud Geometry Supplementary Plots_ — Supplementary solid-3D parameter geometry. (a) Convex hulls show the volumetric extent of global and local parameter clo…
+- [[file:figures/pca3d_positive_vs_negative_dD_surfaces.png][pca3d_positive_vs_negative_dD_surfaces.png]] — _Parameter-Cloud Geometry Supplementary Plots_ — Supplementary solid-3D parameter geometry. (a) Convex hulls show the volumetric extent of global and local parameter clo…
+- [[file:figures/tsne2d_delta_ddgroup.png][tsne2d_delta_ddgroup.png]] — _Parameter-Cloud Geometry Supplementary Plots_ — Supplementary manifold embeddings. (a) t-SNE projection of delta-parameter vectors shows partial clustering of $ D$ grou…
+- [[file:figures/pca_centroid_shift_groups.png][pca_centroid_shift_groups.png]] — _Parameter-Cloud Geometry Supplementary Plots_ — Supplementary manifold embeddings. (a) t-SNE projection of delta-parameter vectors shows partial clustering of $ D$ grou…
